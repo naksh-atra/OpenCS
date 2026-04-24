@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+---
+
+<BaseLayout title="Contribute" description="Contribute to OpenCS">
+  <Header />
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <h1>Contribute to OpenCS</h1>
+        <p class="page-intro">
+          OpenCS is built by the community. Here's how you can help make computer science education better for students across India.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="container narrow">
+        <h2>Ways to Contribute</h2>
+
+        <div class="contribution-types">
+          <div class="contrib-type">
+            <h3>Add New Topics</h3>
+            <p>
+              Implement visualizations for topics not yet covered. Topics must follow the pedagogical contract and use one of the four engines.
+            </p>
+          </div>
+
+          <div class="contrib-type">
+            <h3>Improve Visualizers</h3>
+            <p>
+              Enhance existing visualizations with better animations, interactivity, or mobile support.
+            </p>
+          </div>
+
+          <div class="contrib-type">
+            <h3>Enhance Pedagogy</h3>
+            <p>
+              Improve explanations, add examples, or fix common mistakes sections in existing topic content.
+            </p>
+          </div>
+
+          <div class="contrib-type">
+            <h3>Build Engines</h3>
+            <p>
+              Extend the four core engines with new capabilities or create supporting utilities.
+            </p>
+          </div>
+
+          <div class="contrib-type">
+            <h3>Documentation</h3>
+            <p>
+              Improve docs, fix typos, or add examples for contributors.
+            </p>
+          </div>
+        </div>
+
+        <h2>Getting Started</h2>
+        <ol>
+          <li>Fork the repository</li>
+          <li>Clone your fork locally</li>
+          <li>Create a feature branch</li>
+          <li>Make your changes</li>
+          <li>Test with <code>npm run build</code></li>
+          <li>Submit a pull request</li>
+        </ol>
+
+        <h2>Standards</h2>
+        <p>
+          All contributions must meet our pedagogy standards. Read the
+          <a href="/OpenCS/CONTRIBUTING.md">contribution guide</a> and
+          <a href="/OpenCS/docs/architecture.md">architecture docs</a> before starting.
+        </p>
+
+        <h2>Community</h2>
+        <p>
+          Be respectful. Follow the <a href="/OpenCS/CODE_OF_CONDUCT.md">Code of Conduct</a>.
+          We're here to help fellow students learn.
+        </p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding: var(--space-12) 0;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-header h1 {
+    margin-bottom: var(--space-3);
+  }
+
+  .page-intro {
+    font-size: 1.125rem;
+    color: var(--color-text-muted);
+    max-width: 36rem;
+    line-height: 1.7;
+  }
+
+  .content-section {
+    padding: var(--space-12) 0;
+  }
+
+  .container.narrow {
+    max-width: 48rem;
+  }
+
+  .content-section h2 {
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-4);
+  }
+
+  .content-section h2:first-child {
+    margin-top: 0;
+  }
+
+  .content-section p {
+    margin-bottom: var(--space-4);
+    line-height: 1.7;
+  }
+
+  .contribution-types {
+    display: grid;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+  }
+
+  .contrib-type {
+    padding: var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .contrib-type h3 {
+    font-size: 1rem;
+    margin-bottom: var(--space-2);
+  }
+
+  .contrib-type p {
+    margin-bottom: 0;
+    color: var(--color-text-muted);
+  }
+
+  .content-section ol {
+    margin-bottom: var(--space-4);
+    padding-left: var(--space-6);
+  }
+
+  .content-section li {
+    margin-bottom: var(--space-2);
+  }
+
+  .content-section a {
+    color: var(--color-primary);
+  }
+</style>

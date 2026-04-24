@@ -1,0 +1,99 @@
+---
+title: "Time Complexity Growth"
+description: "Visualize how different algorithms scale as input size grows. Compare O(1) to O(n) to O(n²) to O(2ⁿ) and understand why complexity matters."
+category: "algorithms"
+engine: "sequence"
+order: 1
+difficulty: "beginner"
+tags: ["big-o", "complexity", "asymptotic-analysis", "performance"]
+prerequisites: ["basic-programming"]
+learningObjectives:
+  - "Explain what Big-O notation represents"
+  - "Compare growth rates of common complexity classes"
+  - "Identify the complexity of simple code patterns"
+estimatedTime: "20 minutes"
+status: "planned"
+---
+
+import IntuitionBlock from '../../components/pedagogy/IntuitionBlock.astro';
+
+## Intuition
+
+Imagine you have to find a word in a book. If someone tells you the exact page number, you can flip directly there — that's fast. But if you only know the chapter, you might need to scan the whole table of contents. If you know nothing, you might have to read every page.
+
+**Time complexity** measures how the running time of an algorithm grows as the input size grows. We care about the worst case — when the input is adversarial and makes our algorithm work hardest.
+
+<IntuitionBlock title="The Core Idea">
+Think of complexity like a speed limit. O(1) is highway speed — no matter how much data you have, it takes the same time. O(n) is like traffic — more cars means more time. O(n²) is like pairing everyone at a party for introductions — the time grows much faster.
+</IntuitionBlock>
+
+## Formal Concept
+
+Big-O notation describes the **upper bound** of an algorithm's growth rate. We write T(n) = O(f(n)) where f(n) is some function that bounds T(n) from above.
+
+### Common Complexity Classes
+
+| Notation | Name | Example |
+|----------|------|---------|
+| O(1) | Constant | Array index access |
+| O(log n) | Logarithmic | Binary search |
+| O(n) | Linear | Linear search, single loop |
+| O(n log n) | Linearithmic | Merge sort, heap sort |
+| O(n²) | Quadratic | Bubble sort, nested loops |
+| O(2ⁿ) | Exponential | Recursive Fibonacci (naive) |
+
+### Properties
+
+- **Constants are dropped**: O(2n) = O(n)
+- **Dominant terms win**: O(n² + n) = O(n²)
+- **Log base doesn't matter**: O(log₂ n) = O(log₁₀ n) = O(log n)
+
+## Step-by-Step Example
+
+Let's analyze three code snippets:
+
+**O(1) — Constant**
+```python
+def get_first_element(arr):
+    return arr[0]  # Always one operation
+```
+
+**O(n) — Linear**
+```python
+def find_max(arr):
+    max_val = arr[0]
+    for val in arr:  # n operations
+        if val > max_val:
+            max_val = val
+    return max_val
+```
+
+**O(n²) — Quadratic**
+```python
+def has_duplicate(arr):
+    for i in range(len(arr)):          # n times
+        for j in range(i + 1, len(arr)):  # decreases but still O(n²)
+            if arr[i] == arr[j]:
+                return True
+    return False
+```
+
+## Common Mistakes
+
+1. **Counting iterations wrong** — Nested loops aren't always O(n²). A loop from 1 to n and another from 1 to i gives O(n²/2) which is still O(n²).
+
+2. **Ignoring the dominant term** — When combining complexities, always keep the highest-order term.
+
+3. **Confusing best/worst/average case** — Big-O typically describes worst case unless specified otherwise.
+
+4. **Thinking O(log n) means very slow** — Actually, O(log n) is very fast. Doubling input size only adds one more step.
+
+## Practice Prompts
+
+1. What is the time complexity of inserting into an array at a random index? At the beginning?
+
+2. Write a function that checks if a string is a palindrome. What's its complexity?
+
+3. Binary search cuts the search space in half each step. Show that this gives O(log n) complexity.
+
+4. Why is merge sort O(n log n) and not O(n²)?

@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+---
+
+<BaseLayout title="Roadmap" description="OpenCS development roadmap">
+  <Header />
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <h1>Roadmap</h1>
+        <p class="page-intro">
+          The planned development path for OpenCS. Topics are prioritized based on curriculum relevance and pedagogical value.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="container">
+        <div class="milestones">
+          <div class="milestone">
+            <div class="milestone-header">
+              <h2>Milestone 1 — Non-Topic Shell</h2>
+              <span class="milestone-status">Planned</span>
+            </div>
+            <p>Landing page, topic index, topic layout, contributor pages, navigation, and design system.</p>
+            <ul class="milestone-tasks">
+              <li>Landing page with project introduction</li>
+              <li>Topic index with category filtering</li>
+              <li>Topic layout template with pedagogy blocks</li>
+              <li>Contributor pages (contribute, about, roadmap)</li>
+              <li>Design system tokens and components</li>
+            </ul>
+          </div>
+
+          <div class="milestone">
+            <div class="milestone-header">
+              <h2>Milestone 2 — Engine Implementations</h2>
+              <span class="milestone-status">Planned</span>
+            </div>
+            <p>Four reusable engines that power all topic visualizations.</p>
+            <ul class="milestone-tasks">
+              <li>Sequence Engine — linear operations, arrays, sorting</li>
+              <li>TreeGraph Engine — trees, BSTs, graphs, traversal</li>
+              <li>Theory Engine — DFA/NFA, automata theory</li>
+              <li>SystemProcess Engine — CPU scheduling, process management</li>
+            </ul>
+          </div>
+
+          <div class="milestone">
+            <div class="milestone-header">
+              <h2>Milestone 3 — First Topic Modules</h2>
+              <span class="milestone-status">Planned</span>
+            </div>
+            <p>Ship the first four complete topics with working visualizers.</p>
+            <ul class="milestone-tasks">
+              <li>Sorting Visualizer (bubble, merge, quick)</li>
+              <li>BFS/DFS Graph Traversal</li>
+              <li>DFA/NFA Simulator</li>
+              <li>CPU Scheduling (FCFS, SJF, Round Robin)</li>
+            </ul>
+          </div>
+
+          <div class="milestone">
+            <div class="milestone-header">
+              <h2>Milestone 4 — Remaining Topics</h2>
+              <span class="milestone-status">Planned</span>
+            </div>
+            <p>Complete the initial 12-topic set.</p>
+            <ul class="milestone-tasks">
+              <li>Recursion Tree Visualizer</li>
+              <li>Time Complexity Growth</li>
+              <li>Array Memory Operations</li>
+              <li>Stack and Queue Simulator</li>
+              <li>Linked List Visualizer</li>
+              <li>Tree Traversal Explorer</li>
+              <li>BST Insert/Delete/Search</li>
+              <li>Shortest Path and MST</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding: var(--space-12) 0;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-header h1 {
+    margin-bottom: var(--space-3);
+  }
+
+  .page-intro {
+    font-size: 1.125rem;
+    color: var(--color-text-muted);
+    max-width: 36rem;
+    line-height: 1.7;
+  }
+
+  .content-section {
+    padding: var(--space-12) 0;
+  }
+
+  .milestones {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: 48rem;
+  }
+
+  .milestone {
+    padding: var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .milestone-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-3);
+  }
+
+  .milestone-header h2 {
+    font-size: 1.25rem;
+    margin: 0;
+  }
+
+  .milestone-status {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: var(--space-1) var(--space-3);
+    background: #fef3c7;
+    color: #92400e;
+    border-radius: var(--radius-sm);
+  }
+
+  .milestone > p {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .milestone-tasks {
+    padding-left: var(--space-6);
+  }
+
+  .milestone-tasks li {
+    margin-bottom: var(--space-2);
+    color: var(--color-text-muted);
+  }
+</style>

@@ -1,0 +1,27 @@
+---
+import { getCollection, render } from 'astro:content';
+import TopicLayout from '../../layouts/TopicLayout.astro';
+
+export async function getStaticPaths() {
+  const topics = await getCollection('topics');
+  return topics.map(topic => ({
+    params: { slug: topic.id.replace(/\.mdx?$/, '') },
+    props: { topic },
+  }));
+}
+
+const { topic } = Astro.props;
+const { Content } = await render(topic);
+---
+
+<TopicLayout
+  title={topic.data.title}
+  description={topic.data.description}
+  difficulty={topic.data.difficulty}
+  estimatedTime={topic.data.estimatedTime}
+  category={topic.data.category}
+  prerequisites={topic.data.prerequisites}
+  learningObjectives={topic.data.learningObjectives}
+>
+  <Content />
+</TopicLayout>

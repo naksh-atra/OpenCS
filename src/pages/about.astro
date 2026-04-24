@@ -1,0 +1,116 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+---
+
+<BaseLayout title="About" description="About the OpenCS project">
+  <Header />
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <h1>About OpenCS</h1>
+        <p class="page-intro">
+          OpenCS is an open-source visual learning platform designed specifically for BTech CSE students in India.
+          Our mission is to make computer science fundamentals accessible, intuitive, and free.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="container narrow">
+        <h2>Our Mission</h2>
+        <p>
+          Every BTech CSE student in India deserves access to high-quality, visual learning resources.
+          OpenCS bridges the gap between theoretical concepts and intuitive understanding through
+          interactive visualizations powered by reusable engines.
+        </p>
+
+        <h2>Design Philosophy</h2>
+        <p>
+          We believe in <strong>textbook-modern</strong> design — clean, academic, and focused on clarity.
+          No flashy animations or startup SaaS aesthetics. Just clear explanations, interactive widgets,
+          and step-by-step examples that work.
+        </p>
+
+        <h2>Architecture</h2>
+        <p>
+          OpenCS is built on four reusable engines that power all visualizations:
+        </p>
+        <ul>
+          <li><strong>Sequence Engine</strong> — Linear operations: sorting, recursion, time complexity</li>
+          <li><strong>TreeGraph Engine</strong> — Hierarchical structures: trees, BSTs, graphs</li>
+          <li><strong>Theory Engine</strong> — Formal systems: DFA/NFA, automata</li>
+          <li><strong>SystemProcess Engine</strong> — OS simulations: CPU scheduling</li>
+        </ul>
+
+        <h2>Open Source</h2>
+        <p>
+          Licensed under MIT, OpenCS welcomes contributions from educators, developers, and students.
+          Every contribution follows our pedagogy standards to ensure consistent educational quality.
+        </p>
+
+        <h2>Technology</h2>
+        <p>
+          Built with Astro for static generation, React for interactive components, and MDX for content.
+          Deployed to GitHub Pages for fast, free access to anyone.
+        </p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding: var(--space-12) 0;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-header h1 {
+    margin-bottom: var(--space-3);
+  }
+
+  .page-intro {
+    font-size: 1.125rem;
+    color: var(--color-text-muted);
+    max-width: 36rem;
+    line-height: 1.7;
+  }
+
+  .content-section {
+    padding: var(--space-12) 0;
+  }
+
+  .container.narrow {
+    max-width: 48rem;
+  }
+
+  .content-section h2 {
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-4);
+  }
+
+  .content-section h2:first-child {
+    margin-top: 0;
+  }
+
+  .content-section p {
+    margin-bottom: var(--space-4);
+    line-height: 1.7;
+  }
+
+  .content-section ul {
+    margin-bottom: var(--space-4);
+    padding-left: var(--space-6);
+  }
+
+  .content-section li {
+    margin-bottom: var(--space-2);
+  }
+
+  .content-section strong {
+    font-weight: 600;
+  }
+</style>

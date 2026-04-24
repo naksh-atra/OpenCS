@@ -1,0 +1,359 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+---
+
+<BaseLayout title="Home" description="Visual learning platform for BTech CSE students in India">
+  <Header />
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <h1>Computer Science,<br/>Visualized</h1>
+          <p class="hero-subtitle">
+            OpenCS provides interactive visualizations of core BTech CSE topics —
+            algorithms, data structures, theory of computation, and systems.
+            Free, open-source, and built for students in India.
+          </p>
+          <div class="hero-actions">
+            <a href="/OpenCS/topics" class="btn btn-primary">Explore Topics</a>
+            <a href="/OpenCS/contribute" class="btn btn-secondary">Contribute</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="visual-card">
+            <div class="visual-header">Time Complexity</div>
+            <div class="visual-bars">
+              <div class="bar" style="height: 20%"><span>n</span></div>
+              <div class="bar" style="height: 35%"><span>n log n</span></div>
+              <div class="bar" style="height: 60%"><span>n²</span></div>
+              <div class="bar" style="height: 100%"><span>2ⁿ</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="container">
+        <h2>Built for Learning</h2>
+        <div class="features-grid">
+          <div class="feature">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <h3>Pedagogically Structured</h3>
+            <p>Every topic follows a clear learning path: intuition first, formal concepts second, then interactive exploration.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+              </svg>
+            </div>
+            <h3>Reusable Engines</h3>
+            <p>Four visualization engines power all topics. Sequence, TreeGraph, Theory, and SystemProcess keep the platform coherent.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <h3>Open Source</h3>
+            <p>MIT licensed, community-driven. Contribute topics, visualizers, or documentation to help fellow students.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/>
+              </svg>
+            </div>
+            <h3>Mobile Friendly</h3>
+            <p>Access from any device. Visualizations are optimized for students on phones and laptops alike.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="categories">
+      <div class="container">
+        <h2>Curriculum Areas</h2>
+        <div class="categories-grid">
+          <a href="/OpenCS/topics?category=algorithms" class="category-card">
+            <h3>Algorithms</h3>
+            <p>Sorting, complexity analysis, recursion</p>
+          </a>
+          <a href="/OpenCS/topics?category=data-structures" class="category-card">
+            <h3>Data Structures</h3>
+            <p>Arrays, linked lists, trees, graphs</p>
+          </a>
+          <a href="/OpenCS/topics?category=theory" class="category-card">
+            <h3>Theory of Computation</h3>
+            <p>DFA, NFA, formal languages</p>
+          </a>
+          <a href="/OpenCS/topics?category=systems" class="category-card">
+            <h3>Systems</h3>
+            <p>CPU scheduling, memory management</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <h2>Ready to start learning?</h2>
+        <p>Jump into any topic or explore the full curriculum.</p>
+        <a href="/OpenCS/topics" class="btn btn-primary">Browse All Topics</a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: var(--space-16) 0;
+    background: linear-gradient(to bottom, var(--color-surface), var(--color-bg));
+  }
+
+  .hero .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-12);
+    align-items: center;
+  }
+
+  .hero-content h1 {
+    font-size: 3rem;
+    line-height: 1.1;
+    margin-bottom: var(--space-4);
+  }
+
+  .hero-subtitle {
+    font-size: 1.125rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: var(--space-6);
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: var(--space-3);
+  }
+
+  .btn {
+    display: inline-block;
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  .btn-primary {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--color-primary-hover);
+    text-decoration: none;
+  }
+
+  .btn-secondary {
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+  }
+
+  .visual-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-lg);
+    width: 280px;
+  }
+
+  .visual-header {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .visual-bars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 120px;
+    gap: var(--space-2);
+  }
+
+  .bar {
+    flex: 1;
+    background: var(--color-primary);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: var(--space-1);
+    position: relative;
+  }
+
+  .bar span {
+    font-size: 0.625rem;
+    font-family: var(--font-mono);
+    color: white;
+    position: absolute;
+    top: var(--space-1);
+  }
+
+  .features {
+    padding: var(--space-16) 0;
+  }
+
+  .features h2 {
+    text-align: center;
+    margin-bottom: var(--space-12);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+  }
+
+  .feature {
+    padding: var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-4);
+    color: var(--color-primary);
+  }
+
+  .feature h3 {
+    font-size: 1.125rem;
+    margin-bottom: var(--space-2);
+  }
+
+  .feature p {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+  }
+
+  .categories {
+    padding: var(--space-16) 0;
+    background: var(--color-surface);
+  }
+
+  .categories h2 {
+    text-align: center;
+    margin-bottom: var(--space-8);
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+  }
+
+  .category-card {
+    padding: var(--space-6);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  .category-card:hover {
+    border-color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .category-card h3 {
+    font-size: 1rem;
+    margin-bottom: var(--space-2);
+    color: var(--color-text);
+  }
+
+  .category-card p {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  .cta {
+    padding: var(--space-16) 0;
+    text-align: center;
+  }
+
+  .cta h2 {
+    margin-bottom: var(--space-3);
+  }
+
+  .cta p {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-6);
+  }
+
+  @media (max-width: 1024px) {
+    .hero .container {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .hero-actions {
+      justify-content: center;
+    }
+
+    .hero-visual {
+      display: none;
+    }
+
+    .categories-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-content h1 {
+      font-size: 2.25rem;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .categories-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
