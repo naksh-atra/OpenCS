@@ -6,32 +6,35 @@ OpenCS follows a milestone-based release strategy. The goal is to ship a stable 
 
 ## Milestones
 
-### Milestone 0 — Scaffold (Current)
+### Milestone 0 — Scaffold
 **Status: Complete**
 
-- Astro + React + MDX initialization
-- Project site configuration with `/OpenCS` base path
-- GitHub Actions deployment workflow
-- Community files (LICENSE, README, CONTRIBUTING, CODE_OF_CONDUCT)
-- Architecture documentation
+- [x] Astro + React + MDX initialization
+- [x] Project site configuration with `/OpenCS` base path
+- [x] GitHub Actions deployment workflow
+- [x] Community files (LICENSE, README, CONTRIBUTING, CODE_OF_CONDUCT)
+- [x] Architecture documentation
 
 ### Milestone 1 — Non-Topic Shell
-**Status: Planned**
+**Status: Complete**
 
-- [ ] Landing page with project introduction
-- [ ] Topic index page with curriculum navigation
-- [ ] Topic layout template
-- [ ] Contributor pages (contribute, about)
-- [ ] Route strategy and navigation
-- [ ] Design system tokens
+- [x] Landing page with project introduction
+- [x] Topic index page with curriculum navigation
+- [x] Topic layout template
+- [x] Contributor pages (contribute, about, roadmap)
+- [x] Route strategy and navigation
+- [x] Design system tokens
+- [x] VisualizerFrame API with loading/empty states
+- [x] Global MDX components map
+- [x] First topic page with working visualizer
 
 ### Milestone 2 — Engine Implementations
-**Status: Planned**
+**Status: In Progress**
 
-- [ ] Sequence Engine — for linear data operations
-- [ ] TreeGraph Engine — for tree/graph visualizations
-- [ ] Theory Engine — for automata and formal systems
-- [ ] SystemProcess Engine — for OS-level simulations
+- [x] Theory Engine — complexity data and types
+- [ ] TreeGraph Engine — tree/graph visualization primitives
+- [ ] Sequence Engine — linear operations framework
+- [ ] SystemProcess Engine — process simulation primitives
 
 ### Milestone 3 — First Topic Modules
 **Status: Planned**
@@ -44,8 +47,6 @@ OpenCS follows a milestone-based release strategy. The goal is to ship a stable 
 ### Milestone 4 — Remaining Topic Modules
 **Status: Planned**
 
-- [ ] Recursion Tree Visualizer
-- [ ] Time Complexity Growth Visualizer
 - [ ] Array Memory and Operations
 - [ ] Stack and Queue Simulator
 - [ ] Linked List Visualizer
@@ -53,14 +54,30 @@ OpenCS follows a milestone-based release strategy. The goal is to ship a stable 
 - [ ] BST Insert/Delete/Search
 - [ ] Shortest Path and MST Explorer
 
+## Open Technical Debt
+
+| Item | Description | Priority |
+|------|-------------|----------|
+| Theme toggle | Manual light/dark toggle with localStorage (currently system-only via prefers-color-scheme) | High |
+| Hardcoded button colors | Visualizer buttons still use inline hex values in some places | High |
+| Canvas theme sync | RecursionTreeVisualizer canvas colors read from computed styles | Medium |
+
 ## Topic Category Map
 
-| Category | Topics | Engine |
-|----------|--------|--------|
-| Algorithms | Sorting, Time Complexity, Recursion Trees | Sequence |
-| Data Structures | Arrays, Stacks/Queues, Linked Lists, Trees, BST | TreeGraph |
-| Theory | DFA/NFA | Theory |
-| Systems | CPU Scheduling | SystemProcess |
+| Category | Topics | Engine | Status |
+|----------|--------|--------|--------|
+| Algorithms | Time Complexity | Theory | Complete |
+| Algorithms | Recursion Tree | Theory | Complete |
+| Algorithms | Sorting | Sequence | Planned |
+| Data Structures | Arrays | Sequence | Planned |
+| Data Structures | Stacks/Queues | Sequence | Planned |
+| Data Structures | Linked Lists | TreeGraph | Planned |
+| Data Structures | Trees | TreeGraph | Planned |
+| Data Structures | BST | TreeGraph | Planned |
+| Theory | DFA/NFA | Theory | Planned |
+| Systems | CPU Scheduling | SystemProcess | Planned |
+| Graph | BFS/DFS | TreeGraph | Planned |
+| Graph | Shortest Path/MST | TreeGraph | Planned |
 
 ## Long-term Vision
 
@@ -81,4 +98,4 @@ The roadmap is maintained in GitHub Issues and this document. To propose changes
 
 ---
 
-Last updated: 2025
+_Last updated: 2025-04-24_

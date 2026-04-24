@@ -15,8 +15,6 @@ estimatedTime: "20 minutes"
 status: "planned"
 ---
 
-import IntuitionBlock from '../../components/pedagogy/IntuitionBlock.astro';
-
 ## Intuition
 
 Imagine you have to find a word in a book. If someone tells you the exact page number, you can flip directly there — that's fast. But if you only know the chapter, you might need to scan the whole table of contents. If you know nothing, you might have to read every page.
@@ -47,6 +45,14 @@ Big-O notation describes the **upper bound** of an algorithm's growth rate. We w
 - **Constants are dropped**: O(2n) = O(n)
 - **Dominant terms win**: O(n² + n) = O(n²)
 - **Log base doesn't matter**: O(log₂ n) = O(log₁₀ n) = O(log n)
+
+## Visual Interaction
+
+import TimeComplexityVisualizer from '../../components/visualizers/TimeComplexityVisualizer';
+
+<TimeComplexityVisualizer client:load />
+
+Explore the visualization above. Select different complexity classes to see how they scale as input size grows. Notice how O(1) stays constant while O(2ⁿ) grows explosively.
 
 ## Step-by-Step Example
 

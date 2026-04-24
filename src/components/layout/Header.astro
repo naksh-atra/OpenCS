@@ -1,30 +1,53 @@
 ---
 import { navigation } from '../../data/navigation';
+
+const currentPath = Astro.url.pathname;
 ---
 
 <header class="header">
   <div class="header-inner container">
     <a href="/OpenCS/" class="logo">
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect width="32" height="32" rx="6" fill="var(--color-primary)"/>
         <path d="M8 12h16M8 16h12M8 20h14" stroke="white" stroke-width="2" stroke-linecap="round"/>
       </svg>
       <span>OpenCS</span>
     </a>
 
-    <nav class="nav">
+    <nav class="nav" id="nav-menu">
       {navigation.map(item => (
-        <a href={item.href} class="nav-link">{item.label}</a>
+        <a
+          href={item.href}
+          class:list={['nav-link', { active: currentPath.startsWith(item.href) }]}
+        >
+          {item.label}
+        </a>
       ))}
     </nav>
 
-    <button class="menu-toggle" aria-label="Toggle menu" hidden>
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
+      <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M3 12h18M3 6h18M3 18h18"/>
+      </svg>
+      <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none">
+        <path d="M18 6L6 18M6 6l12 12"/>
       </svg>
     </button>
   </div>
 </header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('nav-menu');
+  const iconMenu = toggle?.querySelector('.icon-menu');
+  const iconClose = toggle?.querySelector('.icon-close');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = menu?.classList.toggle('open');
+    if (iconMenu) iconMenu.style.display = isOpen ? 'none' : 'block';
+    if (iconClose) iconClose.style.display = isOpen ? 'block' : 'none';
+  });
+</script>
 
 <style>
   .header {
@@ -34,7 +57,6 @@ import { navigation } from '../../data/navigation';
     height: var(--header-height);
     background: var(--color-surface);
     border-bottom: 1px solid var(--color-border);
-    box-shadow: var(--shadow-sm);
   }
 
   .header-inner {
@@ -48,7 +70,7 @@ import { navigation } from '../../data/navigation';
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    font-size: 1.25rem;
+    font-size: var(--text-lg);
     font-weight: 600;
     color: var(--color-text);
     text-decoration: none;
@@ -62,20 +84,28 @@ import { navigation } from '../../data/navigation';
   .nav {
     display: flex;
     align-items: center;
-    gap: var(--space-6);
+    gap: var(--space-1);
   }
 
   .nav-link {
-    font-size: 0.9375rem;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
     font-weight: 500;
     color: var(--color-text-muted);
     text-decoration: none;
-    transition: color 0.15s;
+    transition: all 0.15s ease;
   }
 
   .nav-link:hover {
     color: var(--color-primary);
+    background: var(--color-bg);
     text-decoration: none;
+  }
+
+  .nav-link.active {
+    color: var(--color-primary);
+    background: var(--color-bg);
   }
 
   .menu-toggle {
@@ -88,15 +118,35 @@ import { navigation } from '../../data/navigation';
 
   @media (max-width: 768px) {
     .nav {
-      display: none;
+      position: fixed;
+      top: var(--header-height);
+      left: 0;
+      right: 0;
+      bottom: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: var(--space-4);
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      transform: translateX(-100%);
+      transition: transform 0.2s ease;
+    }
+
+    .nav.open {
+      transform: translateX(0);
+    }
+
+    .nav-link {
+      padding: var(--space-4);
+      font-size: var(--text-base);
+      border-radius: var(--radius-md);
     }
 
     .menu-toggle {
-      display: block;
-    }
-
-    .menu-toggle[hidden] {
-      display: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 </style>

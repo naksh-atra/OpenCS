@@ -30,6 +30,12 @@ npm run dev
 
 Visit `http://localhost:4321` to view the site.
 
+## Deployment
+
+This project deploys to GitHub Pages as a project site at `https://opencs.github.io/OpenCS/`.
+
+The GitHub Actions workflow automatically sets the correct `site` value during deployment. If you fork this repository, update `site` in `astro.config.mjs` to your GitHub Pages URL before enabling GitHub Pages in your repo settings.
+
 ## Project Structure
 
 ```
