@@ -12,20 +12,16 @@
 # Error details
 
 ```
-Test timeout of 30000ms exceeded.
-```
+Error: expect(received).not.toEqual(expected) // deep equality
 
-```
-Error: locator.textContent: Test timeout of 30000ms exceeded.
-Call log:
-  - waiting for locator('[data-testid="vf-description"]')
+Expected: not {"data": [137, 80, 78, 71, 13, 10, 26, 10, 0, 0, …], "type": "Buffer"}
 
 ```
 
 # Page snapshot
 
 ```yaml
-- generic [active] [ref=e1]:
+- generic [ref=e1]:
   - banner [ref=e2]:
     - generic [ref=e3]:
       - link "OpenCS" [ref=e4] [cursor=pointer]:
@@ -107,7 +103,7 @@ Call log:
               - generic [ref=e74]:
                 - button "Reset" [ref=e75] [cursor=pointer]
                 - button "Step" [ref=e76] [cursor=pointer]
-                - button "Play" [ref=e77] [cursor=pointer]
+                - button "Play" [active] [ref=e77] [cursor=pointer]
           - generic [ref=e81]:
             - generic [ref=e82]: ■In PQ (unsettled)
             - generic [ref=e83]: ■Settled
@@ -276,19 +272,19 @@ Call log:
   17 |     const legend = page.locator('[data-testid="spmv-legend"]');
   18 |     await expect(legend).toBeVisible();
   19 |     
-  20 |     // Get initial message
-> 21 |     const initialMessage = await page.locator('[data-testid="vf-description"]').textContent();
-     |                                                                                 ^ Error: locator.textContent: Test timeout of 30000ms exceeded.
+  20 |     // Get initial canvas pixel
+  21 |     const initialPixel = await canvas.screenshot();
   22 |     
   23 |     // Press Play button
   24 |     await page.locator('[data-testid="spmv-play"]').click();
   25 |     
   26 |     // Wait for animation to progress
-  27 |     await page.waitForTimeout(1000);
+  27 |     await page.waitForTimeout(1500);
   28 |     
-  29 |     // Message should have changed
-  30 |     const currentMessage = await page.locator('[data-testid="vf-description"]').textContent();
-  31 |     expect(currentMessage).not.toBe(initialMessage);
+  29 |     // Canvas should have changed (not identical pixels)
+  30 |     const currentPixel = await canvas.screenshot();
+> 31 |     expect(currentPixel).not.toEqual(initialPixel);
+     |                              ^ Error: expect(received).not.toEqual(expected) // deep equality
   32 |     
   33 |     // Legend should still be visible
   34 |     await expect(legend).toBeVisible();

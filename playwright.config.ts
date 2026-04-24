@@ -8,7 +8,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? 'github' : 'list',
   use: {
-    baseURL: 'http://localhost:8080',
+    baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
     headless: true,
     viewport: { width: 1280, height: 720 },
@@ -20,10 +20,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: process.env.CI 
-      ? 'npx serve dist -l 8080 -s' // -s serves silently without redirect
-      : 'python -m http.server 8080 -d dist',
-    url: 'http://localhost:8080',
+    command: 'npx http-server dist -p 3000 --silent',
+    url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 30000,
   },
