@@ -137,7 +137,8 @@ export function BSTVisualizer() {
             ))}
           </div>
           <div className="bst-ops">
-            <select value={operation} onChange={e => setOperation(e.target.value as 'search' | 'insert' | 'delete')} className="bst-select">
+            <label className="sr-only" htmlFor="bst-op-select">Operation</label>
+            <select id="bst-op-select" value={operation} onChange={e => setOperation(e.target.value as 'search' | 'insert' | 'delete')} className="bst-select" aria-label="Select operation">
               <option value="search">Search</option>
               <option value="insert">Insert</option>
               <option value="delete">Delete</option>
