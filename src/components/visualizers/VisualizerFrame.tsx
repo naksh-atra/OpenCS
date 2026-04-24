@@ -24,7 +24,7 @@ export function VisualizerFrame({
       <div className="vf-container">
         <div className="vf-header">
           <h3 className="vf-title">{title}</h3>
-          {description && <p className="vf-description">{description}</p>}
+          {description && <p className="vf-description" data-testid="vf-description">{description}</p>}
         </div>
         <div className="vf-loading">
           <div className="vf-spinner" />
@@ -38,7 +38,7 @@ export function VisualizerFrame({
     <div className="vf-container">
       <div className="vf-header">
         <h3 className="vf-title">{title}</h3>
-        {description && <p className="vf-description">{description}</p>}
+        {description && <p className="vf-description" data-testid="vf-description">{description}</p>}
       </div>
 
       {controls && <div className="vf-controls">{controls}</div>}
