@@ -45,8 +45,9 @@ Before contributing, please read [docs/architecture.md](docs/architecture.md) to
 
 1. **Create MDX content** — Add a new file to `src/content/topics/` with frontmatter
 2. **Implement visualizer** — Create a React component in `src/components/visualizers/`
-3. **Register engine** — Ensure the topic uses the appropriate engine
-4. **Update navigation** — Add topic to `src/data/navigation.ts`
+3. **Add engine logic** — If reusable, add operation functions to the appropriate engine
+4. **Embed visualizer** — Import and use `client:load` in the MDX
+5. **Build and test** — Run `npm run build` to verify
 
 ### Topic Frontmatter Schema
 
@@ -69,6 +70,76 @@ status: "planned" | "in-progress" | "published"
 ---
 ```
 
+## Visualizer Rules
+
+### Engine vs Visualizer Boundary
+
+This is the most important rule:
+
+> **Engines own algorithm logic. Visualizers own rendering.**
+
+- **Engine** (`src/engines/*/`): Type definitions, step-trace generation, algorithm implementation
+- **Visualizer** (`src/components/visualizers/*.tsx`): React rendering, user input, canvas/DOM drawing, playback controls
+
+**Wrong:** Putting sorting algorithm logic inside the visualizer component
+**Right:** Engine generates step traces; visualizer renders them
+
+### Step Trace Pattern
+
+Engine functions should return an ordered array of steps:
+
+```typescript
+interface SortStep {
+  action: 'compare' | 'swap' | 'done';
+  indices: number[];
+  array: number[];
+  message: string;
+}
+
+interface SortingState {
+  result: number[];
+  steps: SortStep[];
+  message: string;
+}
+```
+
+Visualizer then plays through steps with Play/Pause/Step controls.
+
+### No Hardcoded Algorithm State
+
+Visualizers should NOT:
+- Run algorithms in useEffect
+- Maintain their own algorithm state
+- Duplicate engine logic
+
+Visualizers SHOULD:
+- Import computed states from engines
+- Render current step index
+- Handle user playback controls
+
+## MDX Gotchas
+
+### JSX Parsing
+
+MDX parses text as JSX if it looks like a component. Avoid:
+
+- `node-A (weight 4)` — parsed as component
+- `Source:` — parsed as component
+
+Safe alternatives:
+- Use code spans: \`node-A\` or numbered labels: \`node 0\`
+- Use lowercase: "start node" not "Source"
+
+### Importing Visualizers
+
+Always import at the top and use `client:load`:
+
+```mdx
+import MyVisualizer from '../../components/visualizers/MyVisualizer';
+
+<MyVisualizer client:load />
+```
+
 ## Pedagogy Standards
 
 Every topic page must follow the educational contract:
@@ -88,11 +159,26 @@ Every topic page must follow the educational contract:
 - Use React (`.tsx`) for interactive visualizers
 - Prefix utility functions with descriptive names
 - Document public APIs with JSDoc
+- Follow existing patterns in the codebase
+
+## Build and Test
+
+Before submitting a PR:
+
+```bash
+npm run build
+```
+
+Ensure:
+- Build completes without errors
+- All topic pages render
+- Visualizers load correctly
+- No TypeScript errors
 
 ## Pull Request Process
 
 1. **Test locally** — Run `npm run build` to verify no errors
-2. **Check your PR** — Ensure your branch is up to date with main
+2. **Check your PR** — Ensure your branch is up to date with dev
 3. **Write a clear PR description** — Explain what and why
 4. **Link related issues** — Use GitHub keywords
 

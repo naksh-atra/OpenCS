@@ -5,14 +5,22 @@ import { mdxComponents } from '../../lib/mdx';
 
 export async function getStaticPaths() {
   const topics = await getCollection('topics');
-  return topics.map(topic => ({
+  const sorted = topics.sort((a, b) => a.data.order - b.data.order);
+  return topics.map((topic, i) => ({
     params: { slug: topic.id.replace(/\.mdx?$/, '') },
-    props: { topic },
+    props: {
+      topic,
+      prev: i > 0 ? { id: sorted[i - 1].id, title: sorted[i - 1].data.title } : null,
+      next: i < sorted.length - 1 ? { id: sorted[i + 1].id, title: sorted[i + 1].data.title } : null,
+    },
   }));
 }
 
-const { topic } = Astro.props;
+const { topic, prev, next } = Astro.props;
 const { Content } = await render(topic);
+
+const prevUrl = prev ? `/OpenCS/topics/${prev.id.replace(/\.mdx?$/, '')}` : null;
+const nextUrl = next ? `/OpenCS/topics/${next.id.replace(/\.mdx?$/, '')}` : null;
 ---
 
 <TopicLayout
@@ -21,8 +29,27 @@ const { Content } = await render(topic);
   difficulty={topic.data.difficulty}
   estimatedTime={topic.data.estimatedTime}
   category={topic.data.category}
+  engine={topic.data.engine}
+  status={topic.data.status}
   prerequisites={topic.data.prerequisites}
   learningObjectives={topic.data.learningObjectives}
 >
   <Content components={mdxComponents} />
+
+  <nav class="topic-nav">
+    <div class="topic-nav-inner">
+      {prevUrl ? (
+        <a href={prevUrl} class="topic-nav-link topic-nav-prev">
+          <span class="topic-nav-direction">&larr; Previous</span>
+          <span class="topic-nav-title">{prev.title}</span>
+        </a>
+      ) : <div />}
+      {nextUrl ? (
+        <a href={nextUrl} class="topic-nav-link topic-nav-next">
+          <span class="topic-nav-direction">Next &rarr;</span>
+          <span class="topic-nav-title">{next.title}</span>
+        </a>
+      ) : <div />}
+    </div>
+  </nav>
 </TopicLayout>

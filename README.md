@@ -28,46 +28,64 @@ npm install
 npm run dev
 ```
 
-Visit `http://localhost:4321` to view the site.
+Visit `http://localhost:4321/OpenCS/` to view the site locally.
 
-## Deployment
+## Topics (Milestone 6 Complete)
 
-This project deploys to GitHub Pages as a project site at `https://opencs.github.io/OpenCS/`.
+OpenCS covers 10 published topics across 4 engines:
 
-The GitHub Actions workflow automatically sets the correct `site` value during deployment. If you fork this repository, update `site` in `astro.config.mjs` to your GitHub Pages URL before enabling GitHub Pages in your repo settings.
+| Topic | Category | Engine | Status |
+|-------|---------|--------|--------|
+| Time Complexity | algorithms | theory | published |
+| Recursion Tree | algorithms | theory | published |
+| Sorting | algorithms | sequence | published |
+| Arrays | data-structures | sequence | published |
+| Stack & Queue | data-structures | sequence | published |
+| Linked Lists | data-structures | sequence | published |
+| Tree Traversals | data-structures | treegraph | published |
+| Binary Search Tree | data-structures | treegraph | published |
+| BFS & DFS | algorithms | treegraph | published |
+| Shortest Path & MST | algorithms | treegraph | published |
 
-## Project Structure
+See [ROADMAP.md](ROADMAP.md) for the full topic list and development status.
+
+## Architecture
+
+OpenCS uses a modular engine architecture:
 
 ```
 src/
-├── components/     # UI, layout, pedagogy, and visualizer components
-├── content/       # MDX topic content
-├── data/          # Navigation and curriculum data
+├── components/      # UI, layout, pedagogy, visualizer components
+├── content/       # MDX topic content (10 files)
 ├── engines/       # Reusable visualization engines
+│   ├── sequence/  # Linear operations: arrays, sorting, linked lists
+│   ├── treegraph/ # Hierarchical: trees, BSTs, graphs
+│   ├── theory/   # Static concepts: complexity, complexity classes
+│   └── system-process/ # OS simulations (planned)
 ├── layouts/       # Page layouts
-├── pages/         # Route pages
-└── styles/       # Global styles and tokens
+└── pages/        # Route pages
 ```
 
-## Topics
-
-OpenCS currently covers 12 core topics across 4 engines:
-
-- **Sequence Engine** — Time complexity, recursion trees, sorting
-- **TreeGraph Engine** — Trees, BSTs, graphs, shortest path, MST
-- **Theory Engine** — DFA/NFA, automata
-- **SystemProcess Engine** — CPU scheduling, memory
-
-See [`ROADMAP.md`](ROADMAP.md) for the full topic list and development status.
+**Engines** contain shared visualization logic. **Visualizers** are React components that render engine data interactively. See [docs/architecture.md](docs/architecture.md) for details.
 
 ## Contributing
 
 We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) before submitting PRs.
 
+Key contributor guidelines:
+- Follow the educational contract (intuition → formal → visual → example → analysis → mistakes → practice)
+- Visualizers belong in `src/components/visualizers/`, engine logic in `src/engines/*/`
+- Use step traces for animation; avoid hardcoded algorithm state in visualizers
+- Test with `npm run build` before submitting
+
+## Deployment
+
+This project deploys to GitHub Pages as a project site at `https://opencs.github.io/OpenCS/`.
+
+The Astro config uses `base: '/OpenCS'` throughout. For local development, `site` is undefined. For GitHub Pages, set `GITHUB_PAGES_DEPLOY=1` to enable the correct `site` value.
+
+See [DEPLOY.md](DEPLOY.md) for detailed deployment configuration.
+
 ## License
 
 Licensed under the MIT License. See [LICENSE](LICENSE) for details.
-
-## Code of Conduct
-
-We adhere to the Contributor Covenant. See [Code of Conduct](CODE_OF_CONDUCT.md).
