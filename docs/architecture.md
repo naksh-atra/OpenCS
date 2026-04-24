@@ -150,6 +150,22 @@ Stateful engines contain **dynamic operation logic**. They track state transitio
 
 **Why separation matters:** Array operations and stack/queue operations are both sequence operations — they both model linear data access patterns. But they are distinct state machines. Keeping them in separate engine files (`array-ops.ts` vs `stack-queue-ops.ts`) while sharing the engine family prevents duplication while maintaining clarity.
 
+### Hierarchical / Graph-Structured Engines
+
+Hierarchical engines handle **recursive structures** with traversal state and tree/graph-specific operations.
+
+**Examples:**
+- `treegraph/tree-types.ts` — TreeNode interface, traversal helpers, tree generators
+- `treegraph/bst-ops.ts` — BST insert, search, delete operations with immutable state
+
+**Characteristics:**
+- Recursive data structures (trees, graphs) need different rendering approaches
+- Traversal algorithms generate step sequences (not just final results)
+- Canvas-based rendering common for tree structures
+- Operations often involve structural transformations (insert, delete, rotate)
+
+**Why separate from sequence:** Sequence engines handle flat/linear data. TreeGraph engines handle hierarchical data. The traversal logic, rendering, and operation complexity differ fundamentally. Keeping them separate ensures the engine stays navigable as more tree/graph topics arrive.
+
 ### Decision Guide
 
 When adding a new topic, ask:

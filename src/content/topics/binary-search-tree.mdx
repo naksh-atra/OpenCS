@@ -1,0 +1,104 @@
+---
+title: "Binary Search Tree"
+description: "Understand BST properties, operations, and why they enable O(log n) search. Visualize insert, search, and delete operations."
+category: "data-structures"
+engine: "treegraph"
+order: 6
+difficulty: "intermediate"
+tags: ["BST", "binary-search-tree", "search", "insert", "delete", "data-structures"]
+prerequisites: ["tree-traversals", "arrays"]
+learningObjectives:
+  - "Explain BST property and why it enables O(log n) operations"
+  - "Trace insert, search, and delete operations"
+  - "Understand the three cases of BST deletion"
+  - "Identify when BSTs are the right choice"
+estimatedTime: "30 minutes"
+status": "planned"
+---
+
+## Intuition
+
+A regular binary tree can have nodes anywhere. But what if we impose a rule?
+
+**Left child < Parent < Right child**
+
+Now you can find any node by comparing — go left if smaller, right if bigger. No need to check every node. This is a **Binary Search Tree (BST)**.
+
+It's like a sorted array, but with the fast insertions of a linked list.
+
+## Formal Concept
+
+A **Binary Search Tree** is a binary tree where every node satisfies:
+- All nodes in left subtree have values less than the node
+- All nodes in right subtree have values greater than the node
+
+### Operations
+
+| Operation | Average | Worst Case |
+|----------|---------|------------|
+| Search | O(log n) | O(n) |
+| Insert | O(log n) | O(n) |
+| Delete | O(log n) | O(n) |
+| Min/Max | O(log n) | O(n) |
+
+Worst case happens when the tree becomes skewed (like a linked list).
+
+## Visual Interaction
+
+import BSTVisualizer from '../../components/visualizers/BSTVisualizer';
+
+<BSTVisualizer client:load />
+
+Try searching for values, inserting new ones, and deleting nodes. Notice how the tree maintains BST property after each operation.
+
+## Step-by-Step Example
+
+### Insert 8, 3, 10, 1, 6, 14, 4, 7, 13
+
+```
+Step 1: Insert 8
+        8
+
+Step 2: Insert 3 (3 < 8 → go left)
+        8
+       /
+      3
+
+Step 3: Insert 10 (10 > 8 → go right)
+        8
+       / \
+      3   10
+
+Step 4: Insert 1 (1 < 8 → 3 → 1 < 3 → left)
+        8
+       / \
+      3   10
+     /
+    1
+```
+
+### Delete Cases
+
+1. **Leaf node** — Simply remove it
+2. **One child** — Replace with child
+3. **Two children** — Replace with inorder successor (smallest in right subtree), then delete successor
+
+## Common Mistakes
+
+1. **Assuming O(log n) always** — Only when tree is balanced. Skewed BST = O(n).
+
+2. **Delete case 3 confusion** — When deleting a node with two children, replace with the **inorder successor** (not predecessor), then delete the successor.
+
+3. **Forgetting to update root** — After deletions, the root reference might change.
+
+4. **Ignoring balancing** — Real-world BSTs need self-balancing (AVL, Red-Black) to guarantee O(log n).
+
+## Practice Prompts
+
+1. What is the worst-case BST? When does it happen?
+
+2. How would you find the kth smallest element in a BST?
+
+3. Delete node 6 from the BST: 8, 3, 10, 1, 6, 14, 4, 7, 13. Walk through each step.
+
+4. Why do most programming languages use self-balancing trees instead of plain BSTs?

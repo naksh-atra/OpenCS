@@ -1,0 +1,91 @@
+---
+title: "Tree Traversals"
+description: "Learn the four fundamental tree traversal algorithms: preorder, inorder, postorder, and level-order. Visualize how each visits nodes in a different order."
+category: "data-structures"
+engine: "treegraph"
+order: 5
+difficulty: "intermediate"
+tags: ["trees", "traversal", "algorithms", "preorder", "inorder", "postorder", "level-order"]
+prerequisites: ["arrays", "stack-queue"]
+learningObjectives:
+  - "Explain the difference between depth-first and breadth-first traversal"
+  - "Trace preorder, inorder, postorder, and level-order on a sample tree"
+  - "Identify use cases for each traversal type"
+  - "Implement each traversal recursively and iteratively"
+estimatedTime: "25 minutes"
+status: "planned"
+---
+
+## Intuition
+
+Imagine you have a family tree and want to write everyone's name in a book. How do you decide the order?
+
+- Visit grandparent before grandchildren? That's **depth-first**.
+- Write everyone on each generation together? That's **level-order** (breadth-first).
+
+Each traversal gives a different ordering, and each is useful for different problems.
+
+## Formal Concept
+
+**Tree traversal** visits every node in a tree exactly once, in a systematic order. The four fundamental traversals are:
+
+| Traversal | Order | Use Case |
+|-----------|-------|----------|
+| Preorder | Root → Left → Right | Copy tree, prefix expression |
+| Inorder | Left → Root → Right | BST sorted output |
+| Postorder | Left → Right → Root | Delete tree, postfix expression |
+| Level-order | Level by level | Shortest path, level averages |
+
+## Visual Interaction
+
+import TreeTraversalVisualizer from '../../components/visualizers/TreeTraversalVisualizer';
+
+<TreeTraversalVisualizer client:load />
+
+Select different traversals above. Watch how the order changes — notice how inorder gives sorted output for BSTs.
+
+## Step-by-Step Example
+
+### Tree
+
+```
+        8
+       / \
+      3   10
+     / \    \
+    1   6    14
+       / \   /
+      4   7 13
+```
+
+### Preorder: 8, 3, 1, 6, 4, 7, 10, 14, 13
+Root first, then recursively left, then right.
+
+### Inorder: 1, 3, 4, 6, 7, 8, 10, 13, 14
+Left subtree, then root, then right. **Gives sorted order for BSTs.**
+
+### Postorder: 1, 4, 7, 6, 3, 13, 14, 10, 8
+Children before parent. Useful for deleting trees (children deleted first).
+
+### Level-order: 8, 3, 10, 1, 6, 14, 4, 7, 13
+Breadth-first. Visit all nodes at depth d before depth d+1.
+
+## Common Mistakes
+
+1. **Confusing inorder with preorder** — Preorder = root first. Inorder = root in the middle (for BSTs, this means sorted).
+
+2. **Forgetting recursive base case** — Always check for null before recursing, or you'll get errors.
+
+3. **Level-order without a queue** — You need a queue to track nodes at the next level. Recursion won't work.
+
+4. **Thinking traversal order is arbitrary** — Each has a specific algorithmic purpose and use case.
+
+## Practice Prompts
+
+1. In a BST with 100 nodes, what's the fastest way to get them in sorted order?
+
+2. If you wanted to print a directory structure (folder → subfolder → files), which traversal would you use?
+
+3. How would you find the depth of the deepest node? Can level-order help?
+
+4. Write pseudocode for iterative inorder traversal using a stack.
