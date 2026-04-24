@@ -8,6 +8,13 @@
   --color-primary-hover: #1d4ed8;
   --color-accent: #7c3aed;
 
+  --color-complexity-optimal: #22c55e;
+  --color-complexity-good: #84cc16;
+  --color-complexity-fair: #eab308;
+  --color-complexity-moderate: #f97316;
+  --color-complexity-costly: #ef4444;
+  --color-complexity-expensive: #dc2626;
+
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
 
@@ -50,6 +57,13 @@
     --color-border: #374151;
     --color-text: #f9fafb;
     --color-text-muted: #9ca3af;
+
+    --color-complexity-optimal: #4ade80;
+    --color-complexity-good: #a3e635;
+    --color-complexity-fair: #facc15;
+    --color-complexity-moderate: #fb923c;
+    --color-complexity-costly: #f87171;
+    --color-complexity-expensive: #f87171;
   }
 }
 

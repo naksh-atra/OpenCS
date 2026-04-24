@@ -84,6 +84,22 @@ src/
 - User input handling
 - Animation logic
 
+## Engine vs Visualizer Boundary
+
+This is the most important architectural rule for contributors:
+
+> **Visualizers own presentation. Engines own concept data and reusable logic.**
+
+Concretely:
+- **Engine files** (`src/engines/*/`) contain: data definitions, type interfaces, utility functions, shared state models
+- **Visualizer components** (`src/components/visualizers/*.tsx`) contain: React rendering, user input handling, canvas/DOM drawing
+
+**Why this matters:** If concept data lives only in visualizers, each new topic that covers the same concept will copy-paste or duplicate. By keeping data in engines and visualizers consuming it, the platform stays coherent as it grows.
+
+**Example:** Complexity classes are defined in `src/engines/theory/complexity.ts`. The `TimeComplexityVisualizer` imports and renders that data. A future Sorting Visualizer can share the same complexity comparison logic from the same engine.
+
+**Rule:** If you find yourself duplicating data (arrays of labels, type definitions, constants) across visualizers, extract it into the appropriate engine file.
+
 ## Engine Interface
 
 Each engine exports a standard interface:

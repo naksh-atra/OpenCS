@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
 import { VisualizerFrame } from './VisualizerFrame';
-
-const complexityData = [
-  { id: 'o1', label: 'O(1)', height: 15, tier: 'optimal' },
-  { id: 'ologn', label: 'O(log n)', height: 30, tier: 'good' },
-  { id: 'on', label: 'O(n)', height: 50, tier: 'fair' },
-  { id: 'onlogn', label: 'O(n log n)', height: 65, tier: 'moderate' },
-  { id: 'on2', label: 'O(n²)', height: 80, tier: 'costly' },
-  { id: 'o2n', label: 'O(2ⁿ)', height: 100, tier: 'expensive' },
-];
+import { complexityClasses } from '../../engines/theory';
 
 export function TimeComplexityVisualizer() {
   const [selected, setSelected] = useState<string[]>(['o1', 'on', 'on2']);
@@ -19,7 +11,7 @@ export function TimeComplexityVisualizer() {
     );
   };
 
-  const active = complexityData.filter(c => selected.includes(c.id));
+  const active = complexityClasses.filter(c => selected.includes(c.id));
 
   return (
     <VisualizerFrame
@@ -27,7 +19,7 @@ export function TimeComplexityVisualizer() {
       description="Select complexity classes to compare how they scale as input size increases."
       controls={
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-          {complexityData.map(c => (
+          {complexityClasses.map(c => (
             <button
               key={c.id}
               onClick={() => toggle(c.id)}
@@ -67,12 +59,12 @@ export function TimeComplexityVisualizer() {
           border-color: var(--color-primary);
         }
 
-        .complexity-btn.active.tier-optimal { background: #22c55e; border-color: #22c55e; color: white; }
-        .complexity-btn.active.tier-good { background: #84cc16; border-color: #84cc16; color: white; }
-        .complexity-btn.active.tier-fair { background: #eab308; border-color: #eab308; color: white; }
-        .complexity-btn.active.tier-moderate { background: #f97316; border-color: #f97316; color: white; }
-        .complexity-btn.active.tier-costly { background: #ef4444; border-color: #ef4444; color: white; }
-        .complexity-btn.active.tier-expensive { background: #dc2626; border-color: #dc2626; color: white; }
+        .complexity-btn.active.tier-optimal { background: var(--color-complexity-optimal); border-color: var(--color-complexity-optimal); color: white; }
+        .complexity-btn.active.tier-good { background: var(--color-complexity-good); border-color: var(--color-complexity-good); color: white; }
+        .complexity-btn.active.tier-fair { background: var(--color-complexity-fair); border-color: var(--color-complexity-fair); color: white; }
+        .complexity-btn.active.tier-moderate { background: var(--color-complexity-moderate); border-color: var(--color-complexity-moderate); color: white; }
+        .complexity-btn.active.tier-costly { background: var(--color-complexity-costly); border-color: var(--color-complexity-costly); color: white; }
+        .complexity-btn.active.tier-expensive { background: var(--color-complexity-expensive); border-color: var(--color-complexity-expensive); color: white; }
 
         .complexity-chart {
           display: flex;
@@ -97,26 +89,17 @@ export function TimeComplexityVisualizer() {
           transition: height 0.3s ease;
         }
 
-        .complexity-bar.tier-optimal { background: var(--color-complexity-optimal, #22c55e); }
-        .complexity-bar.tier-good { background: var(--color-complexity-good, #84cc16); }
-        .complexity-bar.tier-fair { background: var(--color-complexity-fair, #eab308); }
-        .complexity-bar.tier-moderate { background: var(--color-complexity-moderate, #f97316); }
-        .complexity-bar.tier-costly { background: var(--color-complexity-costly, #ef4444); }
-        .complexity-bar.tier-expensive { background: var(--color-complexity-expensive, #dc2626); }
+        .complexity-bar.tier-optimal { background: var(--color-complexity-optimal); }
+        .complexity-bar.tier-good { background: var(--color-complexity-good); }
+        .complexity-bar.tier-fair { background: var(--color-complexity-fair); }
+        .complexity-bar.tier-moderate { background: var(--color-complexity-moderate); }
+        .complexity-bar.tier-costly { background: var(--color-complexity-costly); }
+        .complexity-bar.tier-expensive { background: var(--color-complexity-expensive); }
 
-        .complexity-label {
+.complexity-label {
           font-size: 0.75rem;
           font-family: var(--font-mono);
           color: var(--color-text-muted);
-        }
-
-        @media (prefers-color-scheme: dark) {
-          .complexity-bar.tier-optimal { background: #4ade80; }
-          .complexity-bar.tier-good { background: #a3e635; }
-          .complexity-bar.tier-fair { background: #facc15; }
-          .complexity-bar.tier-moderate { background: #fb923c; }
-          .complexity-bar.tier-costly { background: #f87171; }
-          .complexity-bar.tier-expensive { background: #f87171; }
         }
       `}</style>
     </VisualizerFrame>

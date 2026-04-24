@@ -1,0 +1,112 @@
+---
+title: "Recursion Tree Visualizer"
+description: "Understand how recursive functions branch and grow. Watch factorial, Fibonacci, and binary search unfold as a tree of calls."
+category: "algorithms"
+engine: "sequence"
+order: 2
+difficulty: "intermediate"
+tags: ["recursion", "tree", "fibonacci", "factorial", "complexity"]
+prerequisites: ["time-complexity"]
+learningObjectives:
+  - "Trace recursive function calls as a tree structure"
+  - "Identify the number of calls at each depth"
+  - "Understand why naive Fibonacci is O(2^n)"
+  - "Compare single-branch vs multi-branch recursion"
+estimatedTime: "25 minutes"
+status: "planned"
+---
+
+## Intuition
+
+When a function calls itself, it doesn't just repeat — it **branches**. Each call can spawn more calls, and those spawn more, forming a tree.
+
+Imagine a family tree: you have one parent, who has two parents, who each have two parents, and so on. Recursive calls work the same way. Understanding the shape of that tree is the key to understanding recursion's complexity.
+
+## Formal Concept
+
+A **recursion tree** models each recursive call as a node. The root is the initial call, and each edge represents a recursive invocation. The depth is the number of levels of recursion.
+
+### Key Properties
+
+- **Branching factor** — how many children each node spawns
+- **Depth** — how deep the recursion goes
+- **Total nodes** — sum of all nodes across all levels
+- **Work per level** — cost at each individual level
+
+### Common Patterns
+
+| Function | Branching | Depth | Total Calls |
+|----------|-----------|-------|-------------|
+| Factorial | 1 | n | O(n) |
+| Fibonacci | 2 | n | O(2^n) |
+| Binary Search | 1 | log n | O(log n) |
+| Merge Sort | 2 | log n | O(n log n) |
+
+## Visual Interaction
+
+import RecursionTreeVisualizer from '../../components/visualizers/RecursionTreeVisualizer';
+
+<RecursionTreeVisualizer client:load />
+
+Explore the visualization above. Switch between different recursive functions and adjust the depth to see how the call tree grows.
+
+## Step-by-Step Example
+
+### Factorial (1 branch)
+
+```
+factorial(4)
+└── factorial(3)
+    └── factorial(2)
+        └── factorial(1)
+            └── factorial(0) → returns 1
+```
+
+Each call spawns exactly one child. Total calls = depth. Complexity = O(n).
+
+### Fibonacci (2 branches)
+
+```
+fib(4)
+├── fib(3)
+│   ├── fib(2)
+│   │   ├── fib(1)
+│   │   └── fib(0)
+│   └── fib(1)
+└── fib(2)
+    ├── fib(1)
+    └── fib(0)
+```
+
+Each call spawns two children. This is why naive Fibonacci is O(2^n) — the same subproblem gets solved many times.
+
+### Binary Search (1 branch, halved)
+
+```
+search(0..15)
+└── search(0..7)
+    └── search(0..3)
+        └── search(1..1) → found
+```
+
+Each call works on half the input. Complexity = O(log n).
+
+## Common Mistakes
+
+1. **Counting nodes wrong** — Fibonacci doesn't have n levels of 2^n nodes. The exponential comes from overlapping subproblems, not from sheer count.
+
+2. **Confusing depth with branching** — Deep recursion with one branch is O(n). Shallow recursion with many branches can still be exponential.
+
+3. **Ignoring memoization impact** — With memoization, Fibonacci becomes O(n) because overlapping subproblems are eliminated.
+
+4. **Stack overflow confusion** — The call stack has finite depth. A recursion tree that goes too deep causes a stack overflow, separate from time complexity.
+
+## Practice Prompts
+
+1. Draw the recursion tree for `sumArray([1,2,3,4,5])` if implemented recursively with O(n) branching.
+
+2. Why is merge sort O(n log n) even though its recursion tree has 2 branches at each level?
+
+3. At what depth does Fibonacci's call count exceed 1000? Use the visualization to find out.
+
+4. How would you convert naive Fibonacci to O(n) using memoization? Trace the tree to show eliminated nodes.
