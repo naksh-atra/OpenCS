@@ -1,0 +1,115 @@
+---
+title: "Shortest Path & MST"
+description: "Learn Dijkstra's algorithm for shortest paths and Prim's algorithm for minimum spanning trees. Both use a greedy priority-queue approach but optimize for different goals."
+category: "algorithms"
+engine: "treegraph"
+order: 8
+difficulty: "advanced"
+tags: ["Dijkstra", "Prim", "shortest-path", "MST", "minimum-spanning-tree", "algorithms", "greedy"]
+prerequisites: ["bfs-dfs"]
+learningObjectives:
+  - "Explain why Dijkstra's algorithm works for shortest paths"
+  - "Compare MST vs shortest path as optimization goals"
+  - "Trace Dijkstra step by step on a weighted graph"
+  - "Trace Prim's algorithm step by step"
+estimatedTime: "35 minutes"
+status: "planned"
+---
+
+## Intuition
+
+Greedy algorithms make locally optimal choices that turn out to be globally optimal. Two of the most elegant examples:
+
+1. **Dijkstra** — Find the shortest path from one source to all nodes by always settling the closest unsettled node first.
+2. **Prim** — Build a minimum spanning tree by always adding the cheapest edge that connects the tree to a new node.
+
+Both use a priority queue. Both are greedy. But their objective functions differ.
+
+## Formal Concept
+
+### Dijkstra's Algorithm
+
+For finding shortest paths from a source node to all reachable nodes:
+
+1. Initialize distances: dist[src] = 0, all others = infinity
+2. Add all nodes to a priority queue keyed by distance
+3. While queue is non-empty: pop the node with minimum distance, relax its edges
+4. Relaxation: if dist[u] + w(u,v) less than dist[v], update dist[v] and predecessor
+
+**Time complexity:** O((V + E) log V) with a binary heap priority queue.
+
+**Key property:** Works only with non-negative edge weights.
+
+### Prim's Algorithm
+
+For finding the Minimum Spanning Tree (MST):
+
+1. Start from any node, add it to the MST
+2. Maintain a priority queue of edges crossing the MST cut
+3. Always pick the minimum-weight crossing edge
+4. Add the corresponding node to the MST
+
+**Time complexity:** O((V + E) log V) — identical to Dijkstra with a modified PQ.
+
+## Visual Interaction
+
+import ShortestPathMSTVisualizer from '../../components/visualizers/ShortestPathMSTVisualizer';
+
+<ShortestPathMSTVisualizer client:load />
+
+Try Dijkstra on the weighted graph to see distances propagate. Switch to Prim to watch the MST grow edge by edge. Notice how both algorithms make locally greedy choices but toward different goals.
+
+## Step-by-Step Example
+
+### Weighted Graph
+
+```
+   0---1
+   |\ /|
+   2 3
+   |/|
+   4
+```
+
+Nodes 0 through 4 with varying edge weights.
+
+### Dijkstra from node 0
+
+| Step | Settled | PQ Content | Reason |
+|------|---------|------------|--------|
+| 1 | - | 0:0 | Start from node 0 |
+| 2 | 0 | 1:2, 2:2 | Relax 0-1, 0-2 |
+| 3 | 0, 1 | 2:2, 3:3, 4:5 | Settle 1 (dist=2), relax 1-3, 1-4 |
+| 4 | 0, 1, 2 | 3:3, 4:5 | Settle 2 (dist=2) |
+| 5 | 0, 1, 2, 3 | 4:4 | Settle 3 (dist=3) |
+| 6 | All | - | All settled |
+
+### Prim's MST from node 0
+
+| Step | MST | PQ Content | Reason |
+|------|-----|------------|--------|
+| 1 | {0} | 0-1:2, 0-2:2 | Edges from 0 |
+| 2 | {0, 1, 2} | 1-3:1, ... | Add edge 0-1 (w=2) |
+| 3 | {0, 1, 2, 3} | ... | Add edge 1-3 (w=1) |
+
+**MST total weight: 5**
+
+## Common Mistakes
+
+1. **Using Dijkstra on graphs with negative edges** — Negative weights break the greedy guarantee. Use Bellman-Ford instead.
+
+2. **Confusing MST weight with shortest path length** — MST weight is the sum of the smallest edges connecting all nodes. Shortest path is the minimum distance between two specific nodes.
+
+3. **Forgetting to mark nodes as settled** — Dijkstra can settle a node only once. Without tracking, you might process it multiple times.
+
+4. **Not using a priority queue** — Naive O(V-squared) implementation works but the PQ gives O(E log V), critical for large graphs.
+
+## Practice Prompts
+
+1. Why does Dijkstra's greedy choice (settle closest node first) guarantee shortest paths?
+
+2. Can a graph have two different MSTs? Under what conditions?
+
+3. If all edges in a graph have weight 1, what does Dijkstra give you? What does Prim give you?
+
+4. How would you find the shortest path between two specific nodes s and t using Dijkstra?
