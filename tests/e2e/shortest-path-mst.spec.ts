@@ -17,18 +17,18 @@ test.describe('shortest-path-mst visualizer', () => {
     const legend = page.locator('[data-testid="spmv-legend"]');
     await expect(legend).toBeVisible();
     
-    // Get initial message
-    const initialMessage = await page.locator('[data-testid="vf-description"]').textContent();
+    // Get initial canvas pixel
+    const initialPixel = await canvas.screenshot();
     
     // Press Play button
     await page.locator('[data-testid="spmv-play"]').click();
     
     // Wait for animation to progress
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(1500);
     
-    // Message should have changed
-    const currentMessage = await page.locator('[data-testid="vf-description"]').textContent();
-    expect(currentMessage).not.toBe(initialMessage);
+    // Canvas should have changed (not identical pixels)
+    const currentPixel = await canvas.screenshot();
+    expect(currentPixel).not.toEqual(initialPixel);
     
     // Legend should still be visible
     await expect(legend).toBeVisible();

@@ -194,7 +194,7 @@ export function GraphTraversalVisualizer() {
             <div className="gtv-playback">
               <button onClick={handleReset} className="gtv-btn">Reset</button>
               <button onClick={handleStep} className="gtv-btn">Step</button>
-              <button onClick={handlePlay} className="gtv-btn gtv-btn-primary">{isPlaying ? 'Pause' : 'Play'}</button>
+              <button onClick={handlePlay} className="gtv-btn gtv-btn-primary" data-testid="gtv-play">{isPlaying ? 'Pause' : 'Play'}</button>
             </div>
           </div>
         </>
