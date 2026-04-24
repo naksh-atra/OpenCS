@@ -2,10 +2,10 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
 
+const GitHubPagesSite = 'https://opencs.github.io';
+
 export default defineConfig({
-  // TODO: Update site to your GitHub Pages URL before deploying
-  // e.g., site: 'https://yourusername.github.io'
-  site: undefined,
+  site: process.env.GITHUB_PAGES_DEPLOY ? GitHubPagesSite : undefined,
   base: '/OpenCS',
   output: 'static',
   integrations: [react(), mdx()],
