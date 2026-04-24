@@ -177,6 +177,7 @@ export function GraphTraversalVisualizer() {
     <VisualizerFrame
       title="Graph Traversal"
       description={message}
+      controls={<data-testid="gtv-controls">
       controls={
         <>
           <div className="gtv-presets">

@@ -12,9 +12,18 @@
 # Error details
 
 ```
-Error: expect(received).not.toEqual(expected) // deep equality
+Error: expect(locator).toHaveText(expected) failed
 
-Expected: not {"data": [137, 80, 78, 71, 13, 10, 26, 10, 0, 0, …], "type": "Buffer"}
+Locator:  locator('[data-testid="gtv-play"]')
+Expected: "Pause"
+Received: "Play"
+Timeout:  5000ms
+
+Call log:
+  - Expect "toHaveText" with timeout 5000ms
+  - waiting for locator('[data-testid="gtv-play"]')
+    9 × locator resolved to <button data-testid="gtv-play" class="gtv-btn gtv-btn-primary">Play</button>
+      - unexpected value "Play"
 
 ```
 
@@ -233,31 +242,29 @@ Expected: not {"data": [137, 80, 78, 71, 13, 10, 26, 10, 0, 0, …], "type": "Bu
   8  |     const canvas = page.locator('[data-testid="gtv-canvas"] canvas');
   9  |     await expect(canvas).toBeVisible();
   10 |     
-  11 |     const bbox = await canvas.boundingBox();
-  12 |     expect(bbox).not.toBeNull();
-  13 |     expect(bbox!.width).toBeGreaterThan(100);
-  14 |     expect(bbox!.height).toBeGreaterThan(100);
-  15 |     
-  16 |     // Verify legend is visible
-  17 |     const legend = page.locator('[data-testid="gtv-legend"]');
-  18 |     await expect(legend).toBeVisible();
-  19 |     
-  20 |     // Get initial canvas pixel
-  21 |     const initialPixel = await canvas.screenshot();
-  22 |     
-  23 |     // Press Play button
-  24 |     await page.locator('[data-testid="gtv-play"]').click();
-  25 |     
-  26 |     // Wait for animation to progress
-  27 |     await page.waitForTimeout(1500);
-  28 |     
-  29 |     // Canvas should have changed (not identical pixels)
-  30 |     const currentPixel = await canvas.screenshot();
-> 31 |     expect(currentPixel).not.toEqual(initialPixel);
-     |                              ^ Error: expect(received).not.toEqual(expected) // deep equality
-  32 |     
-  33 |     // Legend should still be visible
-  34 |     await expect(legend).toBeVisible();
-  35 |   });
-  36 | });
+  11 |     // Verify legend is visible
+  12 |     const legend = page.locator('[data-testid="gtv-legend"]');
+  13 |     await expect(legend).toBeVisible();
+  14 |     
+  15 |     // Get play button
+  16 |     const playBtn = page.locator('[data-testid="gtv-play"]');
+  17 |     await expect(playBtn).toBeVisible();
+  18 |     
+  19 |     // Initial button text should be "Play"
+  20 |     await expect(playBtn).toHaveText('Play');
+  21 |     
+  22 |     // Press Play button
+  23 |     await playBtn.click();
+  24 |     
+  25 |     // Button text should change to "Pause"
+> 26 |     await expect(playBtn).toHaveText('Pause');
+     |                           ^ Error: expect(locator).toHaveText(expected) failed
+  27 |     
+  28 |     // After a delay, button should return to "Play" (animation complete)
+  29 |     await page.waitForTimeout(3000);
+  30 |     
+  31 |     // Legend should still be visible
+  32 |     await expect(legend).toBeVisible();
+  33 |   });
+  34 | });
 ```
