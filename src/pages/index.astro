@@ -1,7 +1,17 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
+
+const allTopics = await getCollection('topics');
+const published = allTopics.filter(t => t.data.status === 'published').length;
+const total = allTopics.length;
+
+const recentPublished = allTopics
+  .filter(t => t.data.status === 'published')
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 6);
 ---
 
 <BaseLayout title="Home" description="Visual learning platform for BTech CSE students in India">
@@ -35,6 +45,36 @@ import Footer from '../components/layout/Footer.astro';
       </div>
     </section>
 
+    <section class="topics-preview">
+      <div class="container">
+        <div class="section-header">
+          <h2>Available Topics</h2>
+          <a href="/OpenCS/topics" class="view-all">View all {total} topics &rarr;</a>
+        </div>
+        <div class="topics-grid">
+          {recentPublished.map(topic => (
+            <a href={`/OpenCS/topics/${topic.id.replace(/\.mdx?$/, '')}`} class="topic-card">
+              <div class="topic-card-top">
+                <span class="topic-engine">{topic.data.engine}</span>
+                <span class={`topic-diff ${topic.data.difficulty}`}>{topic.data.difficulty}</span>
+              </div>
+              <h3>{topic.data.title}</h3>
+              <p>{topic.data.description}</p>
+            </a>
+          ))}
+          {recentPublished.length === 0 && (
+            <p class="no-topics">No published topics yet. <a href="/OpenCS/contribute">Be the first to contribute!</a></p>
+          )}
+        </div>
+        <div class="topics-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" style={`width: ${(published / total) * 100}%`} />
+          </div>
+          <span class="progress-label">{published} of {total} topics published</span>
+        </div>
+      </div>
+    </section>
+
     <section class="features">
       <div class="container">
         <h2>Built for Learning</h2>
@@ -55,7 +95,7 @@ import Footer from '../components/layout/Footer.astro';
               </svg>
             </div>
             <h3>Reusable Engines</h3>
-            <p>Four visualization engines power all topics. Sequence, TreeGraph, Theory, and SystemProcess keep the platform coherent.</p>
+            <p>Modular visualization engines power all topics. Sequence, TreeGraph, Theory, and SystemProcess keep the platform coherent.</p>
           </div>
           <div class="feature">
             <div class="feature-icon">
@@ -69,7 +109,7 @@ import Footer from '../components/layout/Footer.astro';
           <div class="feature">
             <div class="feature-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/>
+                <rect x="5" y="2" width="14" height="20" rx="2"/>
               </svg>
             </div>
             <h3>Mobile Friendly</h3>
@@ -225,6 +265,129 @@ import Footer from '../components/layout/Footer.astro';
     top: var(--space-1);
   }
 
+  .topics-preview {
+    padding: var(--space-16) 0;
+    background: var(--color-surface);
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: var(--space-8);
+  }
+
+  .section-header h2 {
+    margin: 0;
+  }
+
+  .view-all {
+    font-size: 0.875rem;
+    color: var(--color-primary);
+  }
+
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .topic-card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-4);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  .topic-card:hover {
+    border-color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .topic-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-2);
+  }
+
+  .topic-engine {
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+  }
+
+  .topic-diff {
+    font-size: 0.625rem;
+    font-weight: 500;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: capitalize;
+  }
+
+  .topic-diff.beginner { background: #d1fae5; color: #065f46; }
+  .topic-diff.intermediate { background: #dbeafe; color: #1e40af; }
+  .topic-diff.advanced { background: #fce7f3; color: #9d174d; }
+
+  .topic-card h3 {
+    font-size: 0.9375rem;
+    margin-bottom: var(--space-1);
+    color: var(--color-text);
+  }
+
+  .topic-card p {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .topics-progress {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--color-border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--color-primary);
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+
+  .progress-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  .no-topics {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--space-8);
+  }
+
+  .no-topics a {
+    color: var(--color-primary);
+  }
+
   .features {
     padding: var(--space-16) 0;
   }
@@ -330,30 +493,16 @@ import Footer from '../components/layout/Footer.astro';
       text-align: center;
     }
 
-    .hero-actions {
-      justify-content: center;
-    }
-
-    .hero-visual {
-      display: none;
-    }
-
-    .categories-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
+    .hero-actions { justify-content: center; }
+    .hero-visual { display: none; }
+    .categories-grid { grid-template-columns: repeat(2, 1fr); }
+    .topics-grid { grid-template-columns: repeat(2, 1fr); }
   }
 
   @media (max-width: 640px) {
-    .hero-content h1 {
-      font-size: 2.25rem;
-    }
-
-    .features-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .categories-grid {
-      grid-template-columns: 1fr;
-    }
+    .hero-content h1 { font-size: 2.25rem; }
+    .features-grid { grid-template-columns: 1fr; }
+    .categories-grid { grid-template-columns: 1fr; }
+    .topics-grid { grid-template-columns: 1fr; }
   }
 </style>

@@ -8,12 +8,39 @@ import { categories } from '../../data/categories';
 const allTopics = await getCollection('topics');
 const url = Astro.url;
 const categoryFilter = url.searchParams.get('category');
+const engineFilter = url.searchParams.get('engine');
+const difficultyFilter = url.searchParams.get('difficulty');
+const statusFilter = url.searchParams.get('status');
 
-const filteredTopics = categoryFilter
-  ? allTopics.filter(t => t.data.category === categoryFilter)
-  : allTopics;
+const filteredTopics = allTopics.filter(t => {
+  if (categoryFilter && t.data.category !== categoryFilter) return false;
+  if (engineFilter && t.data.engine !== engineFilter) return false;
+  if (difficultyFilter && t.data.difficulty !== difficultyFilter) return false;
+  if (statusFilter && t.data.status !== statusFilter) return false;
+  return true;
+});
 
 const sortedTopics = filteredTopics.sort((a, b) => a.data.order - b.data.order);
+
+const publishedCount = allTopics.filter(t => t.data.status === 'published').length;
+const totalCount = allTopics.length;
+
+const engineOptions = [...new Set(allTopics.map(t => t.data.engine))];
+const difficultyOptions = ['beginner', 'intermediate', 'advanced'];
+const statusOptions = ['published', 'in-progress', 'planned'];
+
+function buildUrl(params: Record<string, string | null>) {
+  const merged = new URLSearchParams(url.searchParams);
+  for (const [k, v] of Object.entries(params)) {
+    if (v === null) {
+      merged.delete(k);
+    } else {
+      merged.set(k, v);
+    }
+  }
+  const s = merged.toString();
+  return `/OpenCS/topics${s ? '?' + s : ''}`;
+}
 ---
 
 <BaseLayout title="Topics" description="Browse all computer science topics with interactive visualizations">
@@ -22,24 +49,54 @@ const sortedTopics = filteredTopics.sort((a, b) => a.data.order - b.data.order);
     <section class="topics-header">
       <div class="container">
         <h1>Topics</h1>
-        <p>Explore interactive visualizations of core BTech CSE concepts</p>
+        <p>Explore {publishedCount} interactive visualization{publishedCount !== 1 ? 's' : ''} of core BTech CSE concepts — {totalCount} topics total</p>
       </div>
     </section>
 
     <section class="topics-filters">
       <div class="container">
-        <div class="filter-tabs">
-          <a href="/OpenCS/topics" class:list={['filter-tab', { active: !categoryFilter }]}>
-            All Topics
-          </a>
-          {categories.map(cat => (
-            <a
-              href={`/OpenCS/topics?category=${cat.slug}`}
-              class:list={['filter-tab', { active: categoryFilter === cat.slug }]}
-            >
-              {cat.label}
+        <div class="filter-section">
+          <span class="filter-label">Category</span>
+          <div class="filter-tabs">
+            <a href={buildUrl({ category: null, engine: null, difficulty: null, status: null })} class:list={['filter-tab', { active: !categoryFilter && !engineFilter && !difficultyFilter && !statusFilter }]}>
+              All
             </a>
-          ))}
+            {categories.map(cat => (
+              <a href={buildUrl({ category: cat.slug })} class:list={['filter-tab', { active: categoryFilter === cat.slug }]}>
+                {cat.label}
+              </a>
+            ))}
+          </div>
+        </div>
+        <div class="filter-section">
+          <span class="filter-label">Engine</span>
+          <div class="filter-tabs">
+            {engineOptions.map(e => (
+              <a href={buildUrl({ engine: e })} class:list={['filter-tab', { active: engineFilter === e }]}>
+                {e}
+              </a>
+            ))}
+          </div>
+        </div>
+        <div class="filter-section">
+          <span class="filter-label">Difficulty</span>
+          <div class="filter-tabs">
+            {difficultyOptions.map(d => (
+              <a href={buildUrl({ difficulty: d })} class:list={['filter-tab', { active: difficultyFilter === d }]}>
+                {d}
+              </a>
+            ))}
+          </div>
+        </div>
+        <div class="filter-section">
+          <span class="filter-label">Status</span>
+          <div class="filter-tabs">
+            {statusOptions.map(s => (
+              <a href={buildUrl({ status: s })} class:list={['filter-tab', { active: statusFilter === s }]}>
+                {s}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -48,9 +105,9 @@ const sortedTopics = filteredTopics.sort((a, b) => a.data.order - b.data.order);
       <div class="container">
         {sortedTopics.length === 0 ? (
           <div class="empty-state">
-            <h3>No topics yet</h3>
-            <p>This category is still being built. Check back soon!</p>
-            <a href="/OpenCS/contribute">Want to help build it?</a>
+            <h3>No topics match your filters</h3>
+            <p>Try adjusting the filters or browse all topics.</p>
+            <a href="/OpenCS/topics">Clear filters</a>
           </div>
         ) : (
           <div class="topics-grid">
@@ -58,14 +115,21 @@ const sortedTopics = filteredTopics.sort((a, b) => a.data.order - b.data.order);
               <a href={`/OpenCS/topics/${topic.id.replace(/\.mdx?$/, '')}`} class="topic-card">
                 <div class="topic-card-header">
                   <span class="topic-engine">{topic.data.engine}</span>
-                  <span class="topic-status status-{topic.data.status}">{topic.data.status}</span>
+                  <span class={`topic-status status-${topic.data.status}`}>{topic.data.status}</span>
                 </div>
                 <h3>{topic.data.title}</h3>
                 <p>{topic.data.description}</p>
                 <div class="topic-card-footer">
-                  <span class="topic-difficulty">{topic.data.difficulty}</span>
+                  <span class="topic-difficulty {topic.data.difficulty}">{topic.data.difficulty}</span>
                   <span class="topic-time">{topic.data.estimatedTime}</span>
                 </div>
+                {topic.data.tags && topic.data.tags.length > 0 && (
+                  <div class="topic-tags">
+                    {topic.data.tags.slice(0, 3).map(tag => (
+                      <span class="topic-tag">{tag}</span>
+                    ))}
+                  </div>
+                )}
               </a>
             ))}
           </div>
@@ -100,33 +164,57 @@ const sortedTopics = filteredTopics.sort((a, b) => a.data.order - b.data.order);
     z-index: 50;
   }
 
+  .filter-section {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+    overflow-x: auto;
+  }
+
+  .filter-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .filter-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    min-width: 64px;
+  }
+
   .filter-tabs {
     display: flex;
     gap: var(--space-2);
-    overflow-x: auto;
-    padding-bottom: var(--space-1);
+    flex-wrap: wrap;
   }
 
   .filter-tab {
-    padding: var(--space-2) var(--space-4);
+    padding: var(--space-1) var(--space-3);
     border-radius: var(--radius-md);
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     font-weight: 500;
     color: var(--color-text-muted);
     text-decoration: none;
     white-space: nowrap;
     transition: all 0.15s;
+    border: 1px solid transparent;
   }
 
   .filter-tab:hover {
     background: var(--color-surface);
     color: var(--color-text);
     text-decoration: none;
+    border-color: var(--color-border);
   }
 
   .filter-tab.active {
     background: var(--color-primary);
     color: white;
+    border-color: var(--color-primary);
   }
 
   .topics-list {
@@ -164,8 +252,8 @@ const sortedTopics = filteredTopics.sort((a, b) => a.data.order - b.data.order);
   }
 
   .topic-engine {
-    font-size: 0.75rem;
-    font-weight: 500;
+    font-size: 0.6875rem;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--color-text-muted);
@@ -175,8 +263,8 @@ const sortedTopics = filteredTopics.sort((a, b) => a.data.order - b.data.order);
   }
 
   .topic-status {
-    font-size: 0.6875rem;
-    font-weight: 500;
+    font-size: 0.625rem;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     padding: var(--space-1) var(--space-2);
@@ -199,22 +287,64 @@ const sortedTopics = filteredTopics.sort((a, b) => a.data.order - b.data.order);
   }
 
   .topic-card h3 {
-    font-size: 1.125rem;
+    font-size: 1rem;
     margin-bottom: var(--space-2);
     color: var(--color-text);
   }
 
   .topic-card p {
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     color: var(--color-text-muted);
     flex: 1;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
+    line-height: 1.5;
   }
 
   .topic-card-footer {
     display: flex;
     gap: var(--space-4);
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-top: auto;
+  }
+
+  .topic-difficulty {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+
+  .topic-difficulty.beginner {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .topic-difficulty.intermediate {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .topic-difficulty.advanced {
+    background: #fce7f3;
+    color: #9d174d;
+  }
+
+  .topic-tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .topic-tag {
+    font-size: 0.625rem;
+    padding: 2px 6px;
+    background: var(--color-bg);
+    border-radius: 4px;
     color: var(--color-text-muted);
   }
 
@@ -235,6 +365,11 @@ const sortedTopics = filteredTopics.sort((a, b) => a.data.order - b.data.order);
     margin-bottom: var(--space-4);
   }
 
+  .empty-state a {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
   @media (max-width: 1024px) {
     .topics-grid {
       grid-template-columns: repeat(2, 1fr);
@@ -244,6 +379,16 @@ const sortedTopics = filteredTopics.sort((a, b) => a.data.order - b.data.order);
   @media (max-width: 640px) {
     .topics-grid {
       grid-template-columns: 1fr;
+    }
+
+    .filter-section {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-2);
+    }
+
+    .filter-label {
+      min-width: unset;
     }
   }
 </style>

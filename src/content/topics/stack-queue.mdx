@@ -1,0 +1,130 @@
+---
+title: "Stack and Queue Simulator"
+description: "Understand LIFO and FIFO data structures. Visualize stack push/pop and queue enqueue/dequeue operations."
+category: "data-structures"
+engine: "sequence"
+order: 4
+difficulty: "beginner"
+tags: ["stack", "queue", "LIFO", "FIFO", "data-structures", "ADT"]
+prerequisites: ["arrays"]
+learningObjectives:
+  - "Explain the difference between stack (LIFO) and queue (FIFO)"
+  - "Trace push/pop and enqueue/dequeue operations"
+  - "Identify use cases for each structure"
+  - "Understand how stacks enable function calls and expression parsing"
+estimatedTime: "20 minutes"
+status: "published"
+---
+
+## Intuition
+
+**Stack** — like a stack of plates. You add to the top and remove from the top. Last plate you put down is the first one you pick up. This is **LIFO** (Last In, First Out).
+
+**Queue** — like a line at a movie theater. You join at the back and exit at the front. First person in line is the first to get served. This is **FIFO** (First In, First Out).
+
+These two structures model fundamentally different kinds of ordering, and both are everywhere in computer science.
+
+## Formal Concept
+
+### Stack (LIFO)
+
+| Operation | Time | Description |
+|-----------|------|-------------|
+| Push | O(1) | Add element to top |
+| Pop | O(1) | Remove element from top |
+| Peek | O(1) | View top element |
+
+```python
+stack = []
+stack.append(1)  # push
+stack.append(2)  # push
+stack.append(3)  # push
+stack.pop()      # → 3
+stack.pop()      # → 2
+```
+
+### Queue (FIFO)
+
+| Operation | Time | Description |
+|-----------|------|-------------|
+| Enqueue | O(1) | Add element to back |
+| Dequeue | O(1) | Remove element from front |
+| Peek | O(1) | View front element |
+
+```python
+from collections import deque
+queue = deque()
+queue.append(1)  # enqueue
+queue.append(2)  # enqueue
+queue.append(3)  # enqueue
+queue.popleft()  # → 1
+queue.popleft()  # → 2
+```
+
+## Visual Interaction
+
+import StackQueueVisualizer from '../../components/visualizers/StackQueueVisualizer';
+
+<StackQueueVisualizer client:load />
+
+Switch between Stack and Queue modes. Try push/enqueue and pop/dequeue to see the LIFO vs FIFO ordering in action.
+
+## Step-by-Step Example
+
+### Stack: Undo/Redo
+
+Text editors use stacks for undo. Every action pushes onto the undo stack. Pressing Ctrl+Z pops and undoes the last action.
+
+```
+Action: "Type A" → push "Type A"
+Action: "Delete A" → push "Delete A"
+Action: "Type B" → push "Type B"
+Ctrl+Z → pops "Type B", undoes "Type B"
+Ctrl+Z → pops "Delete A", undoes "Delete A"
+```
+
+### Queue: Print Spooler
+
+Print jobs enter a queue. Jobs print in order — the first submitted job finishes first.
+
+```
+Job "Doc1" → enqueue
+Job "Doc2" → enqueue
+Job "Doc3" → enqueue
+Printer prints → dequeue "Doc1"
+Printer prints → dequeue "Doc2"
+```
+
+### Stack: Function Call Stack
+
+Every function call pushes onto the call stack. When a function returns, it pops.
+
+```
+factorial(3)
+└── factorial(2)
+    └── factorial(1)
+        └── returns 1
+    └── returns 1
+└── returns 2
+returns 6
+```
+
+## Common Mistakes
+
+1. **Confusing which end is which** — Stack: add/remove from same end (top). Queue: add at back, remove from front.
+
+2. **Popping from empty** — Accessing `stack.pop()` on an empty stack crashes. Always check `stack.length` or use `isEmpty()` first.
+
+3. **Assuming O(1) for all queue operations** — With a naive array implementation, `dequeue` from front is O(n) because everything shifts left. Use a linked list or circular buffer for true O(1) dequeue.
+
+4. **Mixing up use cases** — Undo/Redo = stack. Print queue = queue. Caching (LRU) = queue. Expression parsing = stack.
+
+## Practice Prompts
+
+1. A browser's back button is implemented with a stack. Why not a queue?
+
+2. What happens if you call pop() on an empty stack? How would you handle this safely?
+
+3. Design a queue using two stacks. What operations does it support efficiently?
+
+4. Why does the call stack grow downward in most programming languages? What happens when it overflows?

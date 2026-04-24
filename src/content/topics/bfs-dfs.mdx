@@ -1,0 +1,97 @@
+---
+title: "BFS and DFS"
+description: "Explore the two fundamental graph traversal algorithms. See BFS explore layer by layer and DFS dive deep before backtracking. Understand when to use each."
+category: "algorithms"
+engine: "treegraph"
+order: 7
+difficulty: "intermediate"
+tags: ["BFS", "DFS", "graph", "traversal", "breadth-first", "depth-first", "algorithms"]
+prerequisites: ["arrays", "stack-queue"]
+learningObjectives:
+  - "Compare BFS and DFS traversal orders on the same graph"
+  - "Identify when BFS finds shortest paths in unweighted graphs"
+  - "Implement BFS with a queue and DFS with a stack"
+  - "Choose the right traversal based on problem constraints"
+estimatedTime: "30 minutes"
+status: "published"
+---
+
+## Intuition
+
+When you explore a city, you have two natural strategies:
+
+1. **Level by level** — Check every block at distance 1 before moving to distance 2. That's BFS (breadth-first search).
+2. **Go deep first** — Follow one path as far as it goes, then backtrack and try another. That's DFS (depth-first search).
+
+Both visit every node exactly once. The difference is *when* they visit nodes relative to their depth.
+
+## Formal Concept
+
+**BFS** uses a queue — first discovered, first visited. It explores all nodes at distance *d* before any at distance *d+1*.
+
+**DFS** uses a stack (or recursion) — last discovered, first visited. It dives as deep as possible before backtracking.
+
+| Property | BFS | DFS |
+|----------|-----|-----|
+| Data structure | Queue | Stack |
+| Order | Layer by layer | Deep before back |
+| Shortest path | Yes (unweighted) | No |
+| Space | O(V + E) | O(V) worst case |
+| Recursive? | No | Yes (or explicit stack) |
+
+## Visual Interaction
+
+import GraphTraversalVisualizer from '../../components/visualizers/GraphTraversalVisualizer';
+
+<GraphTraversalVisualizer client:load />
+
+Switch between BFS and DFS on the same graph. Notice how BFS gives a level-by-level ordering while DFS follows one path deeply before branching.
+
+## Step-by-Step Example
+
+### Graph
+
+```
+    A
+   / \
+  B   C
+ / \   \
+D   E   F
+```
+
+### BFS from A: A, B, C, D, E, F
+- Queue: [A] → deque A, visit A
+- Enqueue B, C
+- Queue: [B, C] → deque B, visit B
+- Enqueue D, E
+- Queue: [C, D, E] → deque C, visit C
+- Enqueue F
+- Queue: [D, E, F] → deque D, E, F
+
+### DFS from A: A, B, D, E, C, F
+- Stack: [A] → pop A, visit A
+- Push B, C → Stack: [B, C]
+- Pop C, visit C → Push F → Stack: [B, F]
+- Pop F, visit F → Stack: [B]
+- Pop B, visit B → Push D, E → Stack: [D, E]
+- Pop E, visit E → Pop D, visit D
+
+## Common Mistakes
+
+1. **Using DFS for shortest path** — DFS doesn't guarantee shortest path in unweighted graphs. BFS does (by construction).
+
+2. **Forgetting the visited set** — Without tracking visited nodes, you loop forever on graphs with cycles.
+
+3. **Confusing stack order with recursion order** — Explicit stack gives you control over order; recursion is DFS but with call-stack depth limits.
+
+4. **BFS without tracking distance** — BFS naturally gives shortest path *count* (number of edges), not weighted distance.
+
+## Practice Prompts
+
+1. On a maze with unweighted steps, which traversal would find the shortest path from start to goal?
+
+2. How would you detect a cycle in an undirected graph?
+
+3. DFS can be implemented recursively or with an explicit stack. What are the trade-offs?
+
+4. If BFS explores level by level, why does its time complexity remain O(V + E)?
