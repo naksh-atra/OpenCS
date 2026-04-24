@@ -88,6 +88,16 @@ Key points:
 - Uploads `dist/` as a Pages artifact
 - Angular action deploys to the project site
 
+### Repository Settings
+
+The workflow does not automatically enable Pages. You must also:
+
+1. Go to repository **Settings → Pages**
+2. Under **Build and deployment**, select **Source**: GitHub Actions
+3. Wait for the workflow to complete
+
+Without this setting, the site will not publish.
+
 ## Forking
 
 If you fork this repository:

@@ -57,21 +57,22 @@ npm run build
 
 ## Maintainer Action Required Before First Public Deploy
 
-The Astro config uses conditional `site` based on environment:
+**This is the exact sequence:**
 
-```javascript
-// astro.config.mjs
-site: process.env.GITHUB_PAGES_DEPLOY ? GitHubPagesSite : undefined,
-```
+1. Merge `dev` into `main`:
+   ```bash
+   git checkout main
+   git merge dev
+   git push origin main
+   ```
 
-For the first public deploy, **ensure the GitHub Actions workflow sets `GITHUB_PAGES_DEPLOY: 1`** to enable canonical URLs.
+2. In GitHub repo **Settings → Pages**, set **Source** to **GitHub Actions**
 
-If deploying manually, either:
-- Set `site` directly in `astro.config.mjs`:
-  ```javascript
-  site: 'https://opencs.github.io',
-  ```
-- Or set the environment variable before build
+3. Wait for workflow to complete in the **Actions** tab
+
+4. The site publishes to `https://opencs.github.io/OpenCS/`
+
+The workflow builds with `GITHUB_PAGES_DEPLOY: 1`, but you must also configure the Pages source setting to enable GitHub Actions publishing.
 
 ## Rollback
 
