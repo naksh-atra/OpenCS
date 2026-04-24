@@ -1,0 +1,93 @@
+---
+title: "Sorting Algorithms"
+description: "Learn bubble sort, insertion sort, and merge sort. See why O(n log n) beats O(n squared) — and when each algorithm earns its complexity label."
+category: "algorithms"
+engine: "sequence"
+order: 10
+difficulty: "intermediate"
+tags: ["sorting", "bubble-sort", "insertion-sort", "merge-sort", "algorithms", "comparison"]
+prerequisites: ["arrays"]
+learningObjectives:
+  - "Compare time complexities of bubble, insertion, and merge sort"
+  - "Trace each algorithm step by step on a small array"
+  - "Identify the sorted portion growing in each algorithm"
+  - "Choose the right sorting algorithm for a given context"
+estimatedTime: "35 minutes"
+status: "planned"
+---
+
+## Intuition
+
+Sorting is arranging items in order. The naive way: keep swapping adjacent items until nothing swaps. That's bubble sort — simple but slow. The clever way: build the sorted portion one element at a time by insertion. That's insertion sort — better for nearly sorted data. The divide-and-conquer way: split in half, sort each half, merge them. That's merge sort — O(n log n) guaranteed.
+
+All three produce the same result. They differ in how they get there.
+
+## Formal Concept
+
+### Bubble Sort
+Repeatedly compare adjacent pairs and swap if out of order. Largest elements "bubble up" to the end. O(n^2) time, O(1) space.
+
+### Insertion Sort
+For each element, insert it into its correct position within the sorted portion on the left. Like sorting playing cards. O(n^2) worst case, O(n) best case. Stable.
+
+### Merge Sort
+Divide the array in half recursively until single elements. Merge adjacent pairs in sorted order. O(n log n) guaranteed. O(n) space. Stable.
+
+| Algorithm | Best | Average | Worst | Space | Stable |
+|-----------|------|---------|-------|-------|--------|
+| Bubble | O(n) | O(n^2) | O(n^2) | O(1) | Yes |
+| Insertion | O(n) | O(n^2) | O(n^2) | O(1) | Yes |
+| Merge | O(n log n) | O(n log n) | O(n log n) | O(n) | Yes |
+
+## Visual Interaction
+
+import SortingVisualizer from '../../components/visualizers/SortingVisualizer';
+
+<SortingVisualizer client:load />
+
+Switch between algorithms on the same input. Watch the sorted portion grow differently — bubble from the right, insertion from the left, merge recursively splitting and merging.
+
+## Step-by-Step Example
+
+### Array: [5, 2, 8, 1]
+
+### Bubble Sort
+
+Pass 1: compare 5 and 2 (swap) → [2, 5, 8, 1], compare 5 and 8 (no swap) → [2, 5, 8, 1], compare 8 and 1 (swap) → [2, 5, 1, 8]
+Pass 2: [2, 5, 1, 8] → [2, 1, 5, 8]
+Pass 3: [2, 1, 5, 8] → [1, 2, 5, 8]
+
+### Insertion Sort
+
+sorted = [5]
+Insert 2: compare 5 and 2, shift 5 right → [2, 5]
+Insert 8: 8 is already in position → [2, 5, 8]
+Insert 1: shift 8, 5, 2 right → [1, 2, 5, 8]
+
+### Merge Sort
+
+Split: [5, 2] and [8, 1]
+Split: [5], [2], [8], [1]
+Merge [5] and [2]: [2, 5]
+Merge [8] and [1]: [1, 8]
+Merge [2, 5] and [1, 8]: [1, 2, 5, 8]
+
+## Common Mistakes
+
+1. **Assuming O(n^2) is always bad** — For tiny arrays (n < 10), O(n^2) can beat O(n log n) due to lower constant factors. Timsort and Python use hybrid approaches.
+
+2. **Confusing stable with correct** — All three are correct. Stability means equal elements preserve their relative order. Only insertion and merge are stable.
+
+3. **Forgetting merge sort's space cost** — The temporary array in merge is O(n). For huge datasets, this is a real concern.
+
+4. **Thinking one algorithm is universally best** — Nearly sorted data? Insertion sort is fast. Random large data? Merge sort or quicksort. Random small data? Insertion sort again.
+
+## Practice Prompts
+
+1. Why does bubble sort have a best-case of O(n)? What condition makes this happen?
+
+2. If an array is already sorted, which algorithm does the least work? Why?
+
+3. Why is merge sort's space complexity O(n) while insertion sort is O(1)?
+
+4. Can you think of a dataset where bubble sort would outperform merge sort?

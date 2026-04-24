@@ -1,0 +1,81 @@
+---
+title: "Linked Lists"
+description: "Understand singly linked lists — node structure, traversal, insertion, and deletion. See why O(1) insertion matters when you have the node pointer."
+category: "data-structures"
+engine: "sequence"
+order: 9
+difficulty: "intermediate"
+tags: ["linked-list", "data-structures", "pointer", "singly-linked", "dynamic"]
+prerequisites: ["arrays"]
+learningObjectives:
+  - "Explain the node-and-pointer structure of a linked list"
+  - "Trace traversal, search, insert, and delete operations"
+  - "Compare linked list and array access costs"
+  - "Understand when linked lists beat arrays"
+estimatedTime: "25 minutes"
+status: "planned"
+---
+
+## Intuition
+
+An array is a block of memory — every element sits next to its neighbors. A linked list is a chain — each element points to the next one. No block needed. No wasted space. Just pointers linking node to node.
+
+The trade-off: you can't jump to index 5 directly. You have to walk from the start, following pointers, until you get there. But insertion? If you already have the node, it's O(1) — just point around the gap.
+
+## Formal Concept
+
+A **singly linked list** is a sequence of nodes where each node holds a value and a pointer to the next node. The last node points to null (end of chain).
+
+| Operation | Array | Linked List |
+|-----------|-------|-------------|
+| Access by index | O(1) | O(n) |
+| Insert at head | O(n) | O(1) |
+| Insert at tail | O(1) | O(n) or O(1) with tail pointer |
+| Delete at head | O(n) | O(1) |
+| Search | O(n) | O(n) |
+
+**Key property:** No random access. You always walk from the head.
+
+## Visual Interaction
+
+import LinkedListVisualizer from '../../components/visualizers/LinkedListVisualizer';
+
+<LinkedListVisualizer client:load />
+
+Use Step or Play to watch the traversal path. Try searching, inserting, and deleting nodes step by step.
+
+## Step-by-Step Example
+
+### List: 4 -> 2 -> 7 -> 1 -> 5
+
+### Traverse (all nodes)
+Walk from head: 4, 2, 7, 1, 5. O(n) time.
+
+### Search for 7
+Walk from head: 4 (no), 2 (no), 7 (yes, found). O(n) time.
+
+### Insert 9 at index 2
+Walk to index 1 (node 2). Create node 9. Point 2 -> 9, 9 -> 7. List: 4 -> 2 -> 9 -> 7 -> 1 -> 5.
+
+### Delete at index 3
+Walk to index 2 (node 9). Point 9 -> 1. Remove node 7. List: 4 -> 2 -> 9 -> 1 -> 5.
+
+## Common Mistakes
+
+1. **Forgetting to update the tail pointer** — When inserting at the end of a list with a tail pointer, you must update it.
+
+2. **Losing the next pointer before overwriting** — When inserting or deleting, always save references before changing pointers.
+
+3. **Accessing null.next** — If you walk past the end, the next node is null. Accessing .value on null crashes.
+
+4. **Confusing index with position** — Index 0 is the head. Traversal counts from 0.
+
+## Practice Prompts
+
+1. If you have a singly linked list with only a head pointer, how do you find the second-to-last node?
+
+2. How would you reverse a singly linked list in place? What is the time complexity?
+
+3. Why is inserting at the head O(1) for a linked list but O(n) for an array?
+
+4. What happens if you try to delete a node at index 10 when the list only has 5 nodes?
