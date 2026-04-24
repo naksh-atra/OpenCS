@@ -1,0 +1,106 @@
+---
+title: "Array Memory and Operations"
+description: "Understand how arrays store and access data in contiguous memory. Visualize insert, delete, search, and access operations."
+category: "data-structures"
+engine: "sequence"
+order: 3
+difficulty: "beginner"
+tags: ["arrays", "memory", "indexing", "operations", "data-structures"]
+prerequisites: ["time-complexity"]
+learningObjectives:
+  - "Explain how arrays store data in contiguous memory"
+  - "Identify the time complexity of array operations"
+  - "Trace access, insert, delete, and search operations"
+  - "Understand when arrays are the right choice"
+estimatedTime: "20 minutes"
+status: "planned"
+---
+
+## Intuition
+
+Imagine a row of numbered lockers in a school hallway. Each locker has a fixed number, and you know exactly which locker holds what. You don't need to search — you go directly to locker 47 and grab your lunch.
+
+An **array** works the same way. Data lives in consecutive memory slots, each with an index. Random access is instant because the computer can calculate the exact memory address: `base_address + index × element_size`.
+
+## Formal Concept
+
+An **array** is a contiguous block of memory holding elements of the same type, accessible by integer index.
+
+### Key Properties
+
+- **Fixed-size** in most languages (static arrays)
+- **Contiguous memory** — all elements sit next to each other
+- **O(1) random access** — calculate address, jump directly
+- **O(n) insert/delete** — may require shifting elements
+
+### Memory Layout
+
+```
+Array: [3, 7, 1, 8, 2, 5, 9, 4]
+Index:  0  1  2  3  4  5  6  7
+Addr: 100 104 108 112 116 120 124 128  (4-byte integers)
+```
+
+## Visual Interaction
+
+import ArrayVisualizer from '../../components/visualizers/ArrayVisualizer';
+
+<ArrayVisualizer client:load />
+
+Try the operations above. Notice how insert and delete shift surrounding elements, while access jumps directly to the target.
+
+## Step-by-Step Example
+
+### Access — O(1)
+
+```python
+def access(arr, index):
+    return arr[index]  # Direct calculation: O(1)
+```
+
+The CPU computes `address = base + index × size`, no loops.
+
+### Insert at End — O(1)
+
+```python
+arr.append(6)  # Add to end: O(1) amortized
+```
+
+### Insert at Middle — O(n)
+
+```python
+def insert_middle(arr, index, value):
+    for i in range(len(arr) - 1, index, -1):  # Shift right
+        arr[i] = arr[i - 1]
+    arr[index] = value  # O(n) due to shifting
+```
+
+### Search — O(n)
+
+```python
+def search(arr, value):
+    for i, v in enumerate(arr):  # Linear scan
+        if v == value:
+            return i
+    return -1  # O(n)
+```
+
+## Common Mistakes
+
+1. **Confusing access with search** — Array access is O(1) because you give an index. Array search is O(n) because you give a value.
+
+2. **Forgetting about resizing** — Dynamic arrays (Python lists, Java ArrayList) double their capacity when full, giving amortized O(1) insert but occasional O(n) resize.
+
+3. **Assuming insert is always O(1)** — Only true at the end. Middle inserts require shifting.
+
+4. **Ignoring cache friendliness** — Contiguous memory makes arrays cache-friendly, which is why arrays often outperform linked lists in practice despite O(n) insert.
+
+## Practice Prompts
+
+1. How many elements are shifted when inserting at index 3 in an array of length 8?
+
+2. Why is binary search not O(1) on a plain array, even though arrays support O(1) access?
+
+3. What happens to indices after deleting element at index 2?
+
+4. When would you choose an array over a linked list? Consider both time and space.

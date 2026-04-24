@@ -116,6 +116,48 @@ interface Engine {
 
 Visualizers use engine hooks to manage state and animation. See individual engine READMEs for specifics.
 
+## Engine Families
+
+OpenCS has two fundamentally different kinds of engines. Keeping them distinct prevents confusion about what belongs where.
+
+### Theory Engines — Conceptual Data
+
+Theory engines contain **static, declarative concept data**. They do not track state changes or operations over time.
+
+**Examples:**
+- `theory/complexity.ts` — definitions of Big-O classes, their labels, heights, and descriptions
+- Future: DFA state definitions, grammar rules, truth tables
+
+**Characteristics:**
+- Data is constant — the same complexity classes appear in every session
+- No `applyOperation()` or `step()` functions
+- Pure types + static datasets
+- Visualizers import and render the data, but the engine never mutates
+
+### Stateful Data-Structure Engines — Operation Logic
+
+Stateful engines contain **dynamic operation logic**. They track state transitions as users interact with visualizers.
+
+**Examples:**
+- `sequence/array-ops.ts` — insert, delete, search, access, update functions with immutable state transitions
+- `sequence/stack-queue-ops.ts` — push, pop, enqueue, dequeue operations
+
+**Characteristics:**
+- State changes over time as operations are applied
+- `apply*()` functions take current state and return new state
+- Visualizers own the React state, but delegate operation logic to engine
+- Each `apply*()` function is pure and reversible
+
+**Why separation matters:** Array operations and stack/queue operations are both sequence operations — they both model linear data access patterns. But they are distinct state machines. Keeping them in separate engine files (`array-ops.ts` vs `stack-queue-ops.ts`) while sharing the engine family prevents duplication while maintaining clarity.
+
+### Decision Guide
+
+When adding a new topic, ask:
+
+1. **Is the data mostly static?** → Add to the appropriate theory engine file
+2. **Does the topic involve state transitions?** → Create or extend a stateful engine file in the appropriate engine
+3. **Does this share behavior with an existing data structure?** → Extend that engine file before creating a new one
+
 ## Design Principles
 
 1. **Static first** — Only hydrate what needs interactivity
