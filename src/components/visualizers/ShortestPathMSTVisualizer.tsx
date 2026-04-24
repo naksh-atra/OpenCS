@@ -274,17 +274,17 @@ export function ShortestPathMSTVisualizer() {
             <div className="spmv-playback">
               <button onClick={handleReset} className="spmv-btn">Reset</button>
               <button onClick={handleStep} className="spmv-btn">Step</button>
-              <button onClick={handlePlay} className="spmv-btn spmv-btn-primary">{isPlaying ? 'Pause' : 'Play'}</button>
+              <button onClick={handlePlay} data-testid="spmv-play" className="spmv-btn spmv-btn-primary">{isPlaying ? 'Pause' : 'Play'}</button>
             </div>
           </div>
         </>
       }
       isEmpty={false}
     >
-      <div className="spmv-canvas-wrap">
+      <div className="spmv-canvas-wrap" data-testid="spmv-canvas">
         <canvas ref={canvasRef} className="spmv-canvas" width={560} height={320} />
       </div>
-      <div className="spmv-legend">
+      <div className="spmv-legend" data-testid="spmv-legend">
         <span className="spmv-legend-item spmv-legend-relaxed">In PQ (unsettled)</span>
         <span className="spmv-legend-item spmv-legend-visited">Settled</span>
         <span className="spmv-legend-item spmv-legend-mst">MST Edge</span>

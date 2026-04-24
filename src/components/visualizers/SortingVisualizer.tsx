@@ -172,7 +172,7 @@ export function SortingVisualizer() {
       }
       isEmpty={false}
     >
-      <div className="sv-canvas-wrap">
+      <div className="sv-canvas-wrap" data-testid="sv-canvas">
         <canvas ref={canvasRef} className="sv-canvas" width={560} height={260} />
       </div>
       <div className="sv-legend">

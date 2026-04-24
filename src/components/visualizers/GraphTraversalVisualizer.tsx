@@ -201,10 +201,10 @@ export function GraphTraversalVisualizer() {
       }
       isEmpty={false}
     >
-      <div className="gtv-canvas-wrap">
+      <div className="gtv-canvas-wrap" data-testid="gtv-canvas">
         <canvas ref={canvasRef} className="gtv-canvas" width={560} height={320} />
       </div>
-      <div className="gtv-legend">
+      <div className="gtv-legend" data-testid="gtv-legend">
         <span className="gtv-legend-item gtv-legend-pending">Pending</span>
         <span className="gtv-legend-item gtv-legend-frontier">Frontier</span>
         <span className="gtv-legend-item gtv-legend-visited">Visited</span>

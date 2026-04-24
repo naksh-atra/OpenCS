@@ -194,7 +194,7 @@ export function LinkedListVisualizer() {
       }
       isEmpty={false}
     >
-      <div className="llv-list-wrap">
+      <div className="llv-list-wrap" data-testid="llv-list">
         <div ref={listRef} className="ll-list-container" />
       </div>
       <div className="llv-legend">

@@ -151,7 +151,7 @@ export function BSTVisualizer() {
       isEmpty={!state.root}
       emptyMessage="BST is empty — insert values to begin"
     >
-      <div className="bst-canvas-wrap">
+      <div className="bst-canvas-wrap" data-testid="bst-canvas">
         <canvas ref={canvasRef} className="bst-canvas" width={560} height={300} />
       </div>
 
