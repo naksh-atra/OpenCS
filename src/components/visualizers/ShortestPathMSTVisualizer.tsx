@@ -155,15 +155,12 @@ export function ShortestPathMSTVisualizer() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const graph: Graph = {
-    nodes: PRESET_GRAPHS[presetIdx].nodes,
-    edges: PRESET_GRAPHS[presetIdx].edges,
-  };
-  const startNode = findStartNode(graph);
-
   useEffect(() => {
     setStepIdx(0);
     setIsPlaying(false);
+    const preset = PRESET_GRAPHS[presetIdx];
+    const graph: Graph = { nodes: preset.nodes, edges: preset.edges };
+    const startNode = findStartNode(graph);
     if (algo === 'dijkstra') {
       setDijkstraResult(computeDijkstra(graph, startNode));
       setPrimResult(null);
@@ -171,7 +168,7 @@ export function ShortestPathMSTVisualizer() {
       setPrimResult(computePrim(graph, startNode));
       setDijkstraResult(null);
     }
-  }, [presetIdx, algo, graph, startNode]);
+  }, [presetIdx, algo]);
 
   useEffect(() => {
     let steps: GraphStep[] = [];
@@ -184,6 +181,9 @@ export function ShortestPathMSTVisualizer() {
       relaxedEdges: [],
       path: [],
     };
+
+    const preset = PRESET_GRAPHS[presetIdx];
+    const graph: Graph = { nodes: preset.nodes, edges: preset.edges };
 
     if (algo === 'dijkstra' && dijkstraResult) {
       steps = dijkstraResult.steps;
@@ -215,7 +215,7 @@ export function ShortestPathMSTVisualizer() {
     }
 
     drawGraph(canvasRef.current, graph, ds, distances, algo);
-  }, [dijkstraResult, primResult, stepIdx, graph, algo]);
+  }, [dijkstraResult, primResult, stepIdx, presetIdx, algo]);
 
   useEffect(() => {
     if (timerRef.current) clearTimeout(timerRef.current);

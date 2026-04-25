@@ -1,0 +1,386 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Understand LIFO and FIFO data structures. Visualize stack push/pop and queue enqueue/dequeue operations."><title>Stack and Queue Simulator | OpenCS</title><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/OpenCS/_astro/_slug_.Dom457MR.css">
+<link rel="stylesheet" href="/OpenCS/_astro/_slug_.Bny2Cspm.css"></head> <body>  <header class="header" data-astro-cid-qlfjksao> <div class="header-inner container" data-astro-cid-qlfjksao> <a href="/OpenCS/" class="logo" data-astro-cid-qlfjksao> <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" data-astro-cid-qlfjksao> <rect width="32" height="32" rx="6" fill="var(--color-primary)" data-astro-cid-qlfjksao></rect> <path d="M8 12h16M8 16h12M8 20h14" stroke="white" stroke-width="2" stroke-linecap="round" data-astro-cid-qlfjksao></path> </svg> <span data-astro-cid-qlfjksao>OpenCS</span> </a> <nav class="nav" id="nav-menu" data-astro-cid-qlfjksao> <a href="/OpenCS/topics" class="nav-link active" data-astro-cid-qlfjksao> Topics </a><a href="/OpenCS/roadmap" class="nav-link" data-astro-cid-qlfjksao> Roadmap </a><a href="/OpenCS/about" class="nav-link" data-astro-cid-qlfjksao> About </a><a href="/OpenCS/contribute" class="nav-link" data-astro-cid-qlfjksao> Contribute </a> </nav> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" data-astro-cid-qlfjksao> <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-qlfjksao> <path d="M3 12h18M3 6h18M3 18h18" data-astro-cid-qlfjksao></path> </svg> <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none" data-astro-cid-qlfjksao> <path d="M18 6L6 18M6 6l12 12" data-astro-cid-qlfjksao></path> </svg> </button> </div> </header> <script type="module">const e=document.getElementById("menu-toggle"),c=document.getElementById("nav-menu"),o=e?.querySelector(".icon-menu"),t=e?.querySelector(".icon-close");e?.addEventListener("click",()=>{const n=c?.classList.toggle("open");o&&(o.style.display=n?"none":"block"),t&&(t.style.display=n?"block":"none")});</script>  <main class="topic-main" data-astro-cid-bub7cl3e> <article class="topic-article container" data-astro-cid-bub7cl3e> <header class="topic-header" data-astro-cid-bub7cl3e> <div class="topic-meta" data-astro-cid-bub7cl3e> <span class="topic-category" data-astro-cid-bub7cl3e>data-structures</span> <span class="topic-engine" data-astro-cid-bub7cl3e>sequence</span> <span class="topic-difficulty beginner" data-astro-cid-bub7cl3e>beginner</span> <span class="topic-status status-published" data-astro-cid-bub7cl3e>published</span> <span class="topic-time" data-astro-cid-bub7cl3e>20 minutes</span> </div> <h1 data-astro-cid-bub7cl3e>Stack and Queue Simulator</h1> <p class="topic-description" data-astro-cid-bub7cl3e>Understand LIFO and FIFO data structures. Visualize stack push/pop and queue enqueue/dequeue operations.</p> <div class="topic-objectives" data-astro-cid-bub7cl3e> <h4 data-astro-cid-bub7cl3e>Learning Objectives</h4> <ul data-astro-cid-bub7cl3e> <li data-astro-cid-bub7cl3e>Explain the difference between stack (LIFO) and queue (FIFO)</li><li data-astro-cid-bub7cl3e>Trace push/pop and enqueue/dequeue operations</li><li data-astro-cid-bub7cl3e>Identify use cases for each structure</li><li data-astro-cid-bub7cl3e>Understand how stacks enable function calls and expression parsing</li> </ul> </div> </header> <div class="topic-content" data-astro-cid-bub7cl3e>  <h2 id="intuition">Intuition</h2>
+<p><strong>Stack</strong> — like a stack of plates. You add to the top and remove from the top. Last plate you put down is the first one you pick up. This is <strong>LIFO</strong> (Last In, First Out).</p>
+<p><strong>Queue</strong> — like a line at a movie theater. You join at the back and exit at the front. First person in line is the first to get served. This is <strong>FIFO</strong> (First In, First Out).</p>
+<p>These two structures model fundamentally different kinds of ordering, and both are everywhere in computer science.</p>
+<h2 id="formal-concept">Formal Concept</h2>
+<h3 id="stack-lifo">Stack (LIFO)</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Operation</th><th>Time</th><th>Description</th></tr></thead><tbody><tr><td>Push</td><td>O(1)</td><td>Add element to top</td></tr><tr><td>Pop</td><td>O(1)</td><td>Remove element from top</td></tr><tr><td>Peek</td><td>O(1)</td><td>View top element</td></tr></tbody></table>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">stack </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#E1E4E8">stack.append(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D"># push</span></span>
+<span class="line"><span style="color:#E1E4E8">stack.append(</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D"># push</span></span>
+<span class="line"><span style="color:#E1E4E8">stack.append(</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D"># push</span></span>
+<span class="line"><span style="color:#E1E4E8">stack.pop()      </span><span style="color:#6A737D"># → 3</span></span>
+<span class="line"><span style="color:#E1E4E8">stack.pop()      </span><span style="color:#6A737D"># → 2</span></span></code></pre>
+<h3 id="queue-fifo">Queue (FIFO)</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Operation</th><th>Time</th><th>Description</th></tr></thead><tbody><tr><td>Enqueue</td><td>O(1)</td><td>Add element to back</td></tr><tr><td>Dequeue</td><td>O(1)</td><td>Remove element from front</td></tr><tr><td>Peek</td><td>O(1)</td><td>View front element</td></tr></tbody></table>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> collections </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> deque</span></span>
+<span class="line"><span style="color:#E1E4E8">queue </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> deque()</span></span>
+<span class="line"><span style="color:#E1E4E8">queue.append(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D"># enqueue</span></span>
+<span class="line"><span style="color:#E1E4E8">queue.append(</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D"># enqueue</span></span>
+<span class="line"><span style="color:#E1E4E8">queue.append(</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D"># enqueue</span></span>
+<span class="line"><span style="color:#E1E4E8">queue.popleft()  </span><span style="color:#6A737D"># → 1</span></span>
+<span class="line"><span style="color:#E1E4E8">queue.popleft()  </span><span style="color:#6A737D"># → 2</span></span></code></pre>
+<h2 id="visual-interaction">Visual Interaction</h2>
+
+<style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="gXe6M" prefix="r1" component-url="/OpenCS/_astro/StackQueueVisualizer.C4i2M4fD.js" component-export="default" renderer-url="/OpenCS/_astro/client.DYKcjN1Z.js" props="{}" ssr client="load" opts="{&quot;name&quot;:&quot;StackQueueVisualizer&quot;,&quot;value&quot;:true}" await-children><div class="vf-container"><div class="vf-header"><h3 class="vf-title">Stack Visualizer</h3><p class="vf-description" data-testid="vf-description">LIFO — Stack initialized with [3, 7, 1, 8]</p></div><div class="vf-controls"><div class="sqv-mode-tabs"><button class="sqv-mode-tab active">Stack (LIFO)</button><button class="sqv-mode-tab ">Queue (FIFO)</button></div><div class="sqv-presets"><button class="sqv-btn">Small</button><button class="sqv-btn">Ascending</button><button class="sqv-btn">Random</button><button class="sqv-btn">Random</button><button class="sqv-btn sqv-btn-reset">Reset</button></div><div class="sqv-ops"><div class="sqv-input-row"><input type="number" placeholder="Push value" class="sqv-input" value=""/><button class="sqv-btn sqv-btn-primary">Push</button><button class="sqv-btn sqv-btn-warn">Pop</button><button class="sqv-btn">Peek</button></div><div class="sqv-hint">Stack: push adds to top, pop removes from top</div></div></div><div class="vf-canvas"><div class="sqv-container sqv-stack"><div class="sqv-structure"><div class="sqv-top-label">TOP</div><div class="sqv-items sqv-stack-items"><div class="sqv-item "><span class="sqv-item-value">8</span></div><div class="sqv-item "><span class="sqv-item-value">1</span></div><div class="sqv-item "><span class="sqv-item-value">7</span></div><div class="sqv-item "><span class="sqv-item-value">3</span></div></div><div class="sqv-bottom-label">BOTTOM</div></div></div><style>
+        .sqv-mode-tabs {
+          display: flex;
+          gap: 4px;
+          background: var(--color-bg);
+          padding: 4px;
+          border-radius: var(--radius-md);
+        }
+
+        .sqv-mode-tab {
+          padding: 6px 16px;
+          border: none;
+          border-radius: var(--radius-sm);
+          background: transparent;
+          color: var(--color-text-muted);
+          font-size: 0.8125rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.15s ease;
+        }
+
+        .sqv-mode-tab.active {
+          background: var(--color-surface);
+          color: var(--color-primary);
+          box-shadow: var(--shadow-sm);
+        }
+
+        .sqv-presets {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+
+        .sqv-btn {
+          padding: 6px 12px;
+          border-radius: 6px;
+          border: 1px solid var(--color-border);
+          background: var(--color-surface);
+          color: var(--color-text);
+          font-size: 0.8125rem;
+          cursor: pointer;
+          transition: all 0.15s ease;
+        }
+
+        .sqv-btn:hover:not(:disabled) {
+          border-color: var(--color-primary);
+        }
+
+        .sqv-btn:disabled {
+          opacity: 0.4;
+          cursor: not-allowed;
+        }
+
+        .sqv-btn-primary {
+          background: var(--color-primary);
+          border-color: var(--color-primary);
+          color: white;
+        }
+
+        .sqv-btn-warn {
+          color: #dc2626;
+          border-color: #fca5a5;
+        }
+
+        .sqv-btn-reset {
+          color: var(--color-text-muted);
+        }
+
+        .sqv-ops {
+          width: 100%;
+        }
+
+        .sqv-input-row {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+          align-items: center;
+        }
+
+        .sqv-input {
+          padding: 6px 8px;
+          border-radius: 6px;
+          border: 1px solid var(--color-border);
+          background: var(--color-surface);
+          color: var(--color-text);
+          font-size: 0.8125rem;
+          width: 100px;
+        }
+
+        .sqv-hint {
+          margin-top: 8px;
+          font-size: 0.75rem;
+          color: var(--color-text-muted);
+        }
+
+        .sqv-container {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          padding: 16px 0;
+        }
+
+        .sqv-structure {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .sqv-stack .sqv-items {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+
+        .sqv-queue .sqv-items {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .sqv-queue-row {
+          display: flex;
+          gap: 4px;
+        }
+
+        .sqv-item {
+          width: 44px;
+          height: 44px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--color-surface);
+          border: 2px solid var(--color-border);
+          border-radius: var(--radius-sm);
+          transition: all 0.2s ease;
+        }
+
+        .sqv-item-highlight {
+          border-color: var(--color-primary);
+          background: color-mix(in srgb, var(--color-primary) 15%, transparent);
+        }
+
+        .sqv-item-value {
+          font-family: var(--font-mono);
+          font-size: 0.9375rem;
+          font-weight: 600;
+          color: var(--color-text);
+        }
+
+        .sqv-top-label, .sqv-bottom-label {
+          font-size: 0.625rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          color: var(--color-text-muted);
+          padding: 2px 0;
+        }
+
+        .sqv-front-label, .sqv-back-label {
+          font-size: 0.625rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          color: var(--color-text-muted);
+          padding: 2px 0;
+        }
+
+        .sqv-empty-indicator {
+          padding: 12px 24px;
+          color: var(--color-text-muted);
+          font-size: 0.875rem;
+          border: 2px dashed var(--color-border);
+          border-radius: var(--radius-sm);
+        }
+      </style></div><style>
+        .vf-container {
+          margin: var(--space-6) 0;
+          padding: var(--space-6);
+          background: var(--color-surface);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-lg);
+        }
+
+        .vf-header {
+          margin-bottom: var(--space-4);
+          padding-bottom: var(--space-4);
+          border-bottom: 1px solid var(--color-border);
+        }
+
+        .vf-title {
+          font-size: var(--text-lg);
+          font-weight: 600;
+          margin: 0 0 var(--space-2) 0;
+          color: var(--color-text);
+        }
+
+        .vf-description {
+          font-size: var(--text-sm);
+          color: var(--color-text-muted);
+          margin: 0;
+          line-height: 1.5;
+        }
+
+        .vf-controls {
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--space-2);
+          margin-bottom: var(--space-4);
+          padding: var(--space-3);
+          background: var(--color-bg);
+          border-radius: var(--radius-md);
+        }
+
+        .vf-canvas {
+          min-height: 200px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .vf-loading {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-3);
+          padding: var(--space-8);
+          color: var(--color-text-muted);
+        }
+
+        .vf-spinner {
+          width: 32px;
+          height: 32px;
+          border: 3px solid var(--color-border);
+          border-top-color: var(--color-primary);
+          border-radius: 50%;
+          animation: vf-spin 1s linear infinite;
+        }
+
+        .vf-empty {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-3);
+          padding: var(--space-8);
+          color: var(--color-text-muted);
+          font-size: var(--text-sm);
+        }
+
+        .vf-empty svg {
+          opacity: 0.5;
+        }
+
+        @keyframes vf-spin {
+          to { transform: rotate(360deg); }
+        }
+      </style></div><!--astro:end--></astro-island>
+<p>Switch between Stack and Queue modes. Try push/enqueue and pop/dequeue to see the LIFO vs FIFO ordering in action.</p>
+<h2 id="step-by-step-example">Step-by-Step Example</h2>
+<h3 id="stack-undoredo">Stack: Undo/Redo</h3>
+<p>Text editors use stacks for undo. Every action pushes onto the undo stack. Pressing Ctrl+Z pops and undoes the last action.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Action: &quot;Type A&quot; → push &quot;Type A&quot;</span></span>
+<span class="line"><span>Action: &quot;Delete A&quot; → push &quot;Delete A&quot;</span></span>
+<span class="line"><span>Action: &quot;Type B&quot; → push &quot;Type B&quot;</span></span>
+<span class="line"><span>Ctrl+Z → pops &quot;Type B&quot;, undoes &quot;Type B&quot;</span></span>
+<span class="line"><span>Ctrl+Z → pops &quot;Delete A&quot;, undoes &quot;Delete A&quot;</span></span></code></pre>
+<h3 id="queue-print-spooler">Queue: Print Spooler</h3>
+<p>Print jobs enter a queue. Jobs print in order — the first submitted job finishes first.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Job &quot;Doc1&quot; → enqueue</span></span>
+<span class="line"><span>Job &quot;Doc2&quot; → enqueue</span></span>
+<span class="line"><span>Job &quot;Doc3&quot; → enqueue</span></span>
+<span class="line"><span>Printer prints → dequeue &quot;Doc1&quot;</span></span>
+<span class="line"><span>Printer prints → dequeue &quot;Doc2&quot;</span></span></code></pre>
+<h3 id="stack-function-call-stack">Stack: Function Call Stack</h3>
+<p>Every function call pushes onto the call stack. When a function returns, it pops.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>factorial(3)</span></span>
+<span class="line"><span>└── factorial(2)</span></span>
+<span class="line"><span>    └── factorial(1)</span></span>
+<span class="line"><span>        └── returns 1</span></span>
+<span class="line"><span>    └── returns 1</span></span>
+<span class="line"><span>└── returns 2</span></span>
+<span class="line"><span>returns 6</span></span></code></pre>
+<h2 id="common-mistakes">Common Mistakes</h2>
+<ol>
+<li>
+<p><strong>Confusing which end is which</strong> — Stack: add/remove from same end (top). Queue: add at back, remove from front.</p>
+</li>
+<li>
+<p><strong>Popping from empty</strong> — Accessing <code>stack.pop()</code> on an empty stack crashes. Always check <code>stack.length</code> or use <code>isEmpty()</code> first.</p>
+</li>
+<li>
+<p><strong>Assuming O(1) for all queue operations</strong> — With a naive array implementation, <code>dequeue</code> from front is O(n) because everything shifts left. Use a linked list or circular buffer for true O(1) dequeue.</p>
+</li>
+<li>
+<p><strong>Mixing up use cases</strong> — Undo/Redo = stack. Print queue = queue. Caching (LRU) = queue. Expression parsing = stack.</p>
+</li>
+</ol>
+<h2 id="practice-prompts">Practice Prompts</h2>
+<ol>
+<li>
+<p>A browser’s back button is implemented with a stack. Why not a queue?</p>
+</li>
+<li>
+<p>What happens if you call pop() on an empty stack? How would you handle this safely?</p>
+</li>
+<li>
+<p>Design a queue using two stacks. What operations does it support efficiently?</p>
+</li>
+<li>
+<p>Why does the call stack grow downward in most programming languages? What happens when it overflows?</p>
+</li>
+</ol> <nav class="topic-nav"> <div class="topic-nav-inner"> <a href="/OpenCS/topics/arrays" class="topic-nav-link topic-nav-prev"> <span class="topic-nav-direction">&larr; Previous</span> <span class="topic-nav-title">Array Memory and Operations</span> </a> <a href="/OpenCS/topics/tree-traversals" class="topic-nav-link topic-nav-next"> <span class="topic-nav-direction">Next &rarr;</span> <span class="topic-nav-title">Tree Traversals</span> </a> </div> </nav>  </div> </article> </main> <footer class="footer" data-astro-cid-35ed7um5> <div class="footer-inner container" data-astro-cid-35ed7um5> <div class="footer-content" data-astro-cid-35ed7um5> <div class="footer-brand" data-astro-cid-35ed7um5> <span class="footer-logo" data-astro-cid-35ed7um5>OpenCS</span> <p class="footer-tagline" data-astro-cid-35ed7um5>Visual learning for BTech CSE</p> </div> <nav class="footer-nav" data-astro-cid-35ed7um5> <div class="footer-section" data-astro-cid-35ed7um5> <h4 data-astro-cid-35ed7um5>Project</h4> <a href="/OpenCS/about" data-astro-cid-35ed7um5>About</a> <a href="/OpenCS/roadmap" data-astro-cid-35ed7um5>Roadmap</a> <a href="/OpenCS/contribute" data-astro-cid-35ed7um5>Contribute</a> </div> <div class="footer-section" data-astro-cid-35ed7um5> <h4 data-astro-cid-35ed7um5>Topics</h4> <a href="/OpenCS/topics" data-astro-cid-35ed7um5>All Topics</a> <a href="/OpenCS/topics?category=algorithms" data-astro-cid-35ed7um5>Algorithms</a> <a href="/OpenCS/topics?category=data-structures" data-astro-cid-35ed7um5>Data Structures</a> <a href="/OpenCS/topics?category=theory" data-astro-cid-35ed7um5>Theory</a> <a href="/OpenCS/topics?category=systems" data-astro-cid-35ed7um5>Systems</a> </div> </nav> </div> <div class="footer-bottom" data-astro-cid-35ed7um5> <p data-astro-cid-35ed7um5>&copy; 2026 OpenCS. MIT License.</p> <p data-astro-cid-35ed7um5>Built for BTech CSE students in India</p> </div> </div> </footer>   </body></html> 

@@ -4,7 +4,7 @@ test.describe('mobile viewport', () => {
   test.use({ viewport: { width: 390, height: 844 } });
 
   test('should not have dominating sticky filter', async ({ page }) => {
-    await page.goto('/topics');
+    await page.goto('/OpenCS/topics');
     
     // Get filter bar position
     const filter = page.locator('.topics-filters');

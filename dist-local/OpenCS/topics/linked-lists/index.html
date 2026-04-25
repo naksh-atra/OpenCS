@@ -1,0 +1,184 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Understand singly linked lists — node structure, traversal, insertion, and deletion. See why O(1) insertion matters when you have the node pointer."><title>Linked Lists | OpenCS</title><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/OpenCS/_astro/_slug_.Dom457MR.css">
+<link rel="stylesheet" href="/OpenCS/_astro/_slug_.Bny2Cspm.css"></head> <body>  <header class="header" data-astro-cid-qlfjksao> <div class="header-inner container" data-astro-cid-qlfjksao> <a href="/OpenCS/" class="logo" data-astro-cid-qlfjksao> <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" data-astro-cid-qlfjksao> <rect width="32" height="32" rx="6" fill="var(--color-primary)" data-astro-cid-qlfjksao></rect> <path d="M8 12h16M8 16h12M8 20h14" stroke="white" stroke-width="2" stroke-linecap="round" data-astro-cid-qlfjksao></path> </svg> <span data-astro-cid-qlfjksao>OpenCS</span> </a> <nav class="nav" id="nav-menu" data-astro-cid-qlfjksao> <a href="/OpenCS/topics" class="nav-link active" data-astro-cid-qlfjksao> Topics </a><a href="/OpenCS/roadmap" class="nav-link" data-astro-cid-qlfjksao> Roadmap </a><a href="/OpenCS/about" class="nav-link" data-astro-cid-qlfjksao> About </a><a href="/OpenCS/contribute" class="nav-link" data-astro-cid-qlfjksao> Contribute </a> </nav> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" data-astro-cid-qlfjksao> <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-qlfjksao> <path d="M3 12h18M3 6h18M3 18h18" data-astro-cid-qlfjksao></path> </svg> <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none" data-astro-cid-qlfjksao> <path d="M18 6L6 18M6 6l12 12" data-astro-cid-qlfjksao></path> </svg> </button> </div> </header> <script type="module">const e=document.getElementById("menu-toggle"),c=document.getElementById("nav-menu"),o=e?.querySelector(".icon-menu"),t=e?.querySelector(".icon-close");e?.addEventListener("click",()=>{const n=c?.classList.toggle("open");o&&(o.style.display=n?"none":"block"),t&&(t.style.display=n?"block":"none")});</script>  <main class="topic-main" data-astro-cid-bub7cl3e> <article class="topic-article container" data-astro-cid-bub7cl3e> <header class="topic-header" data-astro-cid-bub7cl3e> <div class="topic-meta" data-astro-cid-bub7cl3e> <span class="topic-category" data-astro-cid-bub7cl3e>data-structures</span> <span class="topic-engine" data-astro-cid-bub7cl3e>sequence</span> <span class="topic-difficulty intermediate" data-astro-cid-bub7cl3e>intermediate</span> <span class="topic-status status-published" data-astro-cid-bub7cl3e>published</span> <span class="topic-time" data-astro-cid-bub7cl3e>25 minutes</span> </div> <h1 data-astro-cid-bub7cl3e>Linked Lists</h1> <p class="topic-description" data-astro-cid-bub7cl3e>Understand singly linked lists — node structure, traversal, insertion, and deletion. See why O(1) insertion matters when you have the node pointer.</p> <div class="topic-objectives" data-astro-cid-bub7cl3e> <h4 data-astro-cid-bub7cl3e>Learning Objectives</h4> <ul data-astro-cid-bub7cl3e> <li data-astro-cid-bub7cl3e>Explain the node-and-pointer structure of a linked list</li><li data-astro-cid-bub7cl3e>Trace traversal, search, insert, and delete operations</li><li data-astro-cid-bub7cl3e>Compare linked list and array access costs</li><li data-astro-cid-bub7cl3e>Understand when linked lists beat arrays</li> </ul> </div> </header> <div class="topic-content" data-astro-cid-bub7cl3e>  <h2 id="intuition">Intuition</h2>
+<p>An array is a block of memory — every element sits next to its neighbors. A linked list is a chain — each element points to the next one. No block needed. No wasted space. Just pointers linking node to node.</p>
+<p>The trade-off: you can’t jump to index 5 directly. You have to walk from the start, following pointers, until you get there. But insertion? If you already have the node, it’s O(1) — just point around the gap.</p>
+<h2 id="formal-concept">Formal Concept</h2>
+<p>A <strong>singly linked list</strong> is a sequence of nodes where each node holds a value and a pointer to the next node. The last node points to null (end of chain).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Operation</th><th>Array</th><th>Linked List</th></tr></thead><tbody><tr><td>Access by index</td><td>O(1)</td><td>O(n)</td></tr><tr><td>Insert at head</td><td>O(n)</td><td>O(1)</td></tr><tr><td>Insert at tail</td><td>O(1)</td><td>O(n) or O(1) with tail pointer</td></tr><tr><td>Delete at head</td><td>O(n)</td><td>O(1)</td></tr><tr><td>Search</td><td>O(n)</td><td>O(n)</td></tr></tbody></table>
+<p><strong>Key property:</strong> No random access. You always walk from the head.</p>
+<h2 id="visual-interaction">Visual Interaction</h2>
+
+<style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="ZYC8gX" prefix="r1" component-url="/OpenCS/_astro/LinkedListVisualizer.BENdb29h.js" component-export="default" renderer-url="/OpenCS/_astro/client.DYKcjN1Z.js" props="{}" ssr client="load" opts="{&quot;name&quot;:&quot;LinkedListVisualizer&quot;,&quot;value&quot;:true}" await-children><div class="vf-container"><div class="vf-header"><h3 class="vf-title">Linked List</h3><p class="vf-description" data-testid="vf-description">Press play to start</p></div><div class="vf-controls"><div class="llv-presets"><button class="llv-btn active">Default</button><button class="llv-btn ">Reversed</button><button class="llv-btn ">Nearly Sorted</button><button class="llv-btn ">Random</button></div><div class="llv-controls"><div class="llv-op"><button class="llv-btn active">Traverse</button><button class="llv-btn ">Search</button><button class="llv-btn ">Insert</button><button class="llv-btn ">Delete</button></div><div class="llv-inputs"><button class="llv-btn">Reset</button><button class="llv-btn">Step</button><button class="llv-btn llv-btn-primary">Play</button></div></div></div><div class="vf-canvas"><div class="llv-list-wrap" data-testid="llv-list"><div class="ll-list-container"></div></div><div class="llv-legend"><span class="llv-legend-item llv-legend-visited">Visited</span><span class="llv-legend-item llv-legend-current">Current</span></div><style>
+        .llv-presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+        .llv-controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+        .llv-op { display: flex; gap: 8px; flex-wrap: wrap; }
+        .llv-inputs { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .llv-btn { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 0.8125rem; cursor: pointer; transition: all 0.15s; }
+        .llv-btn:hover { border-color: var(--color-primary); }
+        .llv-btn.active { background: var(--color-primary); border-color: var(--color-primary); color: white; }
+        .llv-btn-primary { background: var(--color-primary); border-color: var(--color-primary); color: white; }
+        .llv-input { padding: 6px 8px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 0.8125rem; width: 72px; }
+        .llv-list-wrap { width: 100%; overflow-x: auto; padding: 8px 0; }
+        .ll-list-container { min-height: 80px; }
+        .llv-legend { display: flex; gap: 16px; justify-content: center; margin-top: 8px; font-size: 0.75rem; color: var(--color-text); }
+        .llv-legend-item::before { content: '■'; margin-right: 4px; }
+        .llv-legend-visited::before { color: #16a34a; }
+        .llv-legend-current::before { color: #d97706; }
+      </style></div><style>
+        .vf-container {
+          margin: var(--space-6) 0;
+          padding: var(--space-6);
+          background: var(--color-surface);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-lg);
+        }
+
+        .vf-header {
+          margin-bottom: var(--space-4);
+          padding-bottom: var(--space-4);
+          border-bottom: 1px solid var(--color-border);
+        }
+
+        .vf-title {
+          font-size: var(--text-lg);
+          font-weight: 600;
+          margin: 0 0 var(--space-2) 0;
+          color: var(--color-text);
+        }
+
+        .vf-description {
+          font-size: var(--text-sm);
+          color: var(--color-text-muted);
+          margin: 0;
+          line-height: 1.5;
+        }
+
+        .vf-controls {
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--space-2);
+          margin-bottom: var(--space-4);
+          padding: var(--space-3);
+          background: var(--color-bg);
+          border-radius: var(--radius-md);
+        }
+
+        .vf-canvas {
+          min-height: 200px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .vf-loading {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-3);
+          padding: var(--space-8);
+          color: var(--color-text-muted);
+        }
+
+        .vf-spinner {
+          width: 32px;
+          height: 32px;
+          border: 3px solid var(--color-border);
+          border-top-color: var(--color-primary);
+          border-radius: 50%;
+          animation: vf-spin 1s linear infinite;
+        }
+
+        .vf-empty {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-3);
+          padding: var(--space-8);
+          color: var(--color-text-muted);
+          font-size: var(--text-sm);
+        }
+
+        .vf-empty svg {
+          opacity: 0.5;
+        }
+
+        @keyframes vf-spin {
+          to { transform: rotate(360deg); }
+        }
+      </style></div><!--astro:end--></astro-island>
+<p>Use Step or Play to watch the traversal path. Try searching, inserting, and deleting nodes step by step.</p>
+<h2 id="step-by-step-example">Step-by-Step Example</h2>
+<h3 id="list-4---2---7---1---5">List: 4 -&gt; 2 -&gt; 7 -&gt; 1 -&gt; 5</h3>
+<h3 id="traverse-all-nodes">Traverse (all nodes)</h3>
+<p>Walk from head: 4, 2, 7, 1, 5. O(n) time.</p>
+<h3 id="search-for-7">Search for 7</h3>
+<p>Walk from head: 4 (no), 2 (no), 7 (yes, found). O(n) time.</p>
+<h3 id="insert-9-at-index-2">Insert 9 at index 2</h3>
+<p>Walk to index 1 (node 2). Create node 9. Point 2 -&gt; 9, 9 -&gt; 7. List: 4 -&gt; 2 -&gt; 9 -&gt; 7 -&gt; 1 -&gt; 5.</p>
+<h3 id="delete-at-index-3">Delete at index 3</h3>
+<p>Walk to index 2 (node 9). Point 9 -&gt; 1. Remove node 7. List: 4 -&gt; 2 -&gt; 9 -&gt; 1 -&gt; 5.</p>
+<h2 id="common-mistakes">Common Mistakes</h2>
+<ol>
+<li>
+<p><strong>Forgetting to update the tail pointer</strong> — When inserting at the end of a list with a tail pointer, you must update it.</p>
+</li>
+<li>
+<p><strong>Losing the next pointer before overwriting</strong> — When inserting or deleting, always save references before changing pointers.</p>
+</li>
+<li>
+<p><strong>Accessing null.next</strong> — If you walk past the end, the next node is null. Accessing .value on null crashes.</p>
+</li>
+<li>
+<p><strong>Confusing index with position</strong> — Index 0 is the head. Traversal counts from 0.</p>
+</li>
+</ol>
+<h2 id="practice-prompts">Practice Prompts</h2>
+<ol>
+<li>
+<p>If you have a singly linked list with only a head pointer, how do you find the second-to-last node?</p>
+</li>
+<li>
+<p>How would you reverse a singly linked list in place? What is the time complexity?</p>
+</li>
+<li>
+<p>Why is inserting at the head O(1) for a linked list but O(n) for an array?</p>
+</li>
+<li>
+<p>What happens if you try to delete a node at index 10 when the list only has 5 nodes?</p>
+</li>
+</ol> <nav class="topic-nav"> <div class="topic-nav-inner"> <a href="/OpenCS/topics/shortest-path-mst" class="topic-nav-link topic-nav-prev"> <span class="topic-nav-direction">&larr; Previous</span> <span class="topic-nav-title">Shortest Path &amp; MST</span> </a> <a href="/OpenCS/topics/sorting" class="topic-nav-link topic-nav-next"> <span class="topic-nav-direction">Next &rarr;</span> <span class="topic-nav-title">Sorting Algorithms</span> </a> </div> </nav>  </div> </article> </main> <footer class="footer" data-astro-cid-35ed7um5> <div class="footer-inner container" data-astro-cid-35ed7um5> <div class="footer-content" data-astro-cid-35ed7um5> <div class="footer-brand" data-astro-cid-35ed7um5> <span class="footer-logo" data-astro-cid-35ed7um5>OpenCS</span> <p class="footer-tagline" data-astro-cid-35ed7um5>Visual learning for BTech CSE</p> </div> <nav class="footer-nav" data-astro-cid-35ed7um5> <div class="footer-section" data-astro-cid-35ed7um5> <h4 data-astro-cid-35ed7um5>Project</h4> <a href="/OpenCS/about" data-astro-cid-35ed7um5>About</a> <a href="/OpenCS/roadmap" data-astro-cid-35ed7um5>Roadmap</a> <a href="/OpenCS/contribute" data-astro-cid-35ed7um5>Contribute</a> </div> <div class="footer-section" data-astro-cid-35ed7um5> <h4 data-astro-cid-35ed7um5>Topics</h4> <a href="/OpenCS/topics" data-astro-cid-35ed7um5>All Topics</a> <a href="/OpenCS/topics?category=algorithms" data-astro-cid-35ed7um5>Algorithms</a> <a href="/OpenCS/topics?category=data-structures" data-astro-cid-35ed7um5>Data Structures</a> <a href="/OpenCS/topics?category=theory" data-astro-cid-35ed7um5>Theory</a> <a href="/OpenCS/topics?category=systems" data-astro-cid-35ed7um5>Systems</a> </div> </nav> </div> <div class="footer-bottom" data-astro-cid-35ed7um5> <p data-astro-cid-35ed7um5>&copy; 2026 OpenCS. MIT License.</p> <p data-astro-cid-35ed7um5>Built for BTech CSE students in India</p> </div> </div> </footer>   </body></html> 

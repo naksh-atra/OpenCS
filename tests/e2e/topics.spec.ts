@@ -2,18 +2,18 @@ import { test, expect } from '@playwright/test';
 
 test.describe('topics page', () => {
   test('should render topic cards', async ({ page }) => {
-    await page.goto('/topics');
+    await page.goto('/OpenCS/topics');
     await expect(page.locator('.topic-card')).toHaveCount(10);
   });
 
   test('should render filter controls', async ({ page }) => {
-    await page.goto('/topics');
+    await page.goto('/OpenCS/topics');
     const filters = page.locator('.filter-section');
     await expect(filters).toHaveCount(4);
   });
 
   test('should filter by clicking category tab', async ({ page }) => {
-    await page.goto('/topics');
+    await page.goto('/OpenCS/topics');
     await expect(page.locator('.topic-card')).toHaveCount(10);
     
     // Click Algorithms tab in Category filter (first filter section)

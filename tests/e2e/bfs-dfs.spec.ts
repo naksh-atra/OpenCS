@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('bfs-dfs visualizer', () => {
   test('should render graph and change state on play', async ({ page }) => {
-    await page.goto('/topics/bfs-dfs');
+    await page.goto('/OpenCS/topics/bfs-dfs');
     
     // Verify canvas is visible with valid bounding box
     const canvas = page.locator('[data-testid="gtv-canvas"] canvas');

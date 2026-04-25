@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('shortest-path-mst visualizer', () => {
   test('should render graph and change state on play', async ({ page }) => {
-    await page.goto('/topics/shortest-path-mst');
+    await page.goto('/OpenCS/topics/shortest-path-mst');
     
     // Verify canvas is visible
     const canvas = page.locator('[data-testid="spmv-canvas"] canvas');

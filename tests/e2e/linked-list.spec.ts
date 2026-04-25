@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('linked-list visualizer', () => {
   test('should render nodes and respond to insert', async ({ page }) => {
-    await page.goto('/topics/linked-lists');
+    await page.goto('/OpenCS/topics/linked-lists');
     
     // Verify list container is visible
     const list = page.locator('[data-testid="llv-list"]');

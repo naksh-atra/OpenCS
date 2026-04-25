@@ -53,49 +53,55 @@ function buildUrl(params: Record<string, string | null>) {
       </div>
     </section>
 
-    <section class="topics-filters">
+    <section class="topics-filters" id="filters">
       <div class="container">
-        <div class="filter-section">
-          <span class="filter-label">Category</span>
-          <div class="filter-tabs">
-            <a href={buildUrl({ category: null, engine: null, difficulty: null, status: null })} class:list={['filter-tab', { active: !categoryFilter && !engineFilter && !difficultyFilter && !statusFilter }]}>
-              All
-            </a>
-            {categories.map(cat => (
-              <a href={buildUrl({ category: cat.slug })} class:list={['filter-tab', { active: categoryFilter === cat.slug }]}>
-                {cat.label}
+        <button class="filter-toggle" id="filterToggle" aria-expanded="true" aria-controls="filterSections">
+          <span class="filter-toggle-text">Hide Filters</span>
+          <span class="filter-toggle-icon">▼</span>
+        </button>
+        <div class="filter-sections" id="filterSections">
+          <div class="filter-section">
+            <span class="filter-label">Category</span>
+            <div class="filter-tabs">
+              <a href={buildUrl({ category: null, engine: null, difficulty: null, status: null })} class:list={['filter-tab', { active: !categoryFilter && !engineFilter && !difficultyFilter && !statusFilter }]}>
+                All
               </a>
-            ))}
+              {categories.map(cat => (
+                <a href={buildUrl({ category: cat.slug })} class:list={['filter-tab', { active: categoryFilter === cat.slug }]}>
+                  {cat.label}
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
-        <div class="filter-section">
-          <span class="filter-label">Engine</span>
-          <div class="filter-tabs">
-            {engineOptions.map(e => (
-              <a href={buildUrl({ engine: e })} class:list={['filter-tab', { active: engineFilter === e }]}>
-                {e}
-              </a>
-            ))}
+          <div class="filter-section">
+            <span class="filter-label">Engine</span>
+            <div class="filter-tabs">
+              {engineOptions.map(e => (
+                <a href={buildUrl({ engine: e })} class:list={['filter-tab', { active: engineFilter === e }]}>
+                  {e}
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
-        <div class="filter-section">
-          <span class="filter-label">Difficulty</span>
-          <div class="filter-tabs">
-            {difficultyOptions.map(d => (
-              <a href={buildUrl({ difficulty: d })} class:list={['filter-tab', { active: difficultyFilter === d }]}>
-                {d}
-              </a>
-            ))}
+          <div class="filter-section">
+            <span class="filter-label">Difficulty</span>
+            <div class="filter-tabs">
+              {difficultyOptions.map(d => (
+                <a href={buildUrl({ difficulty: d })} class:list={['filter-tab', { active: difficultyFilter === d }]}>
+                  {d}
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
-        <div class="filter-section">
-          <span class="filter-label">Status</span>
-          <div class="filter-tabs">
-            {statusOptions.map(s => (
-              <a href={buildUrl({ status: s })} class:list={['filter-tab', { active: statusFilter === s }]}>
-                {s}
-              </a>
-            ))}
+          <div class="filter-section">
+            <span class="filter-label">Status</span>
+            <div class="filter-tabs">
+              {statusOptions.map(s => (
+                <a href={buildUrl({ status: s })} class:list={['filter-tab', { active: statusFilter === s }]}>
+                  {s}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -139,6 +145,41 @@ function buildUrl(params: Record<string, string | null>) {
   </main>
   <Footer />
 </BaseLayout>
+
+<script>
+  const toggle = document.getElementById('filterToggle');
+  const sections = document.getElementById('filterSections');
+  const toggleText = toggle?.querySelector('.filter-toggle-text');
+  const toggleIcon = toggle?.querySelector('.filter-toggle-icon');
+  
+  function updateToggleState(expanded: boolean) {
+    if (!toggle || !sections || !toggleText || !toggleIcon) return;
+    toggle.setAttribute('aria-expanded', String(expanded));
+    sections.classList.toggle('expanded', expanded);
+    sections.classList.toggle('collapsed', !expanded);
+    toggleText.textContent = expanded ? 'Hide Filters' : 'Show Filters';
+    toggleIcon.style.transform = expanded ? 'rotate(0deg)' : 'rotate(-90deg)';
+  }
+
+  // Start collapsed on mobile (filter hidden by default)
+  if (window.innerWidth <= 640) {
+    updateToggleState(false);
+  }
+
+  toggle?.addEventListener('click', () => {
+    const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+    updateToggleState(!isExpanded);
+  });
+
+  // Handle resize
+  window.addEventListener('resize', () => {
+    if (window.innerWidth <= 640) {
+      updateToggleState(false);
+    } else {
+      updateToggleState(true);
+    }
+  });
+</script>
 
 <style>
   .topics-header {
@@ -215,6 +256,41 @@ function buildUrl(params: Record<string, string | null>) {
     background: var(--color-primary);
     color: white;
     border-color: var(--color-primary);
+  }
+
+  .filter-toggle {
+    display: none;
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text);
+    cursor: pointer;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .filter-toggle:hover {
+    border-color: var(--color-primary);
+  }
+
+  .filter-toggle-icon {
+    font-size: 0.625rem;
+    transition: transform 0.2s;
+  }
+
+  .filter-sections {
+    transition: max-height 0.3s ease, opacity 0.2s ease;
+    overflow: hidden;
+  }
+
+  .filter-sections.collapsed {
+    max-height: 0;
+    opacity: 0;
+    padding: 0;
   }
 
   .topics-list {
@@ -389,6 +465,32 @@ function buildUrl(params: Record<string, string | null>) {
 
     .filter-label {
       min-width: unset;
+    }
+
+    .topics-filters {
+      padding: var(--space-2) 0;
+    }
+
+    .filter-toggle {
+      display: flex;
+    }
+
+    .filter-sections {
+      max-height: 0;
+      opacity: 0;
+      padding: 0;
+      margin-top: 0;
+    }
+
+    .filter-sections.expanded {
+      max-height: 500px;
+      opacity: 1;
+      padding: var(--space-3) 0 0 0;
+      margin-top: var(--space-2);
+    }
+
+    .filter-section {
+      margin-bottom: var(--space-2);
     }
   }
 </style>
