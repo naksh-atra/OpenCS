@@ -1,0 +1,249 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Learn Dijkstra's algorithm for shortest paths and Prim's algorithm for minimum spanning trees. Both use a greedy priority-queue approach but optimize for different goals."><title>Shortest Path &amp; MST | OpenCS</title><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/OpenCS/_astro/_slug_.Dom457MR.css">
+<link rel="stylesheet" href="/OpenCS/_astro/_slug_.Bny2Cspm.css"></head> <body>  <header class="header" data-astro-cid-qlfjksao> <div class="header-inner container" data-astro-cid-qlfjksao> <a href="/OpenCS/" class="logo" data-astro-cid-qlfjksao> <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" data-astro-cid-qlfjksao> <rect width="32" height="32" rx="6" fill="var(--color-primary)" data-astro-cid-qlfjksao></rect> <path d="M8 12h16M8 16h12M8 20h14" stroke="white" stroke-width="2" stroke-linecap="round" data-astro-cid-qlfjksao></path> </svg> <span data-astro-cid-qlfjksao>OpenCS</span> </a> <nav class="nav" id="nav-menu" data-astro-cid-qlfjksao> <a href="/OpenCS/topics" class="nav-link active" data-astro-cid-qlfjksao> Topics </a><a href="/OpenCS/roadmap" class="nav-link" data-astro-cid-qlfjksao> Roadmap </a><a href="/OpenCS/about" class="nav-link" data-astro-cid-qlfjksao> About </a><a href="/OpenCS/contribute" class="nav-link" data-astro-cid-qlfjksao> Contribute </a> </nav> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" data-astro-cid-qlfjksao> <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-qlfjksao> <path d="M3 12h18M3 6h18M3 18h18" data-astro-cid-qlfjksao></path> </svg> <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none" data-astro-cid-qlfjksao> <path d="M18 6L6 18M6 6l12 12" data-astro-cid-qlfjksao></path> </svg> </button> </div> </header> <script type="module">const e=document.getElementById("menu-toggle"),c=document.getElementById("nav-menu"),o=e?.querySelector(".icon-menu"),t=e?.querySelector(".icon-close");e?.addEventListener("click",()=>{const n=c?.classList.toggle("open");o&&(o.style.display=n?"none":"block"),t&&(t.style.display=n?"block":"none")});</script>  <main class="topic-main" data-astro-cid-bub7cl3e> <article class="topic-article container" data-astro-cid-bub7cl3e> <header class="topic-header" data-astro-cid-bub7cl3e> <div class="topic-meta" data-astro-cid-bub7cl3e> <span class="topic-category" data-astro-cid-bub7cl3e>algorithms</span> <span class="topic-engine" data-astro-cid-bub7cl3e>treegraph</span> <span class="topic-difficulty advanced" data-astro-cid-bub7cl3e>advanced</span> <span class="topic-status status-published" data-astro-cid-bub7cl3e>published</span> <span class="topic-time" data-astro-cid-bub7cl3e>35 minutes</span> </div> <h1 data-astro-cid-bub7cl3e>Shortest Path &amp; MST</h1> <p class="topic-description" data-astro-cid-bub7cl3e>Learn Dijkstra&#39;s algorithm for shortest paths and Prim&#39;s algorithm for minimum spanning trees. Both use a greedy priority-queue approach but optimize for different goals.</p> <div class="topic-objectives" data-astro-cid-bub7cl3e> <h4 data-astro-cid-bub7cl3e>Learning Objectives</h4> <ul data-astro-cid-bub7cl3e> <li data-astro-cid-bub7cl3e>Explain why Dijkstra&#39;s algorithm works for shortest paths</li><li data-astro-cid-bub7cl3e>Compare MST vs shortest path as optimization goals</li><li data-astro-cid-bub7cl3e>Trace Dijkstra step by step on a weighted graph</li><li data-astro-cid-bub7cl3e>Trace Prim&#39;s algorithm step by step</li> </ul> </div> </header> <div class="topic-content" data-astro-cid-bub7cl3e>  <h2 id="intuition">Intuition</h2>
+<p>Greedy algorithms make locally optimal choices that turn out to be globally optimal. Two of the most elegant examples:</p>
+<ol>
+<li><strong>Dijkstra</strong> — Find the shortest path from one source to all nodes by always settling the closest unsettled node first.</li>
+<li><strong>Prim</strong> — Build a minimum spanning tree by always adding the cheapest edge that connects the tree to a new node.</li>
+</ol>
+<p>Both use a priority queue. Both are greedy. But their objective functions differ.</p>
+<h2 id="formal-concept">Formal Concept</h2>
+<h3 id="dijkstras-algorithm">Dijkstra’s Algorithm</h3>
+<p>For finding shortest paths from a source node to all reachable nodes:</p>
+<ol>
+<li>Initialize distances: dist[src] = 0, all others = infinity</li>
+<li>Add all nodes to a priority queue keyed by distance</li>
+<li>While queue is non-empty: pop the node with minimum distance, relax its edges</li>
+<li>Relaxation: if dist[u] + w(u,v) less than dist[v], update dist[v] and predecessor</li>
+</ol>
+<p><strong>Time complexity:</strong> O((V + E) log V) with a binary heap priority queue.</p>
+<p><strong>Key property:</strong> Works only with non-negative edge weights.</p>
+<h3 id="prims-algorithm">Prim’s Algorithm</h3>
+<p>For finding the Minimum Spanning Tree (MST):</p>
+<ol>
+<li>Start from any node, add it to the MST</li>
+<li>Maintain a priority queue of edges crossing the MST cut</li>
+<li>Always pick the minimum-weight crossing edge</li>
+<li>Add the corresponding node to the MST</li>
+</ol>
+<p><strong>Time complexity:</strong> O((V + E) log V) — identical to Dijkstra with a modified PQ.</p>
+<h2 id="visual-interaction">Visual Interaction</h2>
+
+<style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1G98dq" prefix="r1" component-url="/OpenCS/_astro/ShortestPathMSTVisualizer.hrYMJoWv.js" component-export="default" renderer-url="/OpenCS/_astro/client.DYKcjN1Z.js" props="{}" ssr client="load" opts="{&quot;name&quot;:&quot;ShortestPathMSTVisualizer&quot;,&quot;value&quot;:true}" await-children><div class="vf-container"><div class="vf-header"><h3 class="vf-title">Shortest Path &amp; MST</h3></div><div class="vf-controls"><div class="spmv-presets"><button class="spmv-btn ">Undirected A</button><button class="spmv-btn active">Weighted B</button><button class="spmv-btn ">Cycle</button><button class="spmv-btn ">Sparse</button></div><div class="spmv-controls"><div class="spmv-algo"><button class="spmv-btn active">Dijkstra</button><button class="spmv-btn ">Prim</button></div><div class="spmv-playback"><button class="spmv-btn">Reset</button><button class="spmv-btn">Step</button><button data-testid="spmv-play" class="spmv-btn spmv-btn-primary">Play</button></div></div></div><div class="vf-canvas"><div class="spmv-canvas-wrap" data-testid="spmv-canvas"><canvas class="spmv-canvas" width="560" height="320"></canvas></div><div class="spmv-legend" data-testid="spmv-legend"><span class="spmv-legend-item spmv-legend-relaxed">In PQ (unsettled)</span><span class="spmv-legend-item spmv-legend-visited">Settled</span><span class="spmv-legend-item spmv-legend-mst">MST Edge</span><span class="spmv-legend-item spmv-legend-current">Current</span></div><style>
+        .spmv-presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+        .spmv-controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+        .spmv-algo { display: flex; gap: 8px; }
+        .spmv-playback { display: flex; gap: 8px; }
+        .spmv-btn { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 0.8125rem; cursor: pointer; transition: all 0.15s; }
+        .spmv-btn:hover { border-color: var(--color-primary); }
+        .spmv-btn.active { background: var(--color-primary); border-color: var(--color-primary); color: white; }
+        .spmv-btn-primary { background: var(--color-primary); border-color: var(--color-primary); color: white; }
+        .spmv-canvas-wrap { width: 100%; display: flex; justify-content: center; }
+        .spmv-canvas { width: 100%; max-width: 560px; height: 320px; border-radius: var(--radius-md); background: var(--color-bg); }
+        .spmv-legend { display: flex; gap: 16px; justify-content: center; margin-top: 8px; font-size: 0.75rem; color: var(--color-text); }
+        .spmv-legend-item::before { content: '■'; margin-right: 4px; }
+        .spmv-legend-relaxed::before { color: #d97706; }
+        .spmv-legend-visited::before { color: #16a34a; }
+        .spmv-legend-mst::before { color: #7c3aed; }
+        .spmv-legend-current::before { color: var(--color-primary); }
+      </style></div><style>
+        .vf-container {
+          margin: var(--space-6) 0;
+          padding: var(--space-6);
+          background: var(--color-surface);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-lg);
+        }
+
+        .vf-header {
+          margin-bottom: var(--space-4);
+          padding-bottom: var(--space-4);
+          border-bottom: 1px solid var(--color-border);
+        }
+
+        .vf-title {
+          font-size: var(--text-lg);
+          font-weight: 600;
+          margin: 0 0 var(--space-2) 0;
+          color: var(--color-text);
+        }
+
+        .vf-description {
+          font-size: var(--text-sm);
+          color: var(--color-text-muted);
+          margin: 0;
+          line-height: 1.5;
+        }
+
+        .vf-controls {
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--space-2);
+          margin-bottom: var(--space-4);
+          padding: var(--space-3);
+          background: var(--color-bg);
+          border-radius: var(--radius-md);
+        }
+
+        .vf-canvas {
+          min-height: 200px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .vf-loading {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-3);
+          padding: var(--space-8);
+          color: var(--color-text-muted);
+        }
+
+        .vf-spinner {
+          width: 32px;
+          height: 32px;
+          border: 3px solid var(--color-border);
+          border-top-color: var(--color-primary);
+          border-radius: 50%;
+          animation: vf-spin 1s linear infinite;
+        }
+
+        .vf-empty {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-3);
+          padding: var(--space-8);
+          color: var(--color-text-muted);
+          font-size: var(--text-sm);
+        }
+
+        .vf-empty svg {
+          opacity: 0.5;
+        }
+
+        @keyframes vf-spin {
+          to { transform: rotate(360deg); }
+        }
+      </style></div><!--astro:end--></astro-island>
+<p>Try Dijkstra on the weighted graph to see distances propagate. Switch to Prim to watch the MST grow edge by edge. Notice how both algorithms make locally greedy choices but toward different goals.</p>
+<h2 id="step-by-step-example">Step-by-Step Example</h2>
+<h3 id="weighted-graph">Weighted Graph</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>   0---1</span></span>
+<span class="line"><span>   |\ /|</span></span>
+<span class="line"><span>   2 3</span></span>
+<span class="line"><span>   |/|</span></span>
+<span class="line"><span>   4</span></span></code></pre>
+<p>Nodes 0 through 4 with varying edge weights.</p>
+<h3 id="dijkstra-from-node-0">Dijkstra from node 0</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Step</th><th>Settled</th><th>PQ Content</th><th>Reason</th></tr></thead><tbody><tr><td>1</td><td>-</td><td>0:0</td><td>Start from node 0</td></tr><tr><td>2</td><td>0</td><td>1:2, 2:2</td><td>Relax 0-1, 0-2</td></tr><tr><td>3</td><td>0, 1</td><td>2:2, 3:3, 4:5</td><td>Settle 1 (dist=2), relax 1-3, 1-4</td></tr><tr><td>4</td><td>0, 1, 2</td><td>3:3, 4:5</td><td>Settle 2 (dist=2)</td></tr><tr><td>5</td><td>0, 1, 2, 3</td><td>4:4</td><td>Settle 3 (dist=3)</td></tr><tr><td>6</td><td>All</td><td>-</td><td>All settled</td></tr></tbody></table>
+<h3 id="prims-mst-from-node-0">Prim’s MST from node 0</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Step</th><th>MST</th><th>PQ Content</th><th>Reason</th></tr></thead><tbody><tr><td>1</td><td>0</td><td>0-1:2, 0-2:2</td><td>Edges from 0</td></tr><tr><td>2</td><td>2</td><td>1-3:1, …</td><td>Add edge 0-1 (w=2)</td></tr><tr><td>3</td><td>3</td><td>…</td><td>Add edge 1-3 (w=1)</td></tr></tbody></table>
+<p><strong>MST total weight: 5</strong></p>
+<h2 id="common-mistakes">Common Mistakes</h2>
+<ol>
+<li>
+<p><strong>Using Dijkstra on graphs with negative edges</strong> — Negative weights break the greedy guarantee. Use Bellman-Ford instead.</p>
+</li>
+<li>
+<p><strong>Confusing MST weight with shortest path length</strong> — MST weight is the sum of the smallest edges connecting all nodes. Shortest path is the minimum distance between two specific nodes.</p>
+</li>
+<li>
+<p><strong>Forgetting to mark nodes as settled</strong> — Dijkstra can settle a node only once. Without tracking, you might process it multiple times.</p>
+</li>
+<li>
+<p><strong>Not using a priority queue</strong> — Naive O(V-squared) implementation works but the PQ gives O(E log V), critical for large graphs.</p>
+</li>
+</ol>
+<h2 id="practice-prompts">Practice Prompts</h2>
+<ol>
+<li>
+<p>Why does Dijkstra’s greedy choice (settle closest node first) guarantee shortest paths?</p>
+</li>
+<li>
+<p>Can a graph have two different MSTs? Under what conditions?</p>
+</li>
+<li>
+<p>If all edges in a graph have weight 1, what does Dijkstra give you? What does Prim give you?</p>
+</li>
+<li>
+<p>How would you find the shortest path between two specific nodes s and t using Dijkstra?</p>
+</li>
+</ol> <nav class="topic-nav"> <div class="topic-nav-inner"> <a href="/OpenCS/topics/bfs-dfs" class="topic-nav-link topic-nav-prev"> <span class="topic-nav-direction">&larr; Previous</span> <span class="topic-nav-title">BFS and DFS</span> </a> <a href="/OpenCS/topics/linked-lists" class="topic-nav-link topic-nav-next"> <span class="topic-nav-direction">Next &rarr;</span> <span class="topic-nav-title">Linked Lists</span> </a> </div> </nav>  </div> </article> </main> <footer class="footer" data-astro-cid-35ed7um5> <div class="footer-inner container" data-astro-cid-35ed7um5> <div class="footer-content" data-astro-cid-35ed7um5> <div class="footer-brand" data-astro-cid-35ed7um5> <span class="footer-logo" data-astro-cid-35ed7um5>OpenCS</span> <p class="footer-tagline" data-astro-cid-35ed7um5>Visual learning for BTech CSE</p> </div> <nav class="footer-nav" data-astro-cid-35ed7um5> <div class="footer-section" data-astro-cid-35ed7um5> <h4 data-astro-cid-35ed7um5>Project</h4> <a href="/OpenCS/about" data-astro-cid-35ed7um5>About</a> <a href="/OpenCS/roadmap" data-astro-cid-35ed7um5>Roadmap</a> <a href="/OpenCS/contribute" data-astro-cid-35ed7um5>Contribute</a> </div> <div class="footer-section" data-astro-cid-35ed7um5> <h4 data-astro-cid-35ed7um5>Topics</h4> <a href="/OpenCS/topics" data-astro-cid-35ed7um5>All Topics</a> <a href="/OpenCS/topics?category=algorithms" data-astro-cid-35ed7um5>Algorithms</a> <a href="/OpenCS/topics?category=data-structures" data-astro-cid-35ed7um5>Data Structures</a> <a href="/OpenCS/topics?category=theory" data-astro-cid-35ed7um5>Theory</a> <a href="/OpenCS/topics?category=systems" data-astro-cid-35ed7um5>Systems</a> </div> </nav> </div> <div class="footer-bottom" data-astro-cid-35ed7um5> <p data-astro-cid-35ed7um5>&copy; 2026 OpenCS. MIT License.</p> <p data-astro-cid-35ed7um5>Built for BTech CSE students in India</p> </div> </div> </footer>   </body></html> 

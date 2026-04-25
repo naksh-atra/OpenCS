@@ -1,0 +1,183 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Learn the four fundamental tree traversal algorithms: preorder, inorder, postorder, and level-order. Visualize how each visits nodes in a different order."><title>Tree Traversals | OpenCS</title><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/OpenCS/_astro/_slug_.Dom457MR.css">
+<link rel="stylesheet" href="/OpenCS/_astro/_slug_.Bny2Cspm.css"></head> <body>  <header class="header" data-astro-cid-qlfjksao> <div class="header-inner container" data-astro-cid-qlfjksao> <a href="/OpenCS/" class="logo" data-astro-cid-qlfjksao> <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" data-astro-cid-qlfjksao> <rect width="32" height="32" rx="6" fill="var(--color-primary)" data-astro-cid-qlfjksao></rect> <path d="M8 12h16M8 16h12M8 20h14" stroke="white" stroke-width="2" stroke-linecap="round" data-astro-cid-qlfjksao></path> </svg> <span data-astro-cid-qlfjksao>OpenCS</span> </a> <nav class="nav" id="nav-menu" data-astro-cid-qlfjksao> <a href="/OpenCS/topics" class="nav-link active" data-astro-cid-qlfjksao> Topics </a><a href="/OpenCS/roadmap" class="nav-link" data-astro-cid-qlfjksao> Roadmap </a><a href="/OpenCS/about" class="nav-link" data-astro-cid-qlfjksao> About </a><a href="/OpenCS/contribute" class="nav-link" data-astro-cid-qlfjksao> Contribute </a> </nav> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" data-astro-cid-qlfjksao> <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-qlfjksao> <path d="M3 12h18M3 6h18M3 18h18" data-astro-cid-qlfjksao></path> </svg> <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none" data-astro-cid-qlfjksao> <path d="M18 6L6 18M6 6l12 12" data-astro-cid-qlfjksao></path> </svg> </button> </div> </header> <script type="module">const e=document.getElementById("menu-toggle"),c=document.getElementById("nav-menu"),o=e?.querySelector(".icon-menu"),t=e?.querySelector(".icon-close");e?.addEventListener("click",()=>{const n=c?.classList.toggle("open");o&&(o.style.display=n?"none":"block"),t&&(t.style.display=n?"block":"none")});</script>  <main class="topic-main" data-astro-cid-bub7cl3e> <article class="topic-article container" data-astro-cid-bub7cl3e> <header class="topic-header" data-astro-cid-bub7cl3e> <div class="topic-meta" data-astro-cid-bub7cl3e> <span class="topic-category" data-astro-cid-bub7cl3e>data-structures</span> <span class="topic-engine" data-astro-cid-bub7cl3e>treegraph</span> <span class="topic-difficulty intermediate" data-astro-cid-bub7cl3e>intermediate</span> <span class="topic-status status-published" data-astro-cid-bub7cl3e>published</span> <span class="topic-time" data-astro-cid-bub7cl3e>25 minutes</span> </div> <h1 data-astro-cid-bub7cl3e>Tree Traversals</h1> <p class="topic-description" data-astro-cid-bub7cl3e>Learn the four fundamental tree traversal algorithms: preorder, inorder, postorder, and level-order. Visualize how each visits nodes in a different order.</p> <div class="topic-objectives" data-astro-cid-bub7cl3e> <h4 data-astro-cid-bub7cl3e>Learning Objectives</h4> <ul data-astro-cid-bub7cl3e> <li data-astro-cid-bub7cl3e>Explain the difference between depth-first and breadth-first traversal</li><li data-astro-cid-bub7cl3e>Trace preorder, inorder, postorder, and level-order on a sample tree</li><li data-astro-cid-bub7cl3e>Identify use cases for each traversal type</li><li data-astro-cid-bub7cl3e>Implement each traversal recursively and iteratively</li> </ul> </div> </header> <div class="topic-content" data-astro-cid-bub7cl3e>  <h2 id="intuition">Intuition</h2>
+<p>Imagine you have a family tree and want to write everyone’s name in a book. How do you decide the order?</p>
+<ul>
+<li>Visit grandparent before grandchildren? That’s <strong>depth-first</strong>.</li>
+<li>Write everyone on each generation together? That’s <strong>level-order</strong> (breadth-first).</li>
+</ul>
+<p>Each traversal gives a different ordering, and each is useful for different problems.</p>
+<h2 id="formal-concept">Formal Concept</h2>
+<p><strong>Tree traversal</strong> visits every node in a tree exactly once, in a systematic order. The four fundamental traversals are:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Traversal</th><th>Order</th><th>Use Case</th></tr></thead><tbody><tr><td>Preorder</td><td>Root → Left → Right</td><td>Copy tree, prefix expression</td></tr><tr><td>Inorder</td><td>Left → Root → Right</td><td>BST sorted output</td></tr><tr><td>Postorder</td><td>Left → Right → Root</td><td>Delete tree, postfix expression</td></tr><tr><td>Level-order</td><td>Level by level</td><td>Shortest path, level averages</td></tr></tbody></table>
+<h2 id="visual-interaction">Visual Interaction</h2>
+
+<style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="2rTHiI" prefix="r1" component-url="/OpenCS/_astro/TreeTraversalVisualizer.BaiINw2L.js" component-export="default" renderer-url="/OpenCS/_astro/client.DYKcjN1Z.js" props="{}" ssr client="load" opts="{&quot;name&quot;:&quot;TreeTraversalVisualizer&quot;,&quot;value&quot;:true}" await-children><div class="vf-container"><div class="vf-header"><h3 class="vf-title">Tree Traversal Visualizer</h3><p class="vf-description" data-testid="vf-description">Traversing: Left → Root → Right — Step 1/0</p></div><div class="vf-controls"><div class="ttv-presets"><button class="ttv-btn active">Balanced</button><button class="ttv-btn ">Skewed Left</button><button class="ttv-btn ">Full</button><button class="ttv-btn ">Small</button></div><div class="ttv-traversals"><button class="ttv-btn ">Preorder</button><button class="ttv-btn active">Inorder</button><button class="ttv-btn ">Postorder</button><button class="ttv-btn ">Level-order</button></div></div><div class="vf-canvas"><div class="ttv-canvas-wrap" data-testid="ttv-canvas"><canvas class="ttv-canvas" width="560" height="300"></canvas></div><div class="ttv-result"><span class="ttv-result-label">Result:</span><span class="ttv-result-values"></span></div><style>
+        .ttv-presets, .ttv-traversals { display: flex; gap: 8px; flex-wrap: wrap; }
+        .ttv-btn { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 0.8125rem; cursor: pointer; transition: all 0.15s; }
+        .ttv-btn:hover { border-color: var(--color-primary); }
+        .ttv-btn.active { background: var(--color-primary); border-color: var(--color-primary); color: white; }
+        .ttv-canvas-wrap { width: 100%; display: flex; justify-content: center; }
+        .ttv-canvas { width: 100%; max-width: 560px; height: 300px; border-radius: var(--radius-md); background: var(--color-bg); }
+        .ttv-result { margin-top: 16px; padding: 12px; background: var(--color-bg); border-radius: var(--radius-md); text-align: center; }
+        .ttv-result-label { font-size: 0.75rem; color: var(--color-text-muted); margin-right: 8px; }
+        .ttv-result-values { font-family: var(--font-mono); font-size: 0.875rem; color: var(--color-text); }
+      </style></div><style>
+        .vf-container {
+          margin: var(--space-6) 0;
+          padding: var(--space-6);
+          background: var(--color-surface);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-lg);
+        }
+
+        .vf-header {
+          margin-bottom: var(--space-4);
+          padding-bottom: var(--space-4);
+          border-bottom: 1px solid var(--color-border);
+        }
+
+        .vf-title {
+          font-size: var(--text-lg);
+          font-weight: 600;
+          margin: 0 0 var(--space-2) 0;
+          color: var(--color-text);
+        }
+
+        .vf-description {
+          font-size: var(--text-sm);
+          color: var(--color-text-muted);
+          margin: 0;
+          line-height: 1.5;
+        }
+
+        .vf-controls {
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--space-2);
+          margin-bottom: var(--space-4);
+          padding: var(--space-3);
+          background: var(--color-bg);
+          border-radius: var(--radius-md);
+        }
+
+        .vf-canvas {
+          min-height: 200px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .vf-loading {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-3);
+          padding: var(--space-8);
+          color: var(--color-text-muted);
+        }
+
+        .vf-spinner {
+          width: 32px;
+          height: 32px;
+          border: 3px solid var(--color-border);
+          border-top-color: var(--color-primary);
+          border-radius: 50%;
+          animation: vf-spin 1s linear infinite;
+        }
+
+        .vf-empty {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-3);
+          padding: var(--space-8);
+          color: var(--color-text-muted);
+          font-size: var(--text-sm);
+        }
+
+        .vf-empty svg {
+          opacity: 0.5;
+        }
+
+        @keyframes vf-spin {
+          to { transform: rotate(360deg); }
+        }
+      </style></div><!--astro:end--></astro-island>
+<p>Select different traversals above. Watch how the order changes — notice how inorder gives sorted output for BSTs.</p>
+<h2 id="step-by-step-example">Step-by-Step Example</h2>
+<h3 id="tree">Tree</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>        8</span></span>
+<span class="line"><span>       / \</span></span>
+<span class="line"><span>      3   10</span></span>
+<span class="line"><span>     / \    \</span></span>
+<span class="line"><span>    1   6    14</span></span>
+<span class="line"><span>       / \   /</span></span>
+<span class="line"><span>      4   7 13</span></span></code></pre>
+<h3 id="preorder-8-3-1-6-4-7-10-14-13">Preorder: 8, 3, 1, 6, 4, 7, 10, 14, 13</h3>
+<p>Root first, then recursively left, then right.</p>
+<h3 id="inorder-1-3-4-6-7-8-10-13-14">Inorder: 1, 3, 4, 6, 7, 8, 10, 13, 14</h3>
+<p>Left subtree, then root, then right. <strong>Gives sorted order for BSTs.</strong></p>
+<h3 id="postorder-1-4-7-6-3-13-14-10-8">Postorder: 1, 4, 7, 6, 3, 13, 14, 10, 8</h3>
+<p>Children before parent. Useful for deleting trees (children deleted first).</p>
+<h3 id="level-order-8-3-10-1-6-14-4-7-13">Level-order: 8, 3, 10, 1, 6, 14, 4, 7, 13</h3>
+<p>Breadth-first. Visit all nodes at depth d before depth d+1.</p>
+<h2 id="common-mistakes">Common Mistakes</h2>
+<ol>
+<li>
+<p><strong>Confusing inorder with preorder</strong> — Preorder = root first. Inorder = root in the middle (for BSTs, this means sorted).</p>
+</li>
+<li>
+<p><strong>Forgetting recursive base case</strong> — Always check for null before recursing, or you’ll get errors.</p>
+</li>
+<li>
+<p><strong>Level-order without a queue</strong> — You need a queue to track nodes at the next level. Recursion won’t work.</p>
+</li>
+<li>
+<p><strong>Thinking traversal order is arbitrary</strong> — Each has a specific algorithmic purpose and use case.</p>
+</li>
+</ol>
+<h2 id="practice-prompts">Practice Prompts</h2>
+<ol>
+<li>
+<p>In a BST with 100 nodes, what’s the fastest way to get them in sorted order?</p>
+</li>
+<li>
+<p>If you wanted to print a directory structure (folder → subfolder → files), which traversal would you use?</p>
+</li>
+<li>
+<p>How would you find the depth of the deepest node? Can level-order help?</p>
+</li>
+<li>
+<p>Write pseudocode for iterative inorder traversal using a stack.</p>
+</li>
+</ol> <nav class="topic-nav"> <div class="topic-nav-inner"> <a href="/OpenCS/topics/stack-queue" class="topic-nav-link topic-nav-prev"> <span class="topic-nav-direction">&larr; Previous</span> <span class="topic-nav-title">Stack and Queue Simulator</span> </a> <a href="/OpenCS/topics/binary-search-tree" class="topic-nav-link topic-nav-next"> <span class="topic-nav-direction">Next &rarr;</span> <span class="topic-nav-title">Binary Search Tree</span> </a> </div> </nav>  </div> </article> </main> <footer class="footer" data-astro-cid-35ed7um5> <div class="footer-inner container" data-astro-cid-35ed7um5> <div class="footer-content" data-astro-cid-35ed7um5> <div class="footer-brand" data-astro-cid-35ed7um5> <span class="footer-logo" data-astro-cid-35ed7um5>OpenCS</span> <p class="footer-tagline" data-astro-cid-35ed7um5>Visual learning for BTech CSE</p> </div> <nav class="footer-nav" data-astro-cid-35ed7um5> <div class="footer-section" data-astro-cid-35ed7um5> <h4 data-astro-cid-35ed7um5>Project</h4> <a href="/OpenCS/about" data-astro-cid-35ed7um5>About</a> <a href="/OpenCS/roadmap" data-astro-cid-35ed7um5>Roadmap</a> <a href="/OpenCS/contribute" data-astro-cid-35ed7um5>Contribute</a> </div> <div class="footer-section" data-astro-cid-35ed7um5> <h4 data-astro-cid-35ed7um5>Topics</h4> <a href="/OpenCS/topics" data-astro-cid-35ed7um5>All Topics</a> <a href="/OpenCS/topics?category=algorithms" data-astro-cid-35ed7um5>Algorithms</a> <a href="/OpenCS/topics?category=data-structures" data-astro-cid-35ed7um5>Data Structures</a> <a href="/OpenCS/topics?category=theory" data-astro-cid-35ed7um5>Theory</a> <a href="/OpenCS/topics?category=systems" data-astro-cid-35ed7um5>Systems</a> </div> </nav> </div> <div class="footer-bottom" data-astro-cid-35ed7um5> <p data-astro-cid-35ed7um5>&copy; 2026 OpenCS. MIT License.</p> <p data-astro-cid-35ed7um5>Built for BTech CSE students in India</p> </div> </div> </footer>   </body></html> 

@@ -1,4 +1,5 @@
-import { TreeNode, buildTreeFromArray, inorderCollect } from './tree-types';
+import type { TreeNode } from './tree-types';
+import { buildTreeFromArray, inorderCollect } from './tree-types';
 
 export type BSTOperation = 'insert' | 'search' | 'delete';
 

@@ -155,15 +155,12 @@ export function ShortestPathMSTVisualizer() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const graph: Graph = {
-    nodes: PRESET_GRAPHS[presetIdx].nodes,
-    edges: PRESET_GRAPHS[presetIdx].edges,
-  };
-  const startNode = findStartNode(graph);
-
   useEffect(() => {
     setStepIdx(0);
     setIsPlaying(false);
+    const preset = PRESET_GRAPHS[presetIdx];
+    const graph: Graph = { nodes: preset.nodes, edges: preset.edges };
+    const startNode = findStartNode(graph);
     if (algo === 'dijkstra') {
       setDijkstraResult(computeDijkstra(graph, startNode));
       setPrimResult(null);
@@ -171,7 +168,7 @@ export function ShortestPathMSTVisualizer() {
       setPrimResult(computePrim(graph, startNode));
       setDijkstraResult(null);
     }
-  }, [presetIdx, algo, graph, startNode]);
+  }, [presetIdx, algo]);
 
   useEffect(() => {
     let steps: GraphStep[] = [];
@@ -184,6 +181,9 @@ export function ShortestPathMSTVisualizer() {
       relaxedEdges: [],
       path: [],
     };
+
+    const preset = PRESET_GRAPHS[presetIdx];
+    const graph: Graph = { nodes: preset.nodes, edges: preset.edges };
 
     if (algo === 'dijkstra' && dijkstraResult) {
       steps = dijkstraResult.steps;
@@ -215,7 +215,7 @@ export function ShortestPathMSTVisualizer() {
     }
 
     drawGraph(canvasRef.current, graph, ds, distances, algo);
-  }, [dijkstraResult, primResult, stepIdx, graph, algo]);
+  }, [dijkstraResult, primResult, stepIdx, presetIdx, algo]);
 
   useEffect(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -274,17 +274,17 @@ export function ShortestPathMSTVisualizer() {
             <div className="spmv-playback">
               <button onClick={handleReset} className="spmv-btn">Reset</button>
               <button onClick={handleStep} className="spmv-btn">Step</button>
-              <button onClick={handlePlay} className="spmv-btn spmv-btn-primary">{isPlaying ? 'Pause' : 'Play'}</button>
+              <button onClick={handlePlay} data-testid="spmv-play" className="spmv-btn spmv-btn-primary">{isPlaying ? 'Pause' : 'Play'}</button>
             </div>
           </div>
         </>
       }
       isEmpty={false}
     >
-      <div className="spmv-canvas-wrap">
+      <div className="spmv-canvas-wrap" data-testid="spmv-canvas">
         <canvas ref={canvasRef} className="spmv-canvas" width={560} height={320} />
       </div>
-      <div className="spmv-legend">
+      <div className="spmv-legend" data-testid="spmv-legend">
         <span className="spmv-legend-item spmv-legend-relaxed">In PQ (unsettled)</span>
         <span className="spmv-legend-item spmv-legend-visited">Settled</span>
         <span className="spmv-legend-item spmv-legend-mst">MST Edge</span>

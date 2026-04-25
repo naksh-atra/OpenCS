@@ -114,21 +114,19 @@ export function GraphTraversalVisualizer() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const graph: Graph = {
-    nodes: PRESET_GRAPHS[presetIdx].nodes,
-    edges: PRESET_GRAPHS[presetIdx].edges,
-  };
-  const startNode = findStartNode(graph);
-
   useEffect(() => {
     setStepIdx(0);
     setIsPlaying(false);
-    const res = computeGraphTraversal(algo, graph, startNode);
+    const preset = PRESET_GRAPHS[presetIdx];
+    const graph: Graph = { nodes: preset.nodes, edges: preset.edges };
+    const res = computeGraphTraversal(algo, graph, findStartNode(graph));
     setResult(res);
-  }, [presetIdx, algo, graph, startNode]);
+  }, [presetIdx, algo]);
 
   useEffect(() => {
     if (!result) return;
+    const preset = PRESET_GRAPHS[presetIdx];
+    const graph: Graph = { nodes: preset.nodes, edges: preset.edges };
     const step = stepIdx > 0 && stepIdx <= result.steps.length ? result.steps[stepIdx - 1] : null;
     const ds: DrawState = {
       visited: new Set(step?.visited ?? []),
@@ -143,7 +141,7 @@ export function GraphTraversalVisualizer() {
       pending: [],
     };
     drawGraph(canvasRef.current, graph, ds);
-  }, [result, stepIdx, graph]);
+  }, [result, stepIdx, presetIdx]);
 
   useEffect(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -178,7 +176,7 @@ export function GraphTraversalVisualizer() {
       title="Graph Traversal"
       description={message}
       controls={
-        <>
+        <div data-testid="gtv-controls">
           <div className="gtv-presets">
             {PRESET_GRAPHS.map((p, i) => (
               <button key={p.label} onClick={() => setPresetIdx(i)} className={`gtv-btn ${presetIdx === i ? 'active' : ''}`}>
@@ -194,17 +192,17 @@ export function GraphTraversalVisualizer() {
             <div className="gtv-playback">
               <button onClick={handleReset} className="gtv-btn">Reset</button>
               <button onClick={handleStep} className="gtv-btn">Step</button>
-              <button onClick={handlePlay} className="gtv-btn gtv-btn-primary">{isPlaying ? 'Pause' : 'Play'}</button>
+              <button onClick={handlePlay} className="gtv-btn gtv-btn-primary" data-testid="gtv-play">{isPlaying ? 'Pause' : 'Play'}</button>
             </div>
           </div>
-        </>
+        </div>
       }
       isEmpty={false}
     >
-      <div className="gtv-canvas-wrap">
+      <div className="gtv-canvas-wrap" data-testid="gtv-canvas">
         <canvas ref={canvasRef} className="gtv-canvas" width={560} height={320} />
       </div>
-      <div className="gtv-legend">
+      <div className="gtv-legend" data-testid="gtv-legend">
         <span className="gtv-legend-item gtv-legend-pending">Pending</span>
         <span className="gtv-legend-item gtv-legend-frontier">Frontier</span>
         <span className="gtv-legend-item gtv-legend-visited">Visited</span>

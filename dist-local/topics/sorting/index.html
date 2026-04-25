@@ -1,0 +1,197 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Learn bubble sort, insertion sort, and merge sort. See why O(n log n) beats O(n squared) — and when each algorithm earns its complexity label."><title>Sorting Algorithms | OpenCS</title><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/OpenCS/_astro/_slug_.Dom457MR.css">
+<link rel="stylesheet" href="/OpenCS/_astro/_slug_.Bny2Cspm.css"></head> <body>  <header class="header" data-astro-cid-qlfjksao> <div class="header-inner container" data-astro-cid-qlfjksao> <a href="/OpenCS/" class="logo" data-astro-cid-qlfjksao> <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" data-astro-cid-qlfjksao> <rect width="32" height="32" rx="6" fill="var(--color-primary)" data-astro-cid-qlfjksao></rect> <path d="M8 12h16M8 16h12M8 20h14" stroke="white" stroke-width="2" stroke-linecap="round" data-astro-cid-qlfjksao></path> </svg> <span data-astro-cid-qlfjksao>OpenCS</span> </a> <nav class="nav" id="nav-menu" data-astro-cid-qlfjksao> <a href="/OpenCS/topics" class="nav-link active" data-astro-cid-qlfjksao> Topics </a><a href="/OpenCS/roadmap" class="nav-link" data-astro-cid-qlfjksao> Roadmap </a><a href="/OpenCS/about" class="nav-link" data-astro-cid-qlfjksao> About </a><a href="/OpenCS/contribute" class="nav-link" data-astro-cid-qlfjksao> Contribute </a> </nav> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" data-astro-cid-qlfjksao> <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-qlfjksao> <path d="M3 12h18M3 6h18M3 18h18" data-astro-cid-qlfjksao></path> </svg> <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none" data-astro-cid-qlfjksao> <path d="M18 6L6 18M6 6l12 12" data-astro-cid-qlfjksao></path> </svg> </button> </div> </header> <script type="module">const e=document.getElementById("menu-toggle"),c=document.getElementById("nav-menu"),o=e?.querySelector(".icon-menu"),t=e?.querySelector(".icon-close");e?.addEventListener("click",()=>{const n=c?.classList.toggle("open");o&&(o.style.display=n?"none":"block"),t&&(t.style.display=n?"block":"none")});</script>  <main class="topic-main" data-astro-cid-bub7cl3e> <article class="topic-article container" data-astro-cid-bub7cl3e> <header class="topic-header" data-astro-cid-bub7cl3e> <div class="topic-meta" data-astro-cid-bub7cl3e> <span class="topic-category" data-astro-cid-bub7cl3e>algorithms</span> <span class="topic-engine" data-astro-cid-bub7cl3e>sequence</span> <span class="topic-difficulty intermediate" data-astro-cid-bub7cl3e>intermediate</span> <span class="topic-status status-published" data-astro-cid-bub7cl3e>published</span> <span class="topic-time" data-astro-cid-bub7cl3e>35 minutes</span> </div> <h1 data-astro-cid-bub7cl3e>Sorting Algorithms</h1> <p class="topic-description" data-astro-cid-bub7cl3e>Learn bubble sort, insertion sort, and merge sort. See why O(n log n) beats O(n squared) — and when each algorithm earns its complexity label.</p> <div class="topic-objectives" data-astro-cid-bub7cl3e> <h4 data-astro-cid-bub7cl3e>Learning Objectives</h4> <ul data-astro-cid-bub7cl3e> <li data-astro-cid-bub7cl3e>Compare time complexities of bubble, insertion, and merge sort</li><li data-astro-cid-bub7cl3e>Trace each algorithm step by step on a small array</li><li data-astro-cid-bub7cl3e>Identify the sorted portion growing in each algorithm</li><li data-astro-cid-bub7cl3e>Choose the right sorting algorithm for a given context</li> </ul> </div> </header> <div class="topic-content" data-astro-cid-bub7cl3e>  <h2 id="intuition">Intuition</h2>
+<p>Sorting is arranging items in order. The naive way: keep swapping adjacent items until nothing swaps. That’s bubble sort — simple but slow. The clever way: build the sorted portion one element at a time by insertion. That’s insertion sort — better for nearly sorted data. The divide-and-conquer way: split in half, sort each half, merge them. That’s merge sort — O(n log n) guaranteed.</p>
+<p>All three produce the same result. They differ in how they get there.</p>
+<h2 id="formal-concept">Formal Concept</h2>
+<h3 id="bubble-sort">Bubble Sort</h3>
+<p>Repeatedly compare adjacent pairs and swap if out of order. Largest elements “bubble up” to the end. O(n^2) time, O(1) space.</p>
+<h3 id="insertion-sort">Insertion Sort</h3>
+<p>For each element, insert it into its correct position within the sorted portion on the left. Like sorting playing cards. O(n^2) worst case, O(n) best case. Stable.</p>
+<h3 id="merge-sort">Merge Sort</h3>
+<p>Divide the array in half recursively until single elements. Merge adjacent pairs in sorted order. O(n log n) guaranteed. O(n) space. Stable.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Space</th><th>Stable</th></tr></thead><tbody><tr><td>Bubble</td><td>O(n)</td><td>O(n^2)</td><td>O(n^2)</td><td>O(1)</td><td>Yes</td></tr><tr><td>Insertion</td><td>O(n)</td><td>O(n^2)</td><td>O(n^2)</td><td>O(1)</td><td>Yes</td></tr><tr><td>Merge</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>Yes</td></tr></tbody></table>
+<h2 id="visual-interaction">Visual Interaction</h2>
+
+<style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="2k3ew1" prefix="r1" component-url="/OpenCS/_astro/SortingVisualizer.DOWPLVUf.js" component-export="default" renderer-url="/OpenCS/_astro/client.DYKcjN1Z.js" props="{}" ssr client="load" opts="{&quot;name&quot;:&quot;SortingVisualizer&quot;,&quot;value&quot;:true}" await-children><div class="vf-container"><div class="vf-header"><h3 class="vf-title">Sorting Algorithms</h3><p class="vf-description" data-testid="vf-description">Press play to start</p></div><div class="vf-controls"><div class="sv-presets"><button class="sv-btn active">Shuffled</button><button class="sv-btn ">Reversed</button><button class="sv-btn ">Nearly Sorted</button><button class="sv-btn ">Few Unique</button></div><div class="sv-controls"><div class="sv-algo"><button class="sv-btn active">Bubble</button><button class="sv-btn ">Insertion</button><button class="sv-btn ">Merge</button></div><div class="sv-playback"><button class="sv-btn">Reset</button><button class="sv-btn">Step</button><button class="sv-btn sv-btn-primary">Play</button></div></div></div><div class="vf-canvas"><div class="sv-canvas-wrap" data-testid="sv-canvas"><canvas class="sv-canvas" width="560" height="260"></canvas></div><div class="sv-legend"><span class="sv-legend-item sv-legend-compare">Comparing</span><span class="sv-legend-item sv-legend-swap">Swapping</span><span class="sv-legend-item sv-legend-sorted">Sorted</span></div><style>
+        .sv-presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+        .sv-controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+        .sv-algo { display: flex; gap: 8px; }
+        .sv-playback { display: flex; gap: 8px; }
+        .sv-btn { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 0.8125rem; cursor: pointer; transition: all 0.15s; }
+        .sv-btn:hover { border-color: var(--color-primary); }
+        .sv-btn.active { background: var(--color-primary); border-color: var(--color-primary); color: white; }
+        .sv-btn-primary { background: var(--color-primary); border-color: var(--color-primary); color: white; }
+        .sv-canvas-wrap { width: 100%; display: flex; justify-content: center; }
+        .sv-canvas { width: 100%; max-width: 560px; height: 260px; border-radius: var(--radius-md); background: var(--color-bg); }
+        .sv-legend { display: flex; gap: 16px; justify-content: center; margin-top: 8px; font-size: 0.75rem; color: var(--color-text); }
+        .sv-legend-item::before { content: '■'; margin-right: 4px; }
+        .sv-legend-compare::before { color: #d97706; }
+        .sv-legend-swap::before { color: #dc2626; }
+        .sv-legend-sorted::before { color: #16a34a; }
+      </style></div><style>
+        .vf-container {
+          margin: var(--space-6) 0;
+          padding: var(--space-6);
+          background: var(--color-surface);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-lg);
+        }
+
+        .vf-header {
+          margin-bottom: var(--space-4);
+          padding-bottom: var(--space-4);
+          border-bottom: 1px solid var(--color-border);
+        }
+
+        .vf-title {
+          font-size: var(--text-lg);
+          font-weight: 600;
+          margin: 0 0 var(--space-2) 0;
+          color: var(--color-text);
+        }
+
+        .vf-description {
+          font-size: var(--text-sm);
+          color: var(--color-text-muted);
+          margin: 0;
+          line-height: 1.5;
+        }
+
+        .vf-controls {
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--space-2);
+          margin-bottom: var(--space-4);
+          padding: var(--space-3);
+          background: var(--color-bg);
+          border-radius: var(--radius-md);
+        }
+
+        .vf-canvas {
+          min-height: 200px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .vf-loading {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-3);
+          padding: var(--space-8);
+          color: var(--color-text-muted);
+        }
+
+        .vf-spinner {
+          width: 32px;
+          height: 32px;
+          border: 3px solid var(--color-border);
+          border-top-color: var(--color-primary);
+          border-radius: 50%;
+          animation: vf-spin 1s linear infinite;
+        }
+
+        .vf-empty {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-3);
+          padding: var(--space-8);
+          color: var(--color-text-muted);
+          font-size: var(--text-sm);
+        }
+
+        .vf-empty svg {
+          opacity: 0.5;
+        }
+
+        @keyframes vf-spin {
+          to { transform: rotate(360deg); }
+        }
+      </style></div><!--astro:end--></astro-island>
+<p>Switch between algorithms on the same input. Watch the sorted portion grow differently — bubble from the right, insertion from the left, merge recursively splitting and merging.</p>
+<h2 id="step-by-step-example">Step-by-Step Example</h2>
+<h3 id="array-5-2-8-1">Array: [5, 2, 8, 1]</h3>
+<h3 id="bubble-sort-1">Bubble Sort</h3>
+<p>Pass 1: compare 5 and 2 (swap) → [2, 5, 8, 1], compare 5 and 8 (no swap) → [2, 5, 8, 1], compare 8 and 1 (swap) → [2, 5, 1, 8]
+Pass 2: [2, 5, 1, 8] → [2, 1, 5, 8]
+Pass 3: [2, 1, 5, 8] → [1, 2, 5, 8]</p>
+<h3 id="insertion-sort-1">Insertion Sort</h3>
+<p>sorted = [5]
+Insert 2: compare 5 and 2, shift 5 right → [2, 5]
+Insert 8: 8 is already in position → [2, 5, 8]
+Insert 1: shift 8, 5, 2 right → [1, 2, 5, 8]</p>
+<h3 id="merge-sort-1">Merge Sort</h3>
+<p>Split: [5, 2] and [8, 1]
+Split: [5], [2], [8], [1]
+Merge [5] and [2]: [2, 5]
+Merge [8] and [1]: [1, 8]
+Merge [2, 5] and [1, 8]: [1, 2, 5, 8]</p>
+<h2 id="common-mistakes">Common Mistakes</h2>
+<ol>
+<li>
+<p><strong>Assuming O(n^2) is always bad</strong> — For tiny arrays (n &lt; 10), O(n^2) can beat O(n log n) due to lower constant factors. Timsort and Python use hybrid approaches.</p>
+</li>
+<li>
+<p><strong>Confusing stable with correct</strong> — All three are correct. Stability means equal elements preserve their relative order. Only insertion and merge are stable.</p>
+</li>
+<li>
+<p><strong>Forgetting merge sort’s space cost</strong> — The temporary array in merge is O(n). For huge datasets, this is a real concern.</p>
+</li>
+<li>
+<p><strong>Thinking one algorithm is universally best</strong> — Nearly sorted data? Insertion sort is fast. Random large data? Merge sort or quicksort. Random small data? Insertion sort again.</p>
+</li>
+</ol>
+<h2 id="practice-prompts">Practice Prompts</h2>
+<ol>
+<li>
+<p>Why does bubble sort have a best-case of O(n)? What condition makes this happen?</p>
+</li>
+<li>
+<p>If an array is already sorted, which algorithm does the least work? Why?</p>
+</li>
+<li>
+<p>Why is merge sort’s space complexity O(n) while insertion sort is O(1)?</p>
+</li>
+<li>
+<p>Can you think of a dataset where bubble sort would outperform merge sort?</p>
+</li>
+</ol> <nav class="topic-nav"> <div class="topic-nav-inner"> <a href="/OpenCS/topics/linked-lists" class="topic-nav-link topic-nav-prev"> <span class="topic-nav-direction">&larr; Previous</span> <span class="topic-nav-title">Linked Lists</span> </a> <div></div> </div> </nav>  </div> </article> </main> <footer class="footer" data-astro-cid-35ed7um5> <div class="footer-inner container" data-astro-cid-35ed7um5> <div class="footer-content" data-astro-cid-35ed7um5> <div class="footer-brand" data-astro-cid-35ed7um5> <span class="footer-logo" data-astro-cid-35ed7um5>OpenCS</span> <p class="footer-tagline" data-astro-cid-35ed7um5>Visual learning for BTech CSE</p> </div> <nav class="footer-nav" data-astro-cid-35ed7um5> <div class="footer-section" data-astro-cid-35ed7um5> <h4 data-astro-cid-35ed7um5>Project</h4> <a href="/OpenCS/about" data-astro-cid-35ed7um5>About</a> <a href="/OpenCS/roadmap" data-astro-cid-35ed7um5>Roadmap</a> <a href="/OpenCS/contribute" data-astro-cid-35ed7um5>Contribute</a> </div> <div class="footer-section" data-astro-cid-35ed7um5> <h4 data-astro-cid-35ed7um5>Topics</h4> <a href="/OpenCS/topics" data-astro-cid-35ed7um5>All Topics</a> <a href="/OpenCS/topics?category=algorithms" data-astro-cid-35ed7um5>Algorithms</a> <a href="/OpenCS/topics?category=data-structures" data-astro-cid-35ed7um5>Data Structures</a> <a href="/OpenCS/topics?category=theory" data-astro-cid-35ed7um5>Theory</a> <a href="/OpenCS/topics?category=systems" data-astro-cid-35ed7um5>Systems</a> </div> </nav> </div> <div class="footer-bottom" data-astro-cid-35ed7um5> <p data-astro-cid-35ed7um5>&copy; 2026 OpenCS. MIT License.</p> <p data-astro-cid-35ed7um5>Built for BTech CSE students in India</p> </div> </div> </footer>   </body></html> 

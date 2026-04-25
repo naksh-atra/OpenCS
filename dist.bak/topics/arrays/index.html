@@ -1,0 +1,262 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Understand how arrays store and access data in contiguous memory. Visualize insert, delete, search, and access operations."><title>Array Memory and Operations | OpenCS</title><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/OpenCS/_astro/_slug_.Dom457MR.css">
+<link rel="stylesheet" href="/OpenCS/_astro/_slug_.Bny2Cspm.css"></head> <body>  <header class="header" data-astro-cid-qlfjksao> <div class="header-inner container" data-astro-cid-qlfjksao> <a href="/OpenCS/" class="logo" data-astro-cid-qlfjksao> <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" data-astro-cid-qlfjksao> <rect width="32" height="32" rx="6" fill="var(--color-primary)" data-astro-cid-qlfjksao></rect> <path d="M8 12h16M8 16h12M8 20h14" stroke="white" stroke-width="2" stroke-linecap="round" data-astro-cid-qlfjksao></path> </svg> <span data-astro-cid-qlfjksao>OpenCS</span> </a> <nav class="nav" id="nav-menu" data-astro-cid-qlfjksao> <a href="/OpenCS/topics" class="nav-link active" data-astro-cid-qlfjksao> Topics </a><a href="/OpenCS/roadmap" class="nav-link" data-astro-cid-qlfjksao> Roadmap </a><a href="/OpenCS/about" class="nav-link" data-astro-cid-qlfjksao> About </a><a href="/OpenCS/contribute" class="nav-link" data-astro-cid-qlfjksao> Contribute </a> </nav> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" data-astro-cid-qlfjksao> <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-qlfjksao> <path d="M3 12h18M3 6h18M3 18h18" data-astro-cid-qlfjksao></path> </svg> <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none" data-astro-cid-qlfjksao> <path d="M18 6L6 18M6 6l12 12" data-astro-cid-qlfjksao></path> </svg> </button> </div> </header> <script type="module">const e=document.getElementById("menu-toggle"),c=document.getElementById("nav-menu"),o=e?.querySelector(".icon-menu"),t=e?.querySelector(".icon-close");e?.addEventListener("click",()=>{const n=c?.classList.toggle("open");o&&(o.style.display=n?"none":"block"),t&&(t.style.display=n?"block":"none")});</script>  <main class="topic-main" data-astro-cid-bub7cl3e> <article class="topic-article container" data-astro-cid-bub7cl3e> <header class="topic-header" data-astro-cid-bub7cl3e> <div class="topic-meta" data-astro-cid-bub7cl3e> <span class="topic-category" data-astro-cid-bub7cl3e>data-structures</span> <span class="topic-engine" data-astro-cid-bub7cl3e>sequence</span> <span class="topic-difficulty beginner" data-astro-cid-bub7cl3e>beginner</span> <span class="topic-status status-published" data-astro-cid-bub7cl3e>published</span> <span class="topic-time" data-astro-cid-bub7cl3e>20 minutes</span> </div> <h1 data-astro-cid-bub7cl3e>Array Memory and Operations</h1> <p class="topic-description" data-astro-cid-bub7cl3e>Understand how arrays store and access data in contiguous memory. Visualize insert, delete, search, and access operations.</p> <div class="topic-objectives" data-astro-cid-bub7cl3e> <h4 data-astro-cid-bub7cl3e>Learning Objectives</h4> <ul data-astro-cid-bub7cl3e> <li data-astro-cid-bub7cl3e>Explain how arrays store data in contiguous memory</li><li data-astro-cid-bub7cl3e>Identify the time complexity of array operations</li><li data-astro-cid-bub7cl3e>Trace access, insert, delete, and search operations</li><li data-astro-cid-bub7cl3e>Understand when arrays are the right choice</li> </ul> </div> </header> <div class="topic-content" data-astro-cid-bub7cl3e>  <h2 id="intuition">Intuition</h2>
+<p>Imagine a row of numbered lockers in a school hallway. Each locker has a fixed number, and you know exactly which locker holds what. You don’t need to search — you go directly to locker 47 and grab your lunch.</p>
+<p>An <strong>array</strong> works the same way. Data lives in consecutive memory slots, each with an index. Random access is instant because the computer can calculate the exact memory address: <code>base_address + index × element_size</code>.</p>
+<h2 id="formal-concept">Formal Concept</h2>
+<p>An <strong>array</strong> is a contiguous block of memory holding elements of the same type, accessible by integer index.</p>
+<h3 id="key-properties">Key Properties</h3>
+<ul>
+<li><strong>Fixed-size</strong> in most languages (static arrays)</li>
+<li><strong>Contiguous memory</strong> — all elements sit next to each other</li>
+<li><strong>O(1) random access</strong> — calculate address, jump directly</li>
+<li><strong>O(n) insert/delete</strong> — may require shifting elements</li>
+</ul>
+<h3 id="memory-layout">Memory Layout</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Array: [3, 7, 1, 8, 2, 5, 9, 4]</span></span>
+<span class="line"><span>Index:  0  1  2  3  4  5  6  7</span></span>
+<span class="line"><span>Addr: 100 104 108 112 116 120 124 128  (4-byte integers)</span></span></code></pre>
+<h2 id="visual-interaction">Visual Interaction</h2>
+
+<style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="22E5oj" prefix="r1" component-url="/OpenCS/_astro/ArrayVisualizer.Dell1edP.js" component-export="default" renderer-url="/OpenCS/_astro/client.DYKcjN1Z.js" props="{}" ssr client="load" opts="{&quot;name&quot;:&quot;ArrayVisualizer&quot;,&quot;value&quot;:true}" await-children><div class="vf-container"><div class="vf-header"><h3 class="vf-title">Array Operations Visualizer</h3><p class="vf-description" data-testid="vf-description">Array: [3, 7, 1, 8, 2, 5, 9, 4] — Initial array state</p></div><div class="vf-controls"><div class="av-presets"><button class="av-btn">Small</button><button class="av-btn">Even</button><button class="av-btn">Sorted</button><button class="av-btn">Random</button><button class="av-btn av-btn-reset">Reset</button></div><div class="av-ops"><div class="av-op-row"><select class="av-select"><option value="access" selected="">Access</option><option value="insert">Insert</option><option value="delete">Delete</option><option value="search">Search</option><option value="update">Update</option></select><input type="number" placeholder="Index" class="av-input" value=""/><button class="av-btn av-btn-primary">Execute</button></div></div></div><div class="vf-canvas"><div class="av-chart"><div class="av-cell-wrapper"><div class="av-cell  "><span class="av-cell-value">3</span></div><span class="av-cell-index">0</span></div><div class="av-cell-wrapper"><div class="av-cell  "><span class="av-cell-value">7</span></div><span class="av-cell-index">1</span></div><div class="av-cell-wrapper"><div class="av-cell  "><span class="av-cell-value">1</span></div><span class="av-cell-index">2</span></div><div class="av-cell-wrapper"><div class="av-cell  "><span class="av-cell-value">8</span></div><span class="av-cell-index">3</span></div><div class="av-cell-wrapper"><div class="av-cell  "><span class="av-cell-value">2</span></div><span class="av-cell-index">4</span></div><div class="av-cell-wrapper"><div class="av-cell  "><span class="av-cell-value">5</span></div><span class="av-cell-index">5</span></div><div class="av-cell-wrapper"><div class="av-cell  "><span class="av-cell-value">9</span></div><span class="av-cell-index">6</span></div><div class="av-cell-wrapper"><div class="av-cell  "><span class="av-cell-value">4</span></div><span class="av-cell-index">7</span></div></div><style>
+        .av-presets {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+
+        .av-ops {
+          width: 100%;
+        }
+
+        .av-op-row {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+          align-items: center;
+        }
+
+        .av-btn {
+          padding: 6px 12px;
+          border-radius: 6px;
+          border: 1px solid var(--color-border);
+          background: var(--color-surface);
+          color: var(--color-text);
+          font-size: 0.8125rem;
+          cursor: pointer;
+          transition: all 0.15s ease;
+        }
+
+        .av-btn:hover {
+          border-color: var(--color-primary);
+        }
+
+        .av-btn-primary {
+          background: var(--color-primary);
+          border-color: var(--color-primary);
+          color: white;
+        }
+
+        .av-btn-reset {
+          color: var(--color-text-muted);
+        }
+
+        .av-select {
+          padding: 6px 8px;
+          border-radius: 6px;
+          border: 1px solid var(--color-border);
+          background: var(--color-surface);
+          color: var(--color-text);
+          font-size: 0.8125rem;
+        }
+
+        .av-input {
+          padding: 6px 8px;
+          border-radius: 6px;
+          border: 1px solid var(--color-border);
+          background: var(--color-surface);
+          color: var(--color-text);
+          font-size: 0.8125rem;
+          width: 80px;
+        }
+
+        .av-chart {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+          justify-content: center;
+          padding: 16px 0;
+          width: 100%;
+        }
+
+        .av-cell-wrapper {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 4px;
+        }
+
+        .av-cell {
+          width: 48px;
+          height: 48px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--color-surface);
+          border: 2px solid var(--color-border);
+          border-radius: var(--radius-md);
+          transition: all 0.2s ease;
+        }
+
+        .av-cell-highlight {
+          border-color: var(--color-primary);
+          background: color-mix(in srgb, var(--color-primary) 15%, transparent);
+        }
+
+        .av-cell-current {
+          border-color: var(--color-accent);
+          box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 30%, transparent);
+        }
+
+        .av-cell-value {
+          font-family: var(--font-mono);
+          font-size: 0.9375rem;
+          font-weight: 600;
+          color: var(--color-text);
+        }
+
+        .av-cell-index {
+          font-size: 0.6875rem;
+          color: var(--color-text-muted);
+          font-family: var(--font-mono);
+        }
+      </style></div><style>
+        .vf-container {
+          margin: var(--space-6) 0;
+          padding: var(--space-6);
+          background: var(--color-surface);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-lg);
+        }
+
+        .vf-header {
+          margin-bottom: var(--space-4);
+          padding-bottom: var(--space-4);
+          border-bottom: 1px solid var(--color-border);
+        }
+
+        .vf-title {
+          font-size: var(--text-lg);
+          font-weight: 600;
+          margin: 0 0 var(--space-2) 0;
+          color: var(--color-text);
+        }
+
+        .vf-description {
+          font-size: var(--text-sm);
+          color: var(--color-text-muted);
+          margin: 0;
+          line-height: 1.5;
+        }
+
+        .vf-controls {
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--space-2);
+          margin-bottom: var(--space-4);
+          padding: var(--space-3);
+          background: var(--color-bg);
+          border-radius: var(--radius-md);
+        }
+
+        .vf-canvas {
+          min-height: 200px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .vf-loading {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-3);
+          padding: var(--space-8);
+          color: var(--color-text-muted);
+        }
+
+        .vf-spinner {
+          width: 32px;
+          height: 32px;
+          border: 3px solid var(--color-border);
+          border-top-color: var(--color-primary);
+          border-radius: 50%;
+          animation: vf-spin 1s linear infinite;
+        }
+
+        .vf-empty {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-3);
+          padding: var(--space-8);
+          color: var(--color-text-muted);
+          font-size: var(--text-sm);
+        }
+
+        .vf-empty svg {
+          opacity: 0.5;
+        }
+
+        @keyframes vf-spin {
+          to { transform: rotate(360deg); }
+        }
+      </style></div><!--astro:end--></astro-island>
+<p>Try the operations above. Notice how insert and delete shift surrounding elements, while access jumps directly to the target.</p>
+<h2 id="step-by-step-example">Step-by-Step Example</h2>
+<h3 id="access--o1">Access — O(1)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> access</span><span style="color:#E1E4E8">(arr, index):</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> arr[index]  </span><span style="color:#6A737D"># Direct calculation: O(1)</span></span></code></pre>
+<p>The CPU computes <code>address = base + index × size</code>, no loops.</p>
+<h3 id="insert-at-end--o1">Insert at End — O(1)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">arr.append(</span><span style="color:#79B8FF">6</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D"># Add to end: O(1) amortized</span></span></code></pre>
+<h3 id="insert-at-middle--on">Insert at Middle — O(n)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> insert_middle</span><span style="color:#E1E4E8">(arr, index, value):</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">len</span><span style="color:#E1E4E8">(arr) </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">, index, </span><span style="color:#F97583">-</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">):  </span><span style="color:#6A737D"># Shift right</span></span>
+<span class="line"><span style="color:#E1E4E8">        arr[i] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> arr[i </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">    arr[index] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> value  </span><span style="color:#6A737D"># O(n) due to shifting</span></span></code></pre>
+<h3 id="search--on">Search — O(n)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> search</span><span style="color:#E1E4E8">(arr, value):</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> i, v </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> enumerate</span><span style="color:#E1E4E8">(arr):  </span><span style="color:#6A737D"># Linear scan</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> v </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> value:</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#F97583"> -</span><span style="color:#79B8FF">1</span><span style="color:#6A737D">  # O(n)</span></span></code></pre>
+<h2 id="common-mistakes">Common Mistakes</h2>
+<ol>
+<li>
+<p><strong>Confusing access with search</strong> — Array access is O(1) because you give an index. Array search is O(n) because you give a value.</p>
+</li>
+<li>
+<p><strong>Forgetting about resizing</strong> — Dynamic arrays (Python lists, Java ArrayList) double their capacity when full, giving amortized O(1) insert but occasional O(n) resize.</p>
+</li>
+<li>
+<p><strong>Assuming insert is always O(1)</strong> — Only true at the end. Middle inserts require shifting.</p>
+</li>
+<li>
+<p><strong>Ignoring cache friendliness</strong> — Contiguous memory makes arrays cache-friendly, which is why arrays often outperform linked lists in practice despite O(n) insert.</p>
+</li>
+</ol>
+<h2 id="practice-prompts">Practice Prompts</h2>
+<ol>
+<li>
+<p>How many elements are shifted when inserting at index 3 in an array of length 8?</p>
+</li>
+<li>
+<p>Why is binary search not O(1) on a plain array, even though arrays support O(1) access?</p>
+</li>
+<li>
+<p>What happens to indices after deleting element at index 2?</p>
+</li>
+<li>
+<p>When would you choose an array over a linked list? Consider both time and space.</p>
+</li>
+</ol> <nav class="topic-nav"> <div class="topic-nav-inner"> <a href="/OpenCS/topics/recursion-tree" class="topic-nav-link topic-nav-prev"> <span class="topic-nav-direction">&larr; Previous</span> <span class="topic-nav-title">Recursion Tree Visualizer</span> </a> <a href="/OpenCS/topics/stack-queue" class="topic-nav-link topic-nav-next"> <span class="topic-nav-direction">Next &rarr;</span> <span class="topic-nav-title">Stack and Queue Simulator</span> </a> </div> </nav>  </div> </article> </main> <footer class="footer" data-astro-cid-35ed7um5> <div class="footer-inner container" data-astro-cid-35ed7um5> <div class="footer-content" data-astro-cid-35ed7um5> <div class="footer-brand" data-astro-cid-35ed7um5> <span class="footer-logo" data-astro-cid-35ed7um5>OpenCS</span> <p class="footer-tagline" data-astro-cid-35ed7um5>Visual learning for BTech CSE</p> </div> <nav class="footer-nav" data-astro-cid-35ed7um5> <div class="footer-section" data-astro-cid-35ed7um5> <h4 data-astro-cid-35ed7um5>Project</h4> <a href="/OpenCS/about" data-astro-cid-35ed7um5>About</a> <a href="/OpenCS/roadmap" data-astro-cid-35ed7um5>Roadmap</a> <a href="/OpenCS/contribute" data-astro-cid-35ed7um5>Contribute</a> </div> <div class="footer-section" data-astro-cid-35ed7um5> <h4 data-astro-cid-35ed7um5>Topics</h4> <a href="/OpenCS/topics" data-astro-cid-35ed7um5>All Topics</a> <a href="/OpenCS/topics?category=algorithms" data-astro-cid-35ed7um5>Algorithms</a> <a href="/OpenCS/topics?category=data-structures" data-astro-cid-35ed7um5>Data Structures</a> <a href="/OpenCS/topics?category=theory" data-astro-cid-35ed7um5>Theory</a> <a href="/OpenCS/topics?category=systems" data-astro-cid-35ed7um5>Systems</a> </div> </nav> </div> <div class="footer-bottom" data-astro-cid-35ed7um5> <p data-astro-cid-35ed7um5>&copy; 2026 OpenCS. MIT License.</p> <p data-astro-cid-35ed7um5>Built for BTech CSE students in India</p> </div> </div> </footer>   </body></html> 

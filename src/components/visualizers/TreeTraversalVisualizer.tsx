@@ -176,7 +176,7 @@ export function TreeTraversalVisualizer() {
       isEmpty={!root}
       emptyMessage="Select a tree preset to begin"
     >
-      <div className="ttv-canvas-wrap">
+      <div className="ttv-canvas-wrap" data-testid="ttv-canvas">
         <canvas ref={canvasRef} className="ttv-canvas" width={560} height={300} />
       </div>
       <div className="ttv-result">
