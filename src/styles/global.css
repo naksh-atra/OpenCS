@@ -191,3 +191,134 @@ th {
   h1 { font-size: 1.875rem; }
   h2 { font-size: 1.5rem; }
 }
+
+/* Recursion Tree Visualizer styles */
+.rtv-controls-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.rtv-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.rtv-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.rtv-tab:hover {
+  border-color: var(--color-primary);
+}
+
+.rtv-tab.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.rtv-tab-label {
+  font-weight: 600;
+}
+
+.rtv-tab-complexity {
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+.rtv-slider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 12px;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+}
+
+.rtv-slider label {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.rtv-slider input[type="range"] {
+  width: 100px;
+}
+
+.rtv-depth-value {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text);
+  min-width: 20px;
+}
+
+.rtv-canvas-wrapper {
+  width: 100%;
+}
+
+.rtv-canvas {
+  width: 100%;
+  min-height: 220px;
+  background: #0f172a;
+  border-radius: var(--radius-md);
+}
+
+.rtv-caption {
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  margin-top: var(--space-2);
+}
+
+.rtv-hint {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-3) 0;
+}
+
+.rtv-hint-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.rtv-hint-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.rtv-hint-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.rtv-hint-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.rtv-hint-btn:disabled:hover {
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
