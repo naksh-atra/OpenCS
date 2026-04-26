@@ -57,6 +57,15 @@ export const complexityClasses: ComplexityClass[] = [
     example: 'Bubble sort, insertion sort, naive duplicate check',
   },
   {
+    id: 'on3',
+    label: 'O(n³)',
+    notation: 'O(n³)',
+    height: 90,
+    tier: 'costly',
+    description: 'Cubic time — triple nested loops',
+    example: 'Floyd-Warshall, naive matrix multiplication',
+  },
+  {
     id: 'o2n',
     label: 'O(2ⁿ)',
     notation: 'O(2ⁿ)',
@@ -64,6 +73,15 @@ export const complexityClasses: ComplexityClass[] = [
     tier: 'expensive',
     description: 'Exponential time — each input doubles work',
     example: 'Naive Fibonacci, power set generation',
+  },
+  {
+    id: 'onf',
+    label: 'O(n!)',
+    notation: 'O(n!)',
+    height: 100,
+    tier: 'expensive',
+    description: 'Factorial time — grows faster than exponential',
+    example: 'Traveling salesman brute force, permutation generation',
   },
 ];
 

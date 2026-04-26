@@ -152,6 +152,55 @@ button {
   font-family: inherit;
 }
 
+/* Complexity visualizer button base styles */
+.complexity-btn {
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.complexity-btn.active.tier-optimal { background: var(--color-complexity-optimal); border-color: var(--color-complexity-optimal); color: white; }
+.complexity-btn.active.tier-good { background: var(--color-complexity-good); border-color: var(--color-complexity-good); color: white; }
+.complexity-btn.active.tier-fair { background: var(--color-complexity-fair); border-color: var(--color-complexity-fair); color: white; }
+.complexity-btn.active.tier-moderate { background: var(--color-complexity-moderate); border-color: var(--color-complexity-moderate); color: white; }
+.complexity-btn.active.tier-costly { background: var(--color-complexity-costly); border-color: var(--color-complexity-costly); color: white; }
+.complexity-btn.active.tier-expensive { background: var(--color-complexity-expensive); border-color: var(--color-complexity-expensive); color: white; }
+
+.complexity-btn-primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.complexity-input {
+  width: 70px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+}
+
+.scale-btn {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
 ul, ol {
   padding-left: var(--space-6);
 }
