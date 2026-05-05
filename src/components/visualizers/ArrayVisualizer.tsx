@@ -21,6 +21,7 @@ export function ArrayVisualizer() {
   const [state, setState] = useState<ArrayState>(createArrayState());
   const [inputValue, setInputValue] = useState('');
   const [inputIndex, setInputIndex] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const [operation, setOperation] = useState<string>('access');
 
   const handlePreset = useCallback((data: number[]) => {
@@ -120,6 +121,11 @@ export function ArrayVisualizer() {
       }
       isEmpty={false}
     >
+      {error && (
+        <div className="av-error">
+          {error}
+        </div>
+      )}
       <div className="av-chart">
         {state.data.map((val, i) => (
           <div key={i} className="av-cell-wrapper">
@@ -244,6 +250,17 @@ export function ArrayVisualizer() {
           font-size: 0.6875rem;
           color: var(--color-text-muted);
           font-family: var(--font-mono);
+        }
+
+        .av-error {
+          background: color-mix(in srgb, var(--color-red) 10%, transparent);
+          border: 1px solid var(--color-red);
+          border-radius: 6px;
+          padding: 8px 12px;
+          margin: 12px 0;
+          font-size: 0.875rem;
+          color: var(--color-red);
+          text-align: center;
         }
       `}</style>
     </VisualizerFrame>
