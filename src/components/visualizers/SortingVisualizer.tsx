@@ -5,8 +5,9 @@ import {
   type SortingState,
   type SortAlgorithm,
   computeSort,
-  SORT_PRESETS,
 } from '../../engines/sequence';
+import { SortPreset } from './sorting/types';
+import { SORT_PRESETS } from './sorting/presets';
 
 function drawBars(
   canvas: HTMLCanvasElement | null,

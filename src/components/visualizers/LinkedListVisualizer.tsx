@@ -10,8 +10,9 @@ import {
   computeLLSearch,
   computeLLInsert,
   computeLLDelete,
-  LL_PRESETS,
 } from '../../engines/sequence';
+import { LinkedListPreset } from './linkedlist/types';
+import { LINKED_LIST_PRESETS } from './linkedlist/presets';
 
 function drawList(container: HTMLDivElement, head: LLNode | null, step: LLStep | null) {
   container.innerHTML = '';
@@ -106,7 +107,7 @@ export function LinkedListVisualizer() {
   const listRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const arr = LL_PRESETS[presetIdx].arr;
+  const arr = LINKED_LIST_PRESETS[presetIdx].arr;
 
   useEffect(() => {
     setStepIdx(0);
@@ -166,7 +167,7 @@ export function LinkedListVisualizer() {
       controls={
         <>
           <div className="llv-presets">
-            {LL_PRESETS.map((p, i) => (
+            {LINKED_LIST_PRESETS.map((p, i) => (
               <button key={p.label} onClick={() => setPresetIdx(i)} className={`llv-btn ${presetIdx === i ? 'active' : ''}`}>
                 {p.label}
               </button>

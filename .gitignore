@@ -28,4 +28,6 @@ Thumbs.db
 *.log
 
 # Misc
-*.tsbuildinfotest-results/
+*.tsbuildinfo
+test-results/
+dist-local/
