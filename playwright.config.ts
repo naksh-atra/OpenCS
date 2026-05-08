@@ -8,7 +8,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? 'github' : 'list',
   use: {
-    baseURL: 'http://127.0.0.1:3000/OpenCS',
+    baseURL: 'http://127.0.0.1:4321/OpenCS',
     trace: 'on-first-retry',
     headless: true,
     viewport: { width: 1280, height: 720 },
