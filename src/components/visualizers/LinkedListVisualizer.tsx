@@ -30,6 +30,7 @@ function drawList(container: HTMLDivElement, head: LLNode | null, step: LLStep |
   }
 
   const wrapper = document.createElement('div');
+  wrapper.dataset.testid = 'llv-list';
   wrapper.style.cssText = 'display:flex;align-items:center;gap:0;padding:16px;overflow-x:auto;flex-wrap:wrap;';
 
   if (!nodes.length) {

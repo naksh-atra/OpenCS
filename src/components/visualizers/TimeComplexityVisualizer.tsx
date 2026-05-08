@@ -33,7 +33,7 @@ export function TimeComplexityVisualizer() {
       isEmpty={active.length === 0}
       emptyMessage="Select at least one complexity class to visualize"
     >
-      <div className="complexity-chart">
+      <div className="complexity-chart" data-testid="time-complexity-visualizer">
         {active.map(c => (
           <div key={c.id} className="complexity-bar-wrapper">
             <div className={`complexity-bar tier-${c.tier}`} style={{ height: `${c.height}%` }} />

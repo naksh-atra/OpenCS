@@ -71,7 +71,7 @@ function RecursionTreeVisualizer() {
       }
       isEmpty={false}
     >
-      <div className="rtv-body">
+      <div className="rtv-body" data-testid="recursion-tree-visualizer">
         <div className="rtv-canvas-wrapper">
           <canvas ref={canvasRef} className="rtv-canvas" width={560} height={canvasHeight} />
         </div>
