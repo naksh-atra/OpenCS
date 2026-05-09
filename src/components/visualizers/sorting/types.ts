@@ -1,5 +1,5 @@
 export interface SortPreset {
   label: string;
-  data: number[]; // Array to sort
+  arr: number[]; // Array to sort (matches existing code expectation)
   algorithm?: string; // Optional default algorithm
 }

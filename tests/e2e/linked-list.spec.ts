@@ -16,4 +16,11 @@ test.describe('linked-list visualizer', () => {
     const count = await listContent.count();
     expect(count).toBeGreaterThan(0);
   });
+
+  test('visual regression: linked list default preset', async ({ page }) => {
+    await page.goto('/OpenCS/topics/linked-lists');
+    await page.waitForTimeout(2000);
+    // Take screenshot of the visualizer area
+    await expect(page.locator('.llv-list')).toHaveScreenshot('linked-list-default.png');
+  });
 });

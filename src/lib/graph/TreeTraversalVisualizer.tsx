@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { VisualizerFrame } from './VisualizerFrame';
+import { VisualizerFrame } from '../../components/visualizers/VisualizerFrame';
 import { buildTreeFromArray, computeTraversal, PRESET_TREES, type TreeNode, type TraversalStep } from '../../engines/treegraph';
 
 const TRAVERSALS = [

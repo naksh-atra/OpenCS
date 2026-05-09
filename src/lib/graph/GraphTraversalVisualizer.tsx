@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { VisualizerFrame } from './VisualizerFrame';
+import { VisualizerFrame } from '../../components/visualizers/VisualizerFrame';
 import {
   type Graph,
   type GraphNodeId,
