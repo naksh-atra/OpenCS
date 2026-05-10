@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { VisualizerFrame } from './VisualizerFrame';
+import type { LinkedListPreset } from './linkedlist/types';
+import { LINKED_LIST_PRESETS } from './linkedlist/presets';
+import '../../styles/linkedlist-visualizer.css';
 import {
   type LLNode,
   type LLStep,
@@ -11,8 +14,6 @@ import {
   computeLLInsert,
   computeLLDelete,
 } from '../../engines/sequence';
-import { LinkedListPreset } from './linkedlist/types';
-import { LINKED_LIST_PRESETS } from './linkedlist/presets';
 
 function drawList(container: HTMLDivElement, head: LLNode | null, step: LLStep | null) {
   container.innerHTML = '';
@@ -203,24 +204,6 @@ export function LinkedListVisualizer() {
         <span className="llv-legend-item llv-legend-visited">Visited</span>
         <span className="llv-legend-item llv-legend-current">Current</span>
       </div>
-
-      <style>{`
-        .llv-presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-        .llv-controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
-        .llv-op { display: flex; gap: 8px; flex-wrap: wrap; }
-        .llv-inputs { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-        .llv-btn { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 0.8125rem; cursor: pointer; transition: all 0.15s; }
-        .llv-btn:hover { border-color: var(--color-primary); }
-        .llv-btn.active { background: var(--color-primary); border-color: var(--color-primary); color: white; }
-        .llv-btn-primary { background: var(--color-primary); border-color: var(--color-primary); color: white; }
-        .llv-input { padding: 6px 8px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 0.8125rem; width: 72px; }
-        .llv-list-wrap { width: 100%; overflow-x: auto; padding: 8px 0; }
-        .ll-list-container { min-height: 80px; }
-        .llv-legend { display: flex; gap: 16px; justify-content: center; margin-top: 8px; font-size: 0.75rem; color: var(--color-text); }
-        .llv-legend-item::before { content: '■'; margin-right: 4px; }
-        .llv-legend-visited::before { color: #16a34a; }
-        .llv-legend-current::before { color: #d97706; }
-      `}</style>
     </VisualizerFrame>
   );
 }

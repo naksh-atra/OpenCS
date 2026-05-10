@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { VisualizerFrame } from './VisualizerFrame';
+import type { SortPreset } from './sorting/types';
+import { SORT_PRESETS } from './sorting/presets';
+import '../../styles/sorting-visualizer.css';
 import {
   type SortStep,
   type SortingState,
   type SortAlgorithm,
   computeSort,
 } from '../../engines/sequence';
-import { SortPreset } from './sorting/types';
-import { SORT_PRESETS } from './sorting/presets';
 
 function drawBars(
   canvas: HTMLCanvasElement | null,
@@ -181,24 +182,6 @@ export function SortingVisualizer() {
         <span className="sv-legend-item sv-legend-swap">Swapping</span>
         <span className="sv-legend-item sv-legend-sorted">Sorted</span>
       </div>
-
-      <style>{`
-        .sv-presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-        .sv-controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
-        .sv-algo { display: flex; gap: 8px; }
-        .sv-playback { display: flex; gap: 8px; }
-        .sv-btn { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 0.8125rem; cursor: pointer; transition: all 0.15s; }
-        .sv-btn:hover { border-color: var(--color-primary); }
-        .sv-btn.active { background: var(--color-primary); border-color: var(--color-primary); color: white; }
-        .sv-btn-primary { background: var(--color-primary); border-color: var(--color-primary); color: white; }
-        .sv-canvas-wrap { width: 100%; display: flex; justify-content: center; }
-        .sv-canvas { width: 100%; max-width: 560px; height: 260px; border-radius: var(--radius-md); background: var(--color-bg); }
-        .sv-legend { display: flex; gap: 16px; justify-content: center; margin-top: 8px; font-size: 0.75rem; color: var(--color-text); }
-        .sv-legend-item::before { content: '■'; margin-right: 4px; }
-        .sv-legend-compare::before { color: #d97706; }
-        .sv-legend-swap::before { color: #dc2626; }
-        .sv-legend-sorted::before { color: #16a34a; }
-      `}</style>
     </VisualizerFrame>
   );
 }

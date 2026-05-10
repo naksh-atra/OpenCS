@@ -1,4 +1,4 @@
-import { ArrayPreset } from './types';
+import type { ArrayPreset } from './types';
 
 export const PRESETS: ArrayPreset[] = [
   { label: 'Small', data: [3, 7, 1, 8, 2] },

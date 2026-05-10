@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { VisualizerFrame } from './VisualizerFrame';
-import { ArrayPreset } from './array/types';
+import type { ArrayPreset } from './array/types';
 import { PRESETS } from './array/presets';
 import {
   createArrayState,
