@@ -1,4 +1,4 @@
-import { SortPreset } from './types';
+import type { SortPreset } from './types';
 
 export const SORT_PRESETS: SortPreset[] = [
   { label: 'Small', arr: [3, 7, 1, 8, 2] },

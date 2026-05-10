@@ -1,4 +1,4 @@
-import { LinkedListPreset } from './types';
+import type { LinkedListPreset } from './types';
 
 export const LINKED_LIST_PRESETS: LinkedListPreset[] = [
   { label: 'Small', arr: [3, 7, 1, 8, 2] },
