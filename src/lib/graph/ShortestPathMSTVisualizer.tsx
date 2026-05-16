@@ -1,19 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { VisualizerFrame } from '../../components/visualizers/VisualizerFrame';
+import { GRAPH_PRESETS as PRESET_GRAPHS } from '../../components/visualizers/graph/presets';
 import {
   type Graph,
   type GraphNodeId,
   type GraphEdge,
   type GraphStep,
-  PRESET_GRAPHS,
   findStartNode,
-} from '../../engines/treegraph';
-import {
-  computeDijkstra,
-  computePrim,
-  type AlgorithmType,
-  type PathResult,
-  type MSTResult,
 } from '../../engines/treegraph';
 
 type DrawState = {

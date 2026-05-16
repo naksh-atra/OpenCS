@@ -1,12 +1,11 @@
+// Types and dummy export for BST visualizer
+export const __bst_dummy = {};
+
 export type TreeNode = {
   value: number;
   left: TreeNode | null;
   right: TreeNode | null;
 };
-
-export function createNode(value: number, left: TreeNode | null = null, right: TreeNode | null = null): TreeNode {
-  return { value, left, right };
-}
 
 export function buildTreeFromArray(arr: (number | null)[]): TreeNode | null {
   if (!arr.length || arr[0] === null) return null;
