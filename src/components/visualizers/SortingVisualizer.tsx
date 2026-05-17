@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { VisualizerFrame } from './VisualizerFrame';
 import type { SortPreset } from './types';
-import { SORT_PRESETS } from './presets';
+import { SORT_PRESETS } from './sorting/presets';
 import '../../styles/sorting-visualizer.css';
 import {
   type SortStep,
@@ -10,7 +10,7 @@ import {
   computeSort,
 } from '../../engines/sequence';
 
-import { drawBars } from './render';
+import { drawBars } from './sorting/render';
 export function SortingVisualizer() {
   const [presetIdx, setPresetIdx] = useState(0);
   const [algo, setAlgo] = useState<SortAlgorithm>('bubble');
