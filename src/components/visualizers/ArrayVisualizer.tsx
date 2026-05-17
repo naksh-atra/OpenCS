@@ -12,7 +12,7 @@ import {
   getRandomArray,
   type ArrayState,
 } from '../../engines/sequence';
-import '../../styles/array-visualizer.css';
+import './array/array-visualizer.css';
 
 export function ArrayVisualizer() {
   const [state, setState] = useState<ArrayState>(createArrayState());
