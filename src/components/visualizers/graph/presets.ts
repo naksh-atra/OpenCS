@@ -1,4 +1,4 @@
-import { GraphPreset } from './types';
+import type { GraphPreset } from './types';
 
 export const GRAPH_PRESETS: GraphPreset[] = [
   {

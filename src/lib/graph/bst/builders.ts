@@ -1,4 +1,4 @@
-import { TreeNode } from './types';
+import type { TreeNode } from './types';
 import { PRESET_TREES } from './presets';
 import { buildTreeFromArray } from './types';
 import { createBSTState, computeBSTOperation } from './bst-ops';

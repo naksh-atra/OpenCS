@@ -1,4 +1,4 @@
-import { TreeNode, LayoutConfig } from './types';
+import type { TreeNode, LayoutConfig } from './types';
 
 export const PRESETS = {
   factorial: { maxRenderDepth: 5, complexity: 'O(n)', label: 'Factorial' },

@@ -1,4 +1,4 @@
-import { TreeNode, LayoutNode, LayoutConfig } from './types';
+import type { TreeNode, LayoutNode, LayoutConfig } from './types';
 
 interface TidyNode extends TreeNode {
   prelim: number;

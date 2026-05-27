@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { VisualizerFrame } from '../../components/visualizers/VisualizerFrame';
-import { TreeNode } from './bst/types';
+import type { TreeNode } from './bst/types';
 import { PRESET_TREES } from './bst/presets';
 import { buildInitialState, computeBSTOperationWrapper } from './bst/builders';
 

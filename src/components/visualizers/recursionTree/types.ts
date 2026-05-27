@@ -1,6 +1,4 @@
 export interface TreeNode {
-  // added dummy export to satisfy Vite warnings
-
   label: string;
   sublabel?: string;
   type: 'root' | 'internal' | 'leaf';

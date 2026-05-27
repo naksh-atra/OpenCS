@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { VisualizerFrame } from './VisualizerFrame';
-import type { ArrayPreset } from './array/types';
-import { PRESETS } from './array/presets';
+import { VisualizerFrame } from '../VisualizerFrame';
+import type { ArrayPreset } from './types';
+import { PRESETS } from './presets';
 import {
   createArrayState,
   applyInsert,
@@ -11,8 +11,8 @@ import {
   applyUpdate,
   getRandomArray,
   type ArrayState,
-} from '../../engines/sequence';
-import './array/array-visualizer.css';
+} from '../../../engines/sequence';
+import './array-visualizer.css';
 
 export function ArrayVisualizer() {
   const [state, setState] = useState<ArrayState>(createArrayState());
