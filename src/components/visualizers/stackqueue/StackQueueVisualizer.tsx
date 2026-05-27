@@ -1,5 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { VisualizerFrame } from './VisualizerFrame';
+import { VisualizerFrame } from '../VisualizerFrame';
+import type { StackPreset, QueuePreset } from './types';
+import { STACK_PRESETS, QUEUE_PRESETS } from './presets';
 import {
   createStackQueueState,
   applyPush,
@@ -10,19 +12,8 @@ import {
   getRandomSequence,
   type StackQueueState,
   type DataStructureType,
-} from '../../engines/sequence';
-
-const STACK_PRESETS = [
-  { label: 'Small', data: [3, 7, 1, 8] },
-  { label: 'Ascending', data: [1, 2, 3, 4, 5] },
-  { label: 'Random', data: [5, 2, 8, 1, 9] },
-];
-
-const QUEUE_PRESETS = [
-  { label: 'Small', data: [3, 7, 1, 8] },
-  { label: 'Even', data: [2, 4, 6, 8] },
-  { label: 'Sorted', data: [1, 3, 5, 7] },
-];
+} from '../../../engines/sequence';
+import './stackqueue-visualizer.css';
 
 export function StackQueueVisualizer() {
   const [state, setState] = useState<StackQueueState>(createStackQueueState('stack', [3, 7, 1, 8]));
@@ -75,7 +66,7 @@ export function StackQueueVisualizer() {
   }, []);
 
   const isStack = state.type === 'stack';
-  const presets = isStack ? STACK_PRESETS : QUEUE_PRESETS;
+  const presets: (StackPreset | QueuePreset)[] = isStack ? STACK_PRESETS : QUEUE_PRESETS;
   const canOperate = state.data.length > 0;
 
   return (
@@ -190,182 +181,6 @@ export function StackQueueVisualizer() {
           )}
         </div>
       </div>
-
-      <style>{`
-        .sqv-mode-tabs {
-          display: flex;
-          gap: 4px;
-          background: var(--color-bg);
-          padding: 4px;
-          border-radius: var(--radius-md);
-        }
-
-        .sqv-mode-tab {
-          padding: 6px 16px;
-          border: none;
-          border-radius: var(--radius-sm);
-          background: transparent;
-          color: var(--color-text-muted);
-          font-size: 0.8125rem;
-          font-weight: 500;
-          cursor: pointer;
-          transition: all 0.15s ease;
-        }
-
-        .sqv-mode-tab.active {
-          background: var(--color-surface);
-          color: var(--color-primary);
-          box-shadow: var(--shadow-sm);
-        }
-
-        .sqv-presets {
-          display: flex;
-          gap: 8px;
-          flex-wrap: wrap;
-        }
-
-        .sqv-btn {
-          padding: 6px 12px;
-          border-radius: 6px;
-          border: 1px solid var(--color-border);
-          background: var(--color-surface);
-          color: var(--color-text);
-          font-size: 0.8125rem;
-          cursor: pointer;
-          transition: all 0.15s ease;
-        }
-
-        .sqv-btn:hover:not(:disabled) {
-          border-color: var(--color-primary);
-        }
-
-        .sqv-btn:disabled {
-          opacity: 0.4;
-          cursor: not-allowed;
-        }
-
-        .sqv-btn-primary {
-          background: var(--color-primary);
-          border-color: var(--color-primary);
-          color: white;
-        }
-
-        .sqv-btn-warn {
-          color: #dc2626;
-          border-color: #fca5a5;
-        }
-
-        .sqv-btn-reset {
-          color: var(--color-text-muted);
-        }
-
-        .sqv-ops {
-          width: 100%;
-        }
-
-        .sqv-input-row {
-          display: flex;
-          gap: 8px;
-          flex-wrap: wrap;
-          align-items: center;
-        }
-
-        .sqv-input {
-          padding: 6px 8px;
-          border-radius: 6px;
-          border: 1px solid var(--color-border);
-          background: var(--color-surface);
-          color: var(--color-text);
-          font-size: 0.8125rem;
-          width: 100px;
-        }
-
-        .sqv-hint {
-          margin-top: 8px;
-          font-size: 0.75rem;
-          color: var(--color-text-muted);
-        }
-
-        .sqv-container {
-          width: 100%;
-          display: flex;
-          justify-content: center;
-          padding: 16px 0;
-        }
-
-        .sqv-structure {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .sqv-stack .sqv-items {
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
-        }
-
-        .sqv-queue .sqv-items {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .sqv-queue-row {
-          display: flex;
-          gap: 4px;
-        }
-
-        .sqv-item {
-          width: 44px;
-          height: 44px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: var(--color-surface);
-          border: 2px solid var(--color-border);
-          border-radius: var(--radius-sm);
-          transition: all 0.2s ease;
-        }
-
-        .sqv-item-highlight {
-          border-color: var(--color-primary);
-          background: color-mix(in srgb, var(--color-primary) 15%, transparent);
-        }
-
-        .sqv-item-value {
-          font-family: var(--font-mono);
-          font-size: 0.9375rem;
-          font-weight: 600;
-          color: var(--color-text);
-        }
-
-        .sqv-top-label, .sqv-bottom-label {
-          font-size: 0.625rem;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          color: var(--color-text-muted);
-          padding: 2px 0;
-        }
-
-        .sqv-front-label, .sqv-back-label {
-          font-size: 0.625rem;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          color: var(--color-text-muted);
-          padding: 2px 0;
-        }
-
-        .sqv-empty-indicator {
-          padding: 12px 24px;
-          color: var(--color-text-muted);
-          font-size: 0.875rem;
-          border: 2px dashed var(--color-border);
-          border-radius: var(--radius-sm);
-        }
-      `}</style>
     </VisualizerFrame>
   );
 }
