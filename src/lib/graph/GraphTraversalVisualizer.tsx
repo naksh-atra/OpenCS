@@ -6,8 +6,11 @@ import {
   type GraphStep,
   PRESET_GRAPHS,
   findStartNode,
+  computeGraphTraversal,
+  type TraversalResult,
+  type TraversalType,
 } from '../../engines/treegraph';
-import { computeGraphTraversal, type TraversalResult, type TraversalType } from '../../engines/treegraph';
+import './graph-traversal-visualizer.css';
 
 type DrawState = {
   visited: Set<GraphNodeId>;
@@ -208,25 +211,6 @@ export function GraphTraversalVisualizer() {
         <span className="gtv-legend-item gtv-legend-visited">Visited</span>
         <span className="gtv-legend-item gtv-legend-current">Current</span>
       </div>
-
-      <style>{`
-        .gtv-presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-        .gtv-controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
-        .gtv-algo { display: flex; gap: 8px; }
-        .gtv-playback { display: flex; gap: 8px; }
-        .gtv-btn { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 0.8125rem; cursor: pointer; transition: all 0.15s; }
-        .gtv-btn:hover { border-color: var(--color-primary); }
-        .gtv-btn.active { background: var(--color-primary); border-color: var(--color-primary); color: white; }
-        .gtv-btn-primary { background: var(--color-primary); border-color: var(--color-primary); color: white; }
-        .gtv-canvas-wrap { width: 100%; display: flex; justify-content: center; }
-        .gtv-canvas { width: 100%; max-width: 560px; height: 320px; border-radius: var(--radius-md); background: var(--color-bg); }
-        .gtv-legend { display: flex; gap: 16px; justify-content: center; margin-top: 8px; font-size: 0.75rem; color: var(--color-text); }
-        .gtv-legend-item::before { content: '■'; margin-right: 4px; }
-        .gtv-legend-pending::before { color: var(--color-border); }
-        .gtv-legend-frontier::before { color: #d97706; }
-        .gtv-legend-visited::before { color: #16a34a; }
-        .gtv-legend-current::before { color: var(--color-primary); }
-      `}</style>
     </VisualizerFrame>
   );
 }

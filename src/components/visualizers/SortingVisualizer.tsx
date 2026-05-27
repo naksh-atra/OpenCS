@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { VisualizerFrame } from './VisualizerFrame';
-import type { SortPreset } from './types';
+import type { SortPreset } from './sorting/types';
 import { SORT_PRESETS } from './sorting/presets';
 import '../../styles/sorting-visualizer.css';
 import {

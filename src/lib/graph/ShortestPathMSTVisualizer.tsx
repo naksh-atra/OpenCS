@@ -1,13 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { VisualizerFrame } from '../../components/visualizers/VisualizerFrame';
-import { GRAPH_PRESETS as PRESET_GRAPHS } from '../../components/visualizers/graph/presets';
 import {
   type Graph,
   type GraphNodeId,
   type GraphEdge,
   type GraphStep,
+  type AlgorithmType,
+  type PathResult,
+  type MSTResult,
   findStartNode,
+  computeDijkstra,
+  computePrim,
+  PRESET_GRAPHS,
 } from '../../engines/treegraph';
+import './shortest-path-mst-visualizer.css';
 
 type DrawState = {
   visited: Set<GraphNodeId>;
@@ -283,25 +289,6 @@ export function ShortestPathMSTVisualizer() {
         <span className="spmv-legend-item spmv-legend-mst">MST Edge</span>
         <span className="spmv-legend-item spmv-legend-current">Current</span>
       </div>
-
-      <style>{`
-        .spmv-presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-        .spmv-controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
-        .spmv-algo { display: flex; gap: 8px; }
-        .spmv-playback { display: flex; gap: 8px; }
-        .spmv-btn { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 0.8125rem; cursor: pointer; transition: all 0.15s; }
-        .spmv-btn:hover { border-color: var(--color-primary); }
-        .spmv-btn.active { background: var(--color-primary); border-color: var(--color-primary); color: white; }
-        .spmv-btn-primary { background: var(--color-primary); border-color: var(--color-primary); color: white; }
-        .spmv-canvas-wrap { width: 100%; display: flex; justify-content: center; }
-        .spmv-canvas { width: 100%; max-width: 560px; height: 320px; border-radius: var(--radius-md); background: var(--color-bg); }
-        .spmv-legend { display: flex; gap: 16px; justify-content: center; margin-top: 8px; font-size: 0.75rem; color: var(--color-text); }
-        .spmv-legend-item::before { content: '■'; margin-right: 4px; }
-        .spmv-legend-relaxed::before { color: #d97706; }
-        .spmv-legend-visited::before { color: #16a34a; }
-        .spmv-legend-mst::before { color: #7c3aed; }
-        .spmv-legend-current::before { color: var(--color-primary); }
-      `}</style>
     </VisualizerFrame>
   );
 }

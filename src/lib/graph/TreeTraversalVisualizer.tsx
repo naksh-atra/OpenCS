@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { VisualizerFrame } from '../../components/visualizers/VisualizerFrame';
-import { buildTreeFromArray, computeTraversal, PRESET_TREES, type TreeNode, type TraversalStep } from '../../engines/treegraph';
+import {
+  type TreeNode,
+  type TraversalStep,
+  buildTreeFromArray,
+  computeTraversal,
+  PRESET_TREES,
+} from '../../engines/treegraph';
+import './tree-traversal-visualizer.css';
 
 const TRAVERSALS = [
   { id: 'preorder', label: 'Preorder', desc: 'Root → Left → Right' },
@@ -54,7 +61,6 @@ function drawTree(
 
   const maxLevel = Math.max(...levels.keys());
   const levelHeight = (h - 60) / (maxLevel + 1);
-  const levelWidth = w / (levels.get(0)?.length || 1);
 
   levels.forEach((nodes, depth) => {
     const y = 50 + depth * levelHeight;
@@ -95,21 +101,14 @@ function drawTree(
     ctx.fillText(String(node.value), pos.x, pos.y);
   }
 
-  if (root.left) drawEdge(root, root.left);
-  if (root.right) drawEdge(root, root.right);
-  collect(root.left, 0);
-  collect(root.right, 0);
-
-  function collect(n: TreeNode | null, d: number) {
-    if (!n) return;
-    if (n.left) drawEdge(n, n.left);
-    if (n.right) drawEdge(n, n.right);
-    collect(n.left, d + 1);
-    collect(n.right, d + 1);
+  function drawEdgesRecursive(node: TreeNode | null) {
+    if (!node) return;
+    if (node.left) drawEdge(node, node.left);
+    if (node.right) drawEdge(node, node.right);
+    drawEdgesRecursive(node.left);
+    drawEdgesRecursive(node.right);
   }
-  collect(root.left, 0);
-  collect(root.right, 0);
-
+  drawEdgesRecursive(root);
   levels.forEach(nodes => nodes.forEach(drawNode));
 }
 
@@ -183,18 +182,6 @@ export function TreeTraversalVisualizer() {
         <span className="ttv-result-label">Result:</span>
         <span className="ttv-result-values">{result.join(' → ')}</span>
       </div>
-
-      <style>{`
-        .ttv-presets, .ttv-traversals { display: flex; gap: 8px; flex-wrap: wrap; }
-        .ttv-btn { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 0.8125rem; cursor: pointer; transition: all 0.15s; }
-        .ttv-btn:hover { border-color: var(--color-primary); }
-        .ttv-btn.active { background: var(--color-primary); border-color: var(--color-primary); color: white; }
-        .ttv-canvas-wrap { width: 100%; display: flex; justify-content: center; }
-        .ttv-canvas { width: 100%; max-width: 560px; height: 300px; border-radius: var(--radius-md); background: var(--color-bg); }
-        .ttv-result { margin-top: 16px; padding: 12px; background: var(--color-bg); border-radius: var(--radius-md); text-align: center; }
-        .ttv-result-label { font-size: 0.75rem; color: var(--color-text-muted); margin-right: 8px; }
-        .ttv-result-values { font-family: var(--font-mono); font-size: 0.875rem; color: var(--color-text); }
-      `}</style>
     </VisualizerFrame>
   );
 }

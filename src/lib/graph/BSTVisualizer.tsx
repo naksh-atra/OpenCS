@@ -3,6 +3,7 @@ import { VisualizerFrame } from '../../components/visualizers/VisualizerFrame';
 import type { TreeNode } from './bst/types';
 import { PRESET_TREES } from './bst/presets';
 import { buildInitialState, computeBSTOperationWrapper } from './bst/builders';
+import './bst-visualizer.css';
 
 function drawBST(canvas: HTMLCanvasElement | null, root: TreeNode | null, highlighted: number[]) {
   if (!canvas) return;
@@ -84,8 +85,15 @@ function drawBST(canvas: HTMLCanvasElement | null, root: TreeNode | null, highli
     ctx.fillText(String(node.value), pos.x, pos.y);
   }
 
-  collect(root.left, 0);
-  collect(root.right, 0);
+  // Draw edges recursively from root
+  function drawEdgesRecursive(node: TreeNode | null) {
+    if (!node) return;
+    if (node.left) drawEdge(node, node.left);
+    if (node.right) drawEdge(node, node.right);
+    drawEdgesRecursive(node.left);
+    drawEdgesRecursive(node.right);
+  }
+  drawEdgesRecursive(root);
 
   levels.forEach(nodes => nodes.forEach(drawNode));
 }
@@ -118,13 +126,7 @@ export function BSTVisualizer() {
     setInputValue('');
   };
 
-  const inorder = () => {
-    const result: number[] = [];
-    // We don't have inorderCollect in our new structure, so we'll compute it from the state's result?
-    // Actually, the state already has the result from the BSTState (which is the inorder traversal).
-    // So we can just use state.result.
-    return state.result.join(', ');
-  };
+  const inorder = () => state.result.join(', ');
 
   return (
     <VisualizerFrame
@@ -157,19 +159,6 @@ export function BSTVisualizer() {
       <div className="bst-canvas-wrap" data-testid="bst-canvas">
         <canvas ref={canvasRef} className="bst-canvas" width={560} height={300} />
       </div>
-
-      <style>{`
-        .bst-presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-        .bst-ops { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-        .bst-btn { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 0.8125rem; cursor: pointer; transition: all 0.15s; }
-        .bst-btn:hover { border-color: var(--color-primary); }
-        .bst-btn.active { background: var(--color-primary); border-color: var(--color-primary); color: white; }
-        .bst-btn-primary { background: var(--color-primary); border-color: var(--color-primary); color: white; }
-        .bst-select { padding: 6px 8px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 0.8125rem; }
-        .bst-input { padding: 6px 8px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 0.8125rem; width: 80px; }
-        .bst-canvas-wrap { width: 100%; display: flex; justify-content: center; }
-        .bst-canvas { width: 100%; max-width: 560px; height: 300px; border-radius: var(--radius-md); background: var(--color-bg); }
-      `}</style>
     </VisualizerFrame>
   );
 }
