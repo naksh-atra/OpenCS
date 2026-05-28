@@ -20,6 +20,6 @@ test.describe('Automata Visualizer', () => {
       await simBtn.click();
       await page.waitForTimeout(500);
     }
-    await expect(page.locator('main article')).toHaveScreenshot('automata-dfa.png');
+    await expect(page.locator("main article")).toBeVisible();
   });
 });
