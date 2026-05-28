@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { VisualizerFrame } from './VisualizerFrame';
+import type { LinkedListPreset } from './linkedlist/types';
+import { LINKED_LIST_PRESETS } from './linkedlist/presets';
+import '../../styles/linkedlist-visualizer.css';
 import {
   type LLNode,
   type LLStep,
@@ -10,7 +13,6 @@ import {
   computeLLSearch,
   computeLLInsert,
   computeLLDelete,
-  LL_PRESETS,
 } from '../../engines/sequence';
 
 function drawList(container: HTMLDivElement, head: LLNode | null, step: LLStep | null) {
@@ -30,6 +32,7 @@ function drawList(container: HTMLDivElement, head: LLNode | null, step: LLStep |
   }
 
   const wrapper = document.createElement('div');
+  wrapper.dataset.testid = 'llv-list';
   wrapper.style.cssText = 'display:flex;align-items:center;gap:0;padding:16px;overflow-x:auto;flex-wrap:wrap;';
 
   if (!nodes.length) {
@@ -105,7 +108,7 @@ export function LinkedListVisualizer() {
   const listRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const arr = LL_PRESETS[presetIdx].arr;
+  const arr = LINKED_LIST_PRESETS[presetIdx].arr;
 
   useEffect(() => {
     setStepIdx(0);
@@ -165,7 +168,7 @@ export function LinkedListVisualizer() {
       controls={
         <>
           <div className="llv-presets">
-            {LL_PRESETS.map((p, i) => (
+            {LINKED_LIST_PRESETS.map((p, i) => (
               <button key={p.label} onClick={() => setPresetIdx(i)} className={`llv-btn ${presetIdx === i ? 'active' : ''}`}>
                 {p.label}
               </button>
@@ -194,31 +197,13 @@ export function LinkedListVisualizer() {
       }
       isEmpty={false}
     >
-      <div className="llv-list-wrap" data-testid="llv-list">
+      <div className="llv-list-wrap">
         <div ref={listRef} className="ll-list-container" />
       </div>
       <div className="llv-legend">
         <span className="llv-legend-item llv-legend-visited">Visited</span>
         <span className="llv-legend-item llv-legend-current">Current</span>
       </div>
-
-      <style>{`
-        .llv-presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-        .llv-controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
-        .llv-op { display: flex; gap: 8px; flex-wrap: wrap; }
-        .llv-inputs { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-        .llv-btn { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 0.8125rem; cursor: pointer; transition: all 0.15s; }
-        .llv-btn:hover { border-color: var(--color-primary); }
-        .llv-btn.active { background: var(--color-primary); border-color: var(--color-primary); color: white; }
-        .llv-btn-primary { background: var(--color-primary); border-color: var(--color-primary); color: white; }
-        .llv-input { padding: 6px 8px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 0.8125rem; width: 72px; }
-        .llv-list-wrap { width: 100%; overflow-x: auto; padding: 8px 0; }
-        .ll-list-container { min-height: 80px; }
-        .llv-legend { display: flex; gap: 16px; justify-content: center; margin-top: 8px; font-size: 0.75rem; color: var(--color-text); }
-        .llv-legend-item::before { content: '■'; margin-right: 4px; }
-        .llv-legend-visited::before { color: #16a34a; }
-        .llv-legend-current::before { color: #d97706; }
-      `}</style>
     </VisualizerFrame>
   );
 }

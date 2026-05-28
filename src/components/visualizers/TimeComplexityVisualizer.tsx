@@ -76,11 +76,11 @@ export function TimeComplexityVisualizer() {
 
   const active = complexityClasses.filter(c => selected.includes(c.id));
   const isAllDeselected = selected.length === 0;
-  const maxRaw = active.length > 0 
+  const maxRaw = active.length > 0
     ? Math.max(...active.map(c => getRawValue(c.id, counter)).filter(v => v > 0))
     : 1;
 
-  const displayHeight = scaleMode === 'linear' 
+  const displayHeight = scaleMode === 'linear'
     ? (id: string) => getLinearHeight(getRawValue(id, counter), maxRaw)
     : (id: string) => getLogHeight(getRawValue(id, counter), maxRaw);
 
@@ -119,7 +119,7 @@ export function TimeComplexityVisualizer() {
             </div>
             <div style={{ display: 'flex', gap: '4px' }}>
               {[3, 5, 7, 20].map(v => (
-                <button 
+                <button
                   key={v}
                   onClick={() => handlePreset(v)}
                   className={`complexity-btn ${n === String(v) ? 'active' : ''}`}
@@ -140,14 +140,14 @@ export function TimeComplexityVisualizer() {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{ fontSize: '0.7rem', fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)' }}>Scale:</span>
-            <button 
+            <button
               onClick={() => setScaleMode('linear')}
               className={`scale-btn ${scaleMode === 'linear' ? 'active' : ''}`}
               style={scaleMode === 'linear' ? { background: 'var(--color-primary)', color: 'white', borderColor: 'var(--color-primary)' } : {}}
             >
               Raw view
             </button>
-            <button 
+            <button
               onClick={() => setScaleMode('log')}
               className={`scale-btn ${scaleMode === 'log' ? 'active' : ''}`}
               style={scaleMode === 'log' ? { background: 'var(--color-primary)', color: 'white', borderColor: 'var(--color-primary)' } : {}}
@@ -171,7 +171,7 @@ export function TimeComplexityVisualizer() {
           const h = displayHeight(c.id);
           return (
             <div key={c.id} className="complexity-bar-wrapper">
-              <div 
+              <div
                 className={`complexity-bar tier-${c.tier}`}
                 style={{ height: `${Math.min(98, h)}%` }}
               />

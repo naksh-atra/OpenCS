@@ -1,197 +1,88 @@
-import React, { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { VisualizerFrame } from './VisualizerFrame';
+import { PRESETS, LAYOUT, CAPTIONS, getActualTreeDepth, getCanvasHeight, buildFactorialTree, buildFibonacciTree, buildBinarySearchTree } from './recursionTree/builders';
+import { computeLayout, renderLayout } from './recursionTree/render';
+import '../../styles/recursion-tree.css';
 
-interface TreeNode {
-  value: number;
-  children: TreeNode[];
-}
+function RecursionTreeVisualizer() {
+  const [algorithm, setAlgorithm] = useState<'factorial' | 'fibonacci' | 'binary-search'>('fibonacci');
+  const [renderDepth, setRenderDepth] = useState(4);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-function buildTree(fn: string, depth: number, maxDepth: number): TreeNode | null {
-  if (depth > maxDepth) return null;
-  const node: TreeNode = { value: depth, children: [] };
-  const callPattern = getCallPattern(fn, depth);
-  callPattern.times.forEach(() => {
-    const child = buildTree(fn, depth + 1, maxDepth);
-    if (child) node.children.push(child);
-  });
-  return node;
-}
+  const preset = PRESETS[algorithm];
+  const layoutConfig = LAYOUT[algorithm];
+  const caption = CAPTIONS[algorithm];
+  const { label, complexity, rangeSize } = preset;
 
-function getCallPattern(fn: string, depth: number): { times: number; label: string } {
-  switch (fn) {
-    case 'factorial':
-      return { times: 1, label: `T(${depth}) → T(${depth}-1)` };
-    case 'fibonacci':
-      return { times: 2, label: `T(${depth}) → 2 calls` };
-    case 'binary-search':
-      return { times: 1, label: `T(${depth}) → T(${depth/2})` };
-    default:
-      return { times: 1, label: `T(${depth})` };
-  }
-}
-
-function renderTree(node: TreeNode | null, x: number, y: number, spread: number, ctx: CanvasRenderingContext2D, depth: number): number {
-  if (!node) return 0;
-  const nodeX = x;
-  const nodeY = y;
-  const childY = y + 70;
-  node.children.forEach((child, i) => {
-    const childX = x - spread + (spread * 2 / node.children.length) * (i + 0.5);
-    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-border').trim() || '#e5e7eb';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(nodeX, nodeY + 12);
-    ctx.lineTo(childX, childY - 12);
-    ctx.stroke();
-    renderTree(child, childX, childY, spread / 1.5, ctx, depth + 1);
-  });
-  ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-surface').trim() || '#ffffff';
-  ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim() || '#2563eb';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.arc(nodeX, nodeY, 16, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.stroke();
-  ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-text').trim() || '#1f2937';
-  ctx.font = 'bold 12px system-ui, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(String(node.value), nodeX, nodeY);
-  return nodeX;
-}
-
-export function RecursionTreeVisualizer() {
-  const [fn, setFn] = useState<'factorial' | 'fibonacci' | 'binary-search'>('fibonacci');
-  const [depth, setDepth] = useState(4);
-  const [canvasKey, setCanvasKey] = useState(0);
-
-  const presets = [
-    { id: 'factorial', label: 'Factorial', maxDepth: 6, description: 'Single recursive call' },
-    { id: 'fibonacci', label: 'Fibonacci', maxDepth: 6, description: 'Two recursive calls (exponential)' },
-    { id: 'binary-search', label: 'Binary Search', maxDepth: 5, description: 'One call on half the input' },
-  ] as const;
-
-  const preset = presets.find(p => p.id === fn)!;
-  const maxD = preset.maxDepth;
-
-  const draw = (canvas: HTMLCanvasElement | null) => {
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    const dpr = window.devicePixelRatio || 1;
-    const w = canvas.offsetWidth;
-    const h = canvas.offsetHeight;
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
-    ctx.scale(dpr, dpr);
-    ctx.clearRect(0, 0, w, h);
-    const tree = buildTree(fn, 0, Math.min(depth, maxD));
-    if (tree) {
-      const spread = Math.min(w / 3, 120 * Math.pow(1.8, depth));
-      renderTree(tree, w / 2, 30, spread, ctx, 0);
-    }
+  const buildTree = () => {
+    if (algorithm === 'factorial') return buildFactorialTree(renderDepth, 0, renderDepth);
+    if (algorithm === 'fibonacci') return buildFibonacciTree(renderDepth, 0, renderDepth);
+    return buildBinarySearchTree(0, (rangeSize || 16) - 1, 0, renderDepth);
   };
 
-  const redraw = () => {
-    setCanvasKey(k => k + 1);
+  const tree = buildTree();
+  const canvasHeight = getCanvasHeight(getActualTreeDepth(tree), layoutConfig);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const w = rect.width || 560;
+    canvas.style.height = `${canvasHeight}px`;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = w * dpr;
+    canvas.height = canvasHeight * dpr;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.scale(dpr, dpr);
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(0, 0, w, canvasHeight);
+    if (tree) {
+      const spread = algorithm === 'fibonacci' ? w / 2.4 : w / 2.3;
+      renderLayout(computeLayout(tree, w / 2, 30, spread, layoutConfig, w), layoutConfig, ctx);
+    }
+  }, [algorithm, renderDepth, tree, canvasHeight, layoutConfig]);
+
+  const handleAlgorithmChange = (newAlg: keyof typeof PRESETS) => {
+    setAlgorithm(newAlg);
+    setRenderDepth(Math.min(3, PRESETS[newAlg].maxRenderDepth));
   };
 
   return (
     <VisualizerFrame
       title="Recursion Tree Visualizer"
-      description={`Visualize ${preset.label} call patterns. See how recursion branches at each level.`}
+      description={`${label} · levels ${renderDepth} · ${complexity}`}
       controls={
-        <>
-          <div className="rtv-presets">
-            {presets.map(p => (
-              <button
-                key={p.id}
-                onClick={() => { setFn(p.id); setTimeout(redraw, 0); }}
-                className={`rtv-preset-btn ${fn === p.id ? 'active' : ''}`}
-              >
-                {p.label}
+        <div className="rtv-controls-wrapper">
+          <div className="rtv-tabs">
+            {Object.entries(PRESETS).map(([id, p]) => (
+              <button key={id} onClick={() => handleAlgorithmChange(id as keyof typeof PRESETS)} className={`rtv-tab ${algorithm === id ? 'active' : ''}`}>
+                <span className="rtv-tab-label">{p.label}</span>
+                <span className="rtv-tab-complexity">{p.complexity}</span>
               </button>
             ))}
           </div>
           <div className="rtv-slider">
-            <label>Depth: {depth}</label>
-            <input
-              type="range"
-              min={1}
-              max={maxD}
-              value={depth}
-              onChange={e => { setDepth(Number(e.target.value)); setTimeout(redraw, 0); }}
-            />
+            <label>Levels</label>
+            <input type="range" min={1} max={preset.maxRenderDepth} value={renderDepth} onChange={e => setRenderDepth(Number(e.target.value))} />
+            <span className="rtv-depth-value">{renderDepth}</span>
           </div>
-        </>
+        </div>
       }
       isEmpty={false}
     >
-      <div className="rtv-canvas-wrapper">
-        <canvas
-          key={canvasKey}
-          ref={draw}
-          className="rtv-canvas"
-          width={560}
-          height={280}
-        />
+      <div className="rtv-body" data-testid="recursion-tree-visualizer">
+        <div className="rtv-canvas-wrapper">
+          <canvas ref={canvasRef} className="rtv-canvas" width={560} height={canvasHeight} />
+        </div>
+        <div className="rtv-caption">{caption}</div>
+        <div className="rtv-hint">
+          <div className="rtv-hint-actions">
+            <button className="rtv-hint-btn" onClick={() => setRenderDepth(r => Math.max(1, r - 1))} disabled={renderDepth <= 1}>Fewer</button>
+            <button className="rtv-hint-btn" onClick={() => setRenderDepth(r => Math.min(preset.maxRenderDepth, r + 1))} disabled={renderDepth >= preset.maxRenderDepth}>More</button>
+          </div>
+        </div>
       </div>
-
-      <style>{`
-        .rtv-presets {
-          display: flex;
-          gap: 8px;
-          flex-wrap: wrap;
-        }
-
-        .rtv-preset-btn {
-          padding: 6px 12px;
-          border-radius: 6px;
-          border: 1px solid var(--color-border);
-          background: var(--color-surface);
-          color: var(--color-text);
-          font-size: 0.8125rem;
-          cursor: pointer;
-          transition: all 0.15s ease;
-        }
-
-        .rtv-preset-btn:hover {
-          border-color: var(--color-primary);
-        }
-
-        .rtv-preset-btn.active {
-          background: var(--color-primary);
-          border-color: var(--color-primary);
-          color: white;
-        }
-
-        .rtv-slider {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          font-size: 0.8125rem;
-          color: var(--color-text-muted);
-        }
-
-        .rtv-slider input[type="range"] {
-          width: 120px;
-          accent-color: var(--color-primary);
-        }
-
-        .rtv-canvas-wrapper {
-          width: 100%;
-          display: flex;
-          justify-content: center;
-        }
-
-        .rtv-canvas {
-          width: 100%;
-          max-width: 560px;
-          height: 280px;
-          border-radius: var(--radius-md);
-          background: var(--color-bg);
-        }
-      `}</style>
     </VisualizerFrame>
   );
 }
