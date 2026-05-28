@@ -1,0 +1,159 @@
+---
+title: "Page Replacement Algorithms"
+description: "Compare FIFO, LRU, and Optimal page replacement. Understand Belady's anomaly and thrashing — essential for Operating Systems and GATE."
+category: "systems"
+engine: "system-process"
+order: 45
+difficulty: "intermediate"
+tags: ["memory-management", "page-replacement", "fifo", "lru", "optimal", "operating-systems", "gate"]
+prerequisites: ["cpu-scheduling"]
+learningObjectives:
+  - "Understand demand paging and page faults"
+  - "Compare FIFO, LRU, and Optimal replacement algorithms"
+  - "Explain Belady's anomaly in FIFO"
+  - "Calculate page faults for a given reference string"
+  - "Understand thrashing and working set model"
+estimatedTime: "25 minutes"
+status: "published"
+---
+
+## Intuition
+
+When a program needs a page that's not in RAM, a **page fault** occurs. The OS must bring it in from disk — but if RAM is full, which page gets evicted? This is the **page replacement** problem.
+
+The optimal choice is to evict the page that won't be used for the longest time. But the OS can't predict the future! So we approximate with algorithms like LRU.
+
+## Formal Concept
+
+### Page Table
+
+Each process has a page table mapping virtual pages to physical frames. When a page fault occurs:
+
+1. Trap to OS
+2. Find the page on disk
+3. If free frame exists, load into it
+4. If no free frame, run page replacement algorithm
+5. Update page table
+6. Restart the instruction
+
+### Algorithms
+
+**1. FIFO (First In First Out)**
+- Evict the page that has been in memory the longest
+- Simple (use a queue) but performs poorly
+- **Belady's anomaly:** More frames can cause MORE page faults!
+
+**2. LRU (Least Recently Used)**
+- Evict the page that hasn't been used for the longest time
+- Approximates optimal using past behavior as predictor
+- Expensive to implement exactly (needs timestamps or stack)
+
+**3. Optimal (OPT / Bélády's Algorithm)**
+- Evict the page that won't be used for the longest time in the future
+- Theoretical best — used as benchmark
+- Impossible to implement (requires future knowledge)
+
+### Belady's Anomaly
+
+FIFO can produce MORE page faults when you add MORE frames. Example:
+
+Reference string: `1,2,3,4,1,2,5,1,2,3,4,5`
+- 3 frames: 9 page faults
+- 4 frames: 10 page faults (!)
+
+LRU and OPT do NOT suffer from Belady's anomaly.
+
+### Thrashing
+
+When a process spends more time paging than executing, it's **thrashing**. Caused by too many processes competing for too few frames. Solution: reduce degree of multiprogramming or use working set model.
+
+## Visual Interaction
+
+import MemoryVisualizer from '../../components/visualizers/memory/MemoryVisualizer';
+
+<MemoryVisualizer client:load />
+
+Run the reference string step-by-step. Watch frames fill up and pages get replaced.
+
+## Step-by-Step Example
+
+### FIFO with 3 frames, reference: [1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5]
+
+| Ref | Frames | Action | Faults |
+|-----|--------|--------|--------|
+| 1 | [1, -, -] | Load 1 | 1 |
+| 2 | [1, 2, -] | Load 2 | 2 |
+| 3 | [1, 2, 3] | Load 3 | 3 |
+| 4 | [4, 2, 3] | Replace 1 (oldest) | 4 |
+| 1 | [4, 1, 3] | Replace 2 | 5 |
+| 2 | [4, 1, 2] | Replace 3 | 6 |
+| 5 | [5, 1, 2] | Replace 4 | 7 |
+| 1 | [5, 1, 2] | Hit | 7 |
+| 2 | [5, 1, 2] | Hit | 7 |
+| 3 | [5, 3, 2] | Replace 1 | 8 |
+| 4 | [5, 3, 4] | Replace 2 | 9 |
+| 5 | [5, 3, 4] | Hit | 9 |
+
+**FIFO: 9 page faults, 3 hits**
+
+### LRU with same string:
+
+LRU tracks usage order: most recently used at the "front".
+
+| Ref | Frames (MRU→LRU) | Faults |
+|-----|-------------------|--------|
+| 1 | [1, -, -] | 1 |
+| 2 | [2, 1, -] | 2 |
+| 3 | [3, 2, 1] | 3 |
+| 4 | [4, 3, 2] | 4 |
+| 1 | [1, 4, 3] | 5 |
+| 2 | [2, 1, 4] | 6 |
+| 5 | [5, 2, 1] | 7 |
+| 1 | [1, 5, 2] | 7 |
+| 2 | [2, 1, 5] | 7 |
+| 3 | [3, 2, 1] | 8 |
+| 4 | [4, 3, 2] | 9 |
+| 5 | [5, 4, 3] | 10 |
+
+**LRU: 10 page faults** (sometimes worse than FIFO for specific strings!)
+
+### Optimal with same string:
+
+| Ref | Frames | Faults |
+|-----|--------|--------|
+| 1-3 | [1, 2, 3] | 3 |
+| 4 | [1, 2, 4] | 4 |
+| 1 | [1, 2, 4] | 4 |
+| 2 | [1, 2, 4] | 4 |
+| 5 | [1, 2, 5] | 5 |
+| 1 | [1, 2, 5] | 5 |
+| 2 | [1, 2, 5] | 5 |
+| 3 | [1, 2, 3] | 6 |
+| 4 | [1, 2, 4] | 7 |
+| 5 | [1, 2, 5] | 7 |
+
+**Optimal: 7 page faults** (best possible)
+
+## Common Mistakes
+
+1. **Confusing LRU with LFU** — LRU looks at recency (when last used). LFU looks at frequency (how often used).
+
+2. **Thinking more frames always helps** — FIFO's Belady's anomaly proves otherwise.
+
+3. **Not counting hits** — A "hit" means the page is already in a frame. Only faults cause disk I/O.
+
+4. **Ignoring the cost of page faults** — A page fault takes ~10ms (disk access). Normal memory access takes ~100ns. That's a 100,000× difference.
+
+5. **Confusing frames and pages** — Frames are physical (in RAM). Pages are logical (in virtual memory).
+
+## Practice Prompts
+
+1. Show that LRU does not suffer from Belady's anomaly.
+
+2. For reference string [1,2,3,4,1,2,5,1,2,3,4,5], compare FIFO with 3 vs 4 frames. Demonstrate Belady's anomaly.
+
+3. Why is LRU called a "stack algorithm"? How does this relate to Belady's anomaly?
+
+4. In the visualizer, run FIFO and LRU on the same reference string. Which has fewer faults? Why?
+
+5. If a system has 100ns memory access and 10ms page fault time, what is the effective access time if the page fault rate is 0.1%?
