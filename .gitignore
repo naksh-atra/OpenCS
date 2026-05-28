@@ -31,3 +31,6 @@ Thumbs.db
 *.tsbuildinfo
 test-results/
 dist-local/
+
+# Implementation plan (internal doc, not for repo)
+IMPLEMENTATION_PLAN.md
