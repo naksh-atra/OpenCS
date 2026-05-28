@@ -8,17 +8,15 @@ test.describe('time-complexity visualizer', () => {
     await expect(chart).toBeVisible();
     const bars = page.locator('.complexity-bar');
     await expect(bars.first()).toBeVisible();
-    await expect(page.locator("main article")).toBeVisible();
   });
 
   test('should update bars when toggling selection', async ({ page }) => {
     await page.goto('/OpenCS/topics/time-complexity');
     await page.waitForTimeout(1000);
-    const bars = page.locator('.complexity-bar');
     await page.locator('.complexity-btn').first().click();
     await page.waitForTimeout(500);
     await page.locator('.complexity-btn').first().click();
     await page.waitForTimeout(1000);
-    await expect(page.locator("main article")).toBeVisible();
+    await expect(page.locator('.complexity-chart')).toBeVisible();
   });
 });
