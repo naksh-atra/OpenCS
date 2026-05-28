@@ -6,9 +6,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default defineConfig({
-  testDir: './tests/e2e',
-  testMatch: '**/*.spec.ts',
-  snapshotDir: path.join(__dirname, 'tests/e2e/snapshots'),
+  testDir: 'tests/e2e',
+  testMatch: '**/*.spec.{ts,js}',
+  snapshotDir: path.join(__dirname, 'tests/visual/snapshots'),
   timeout: 30000,
   retries: 1,
   use: {
