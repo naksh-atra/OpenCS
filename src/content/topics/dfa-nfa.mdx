@@ -55,7 +55,7 @@ Select a preset, enter an input string, and click Simulate. Current states are h
 
 ## Step-by-Step Example
 
-### DFA: Strings ending in "01" over {0,1}
+### DFA: Strings ending in "01" over alphabet {0,1}
 
 States: q0 (start), q1, q2 (accept)
 
@@ -66,17 +66,17 @@ States: q0 (start), q1, q2 (accept)
 | q2 | q1 | q0 |
 
 **Input: "101"**
-1. Start: {q0}
-2. Read '1': q0 via 1 -> q0, state set {q0}
-3. Read '0': q0 via 0 -> q1, state set {q1}
-4. Read '1': q1 via 1 -> q2, state set {q2}
+1. Start: state set = [q0]
+2. Read '1': q0 via 1 -> q0, state set = [q0]
+3. Read '0': q0 via 0 -> q1, state set = [q1]
+4. Read '1': q1 via 1 -> q2, state set = [q2]
 5. End: q2 is in F -> **Accepted!**
 
 **Input: "110"**
-1. Start: {q0}
-2. Read '1': {q0}
-3. Read '1': {q0}
-4. Read '0': {q1}
+1. Start: state set = [q0]
+2. Read '1': state set = [q0]
+3. Read '1': state set = [q0]
+4. Read '0': state set = [q1]
 5. End: q1 is not in F -> **Rejected**
 
 ## Common Mistakes
@@ -101,4 +101,4 @@ States: q0 (start), q1, q2 (accept)
 
 4. Can an NFA without epsilon-transitions always be converted to an equivalent DFA?
 
-5. Design a DFA for strings that start AND end with the same symbol over {a, b}.
+5. Design a DFA for strings that start AND end with the same symbol over the alphabet with symbols a and b.
