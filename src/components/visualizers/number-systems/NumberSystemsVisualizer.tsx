@@ -239,7 +239,7 @@ export function NumberSystemsVisualizer() {
         {/* IEEE 754 Display */}
         {showIEEE754 && ieeeState && (
           <div className="ns-ieee754-area">
-            <h4 style={{ margin: 0, fontSize: '0.875rem', color: var(--color-text) }}>
+            <h4 style={{ margin: 0, fontSize: '0.875rem', color: 'var(--color-text)' }}>
               IEEE 754 Single Precision — {ieeeState.value}
             </h4>
             {renderBitLayout()}
