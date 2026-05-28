@@ -7,6 +7,7 @@ const __dirname = path.dirname(__filename);
 
 export default defineConfig({
   testDir: './tests/visual',
+  testMatch: '**/*.spec.js',
   snapshotDir: path.join(__dirname, 'tests/visual/snapshots'),
   timeout: 30000,
   retries: 1,
