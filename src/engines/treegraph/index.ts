@@ -4,3 +4,4 @@ export * from './graph-types';
 export * from './traversal-ops';
 export * from './weighted-graph-ops';
 export * from './heap-ops';
+export * from './avl-ops';
