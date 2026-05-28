@@ -1,0 +1,135 @@
+---
+title: "Hash Tables & Collision Resolution"
+description: "Understand how hash tables work and how to handle collisions. Compare chaining, linear probing, quadratic probing, and double hashing — essential for GATE and interviews."
+category: "data-structures"
+engine: "sequence"
+order: 15
+difficulty: "intermediate"
+tags: ["hashing", "hash-table", "collision-resolution", "open-addressing", "chaining", "data-structures"]
+prerequisites: ["arrays"]
+learningObjectives:
+  - "Explain how hash functions map keys to table indices"
+  - "Compare chaining vs open addressing for collision resolution"
+  - "Trace insertion, search, and delete operations step by step"
+  - "Understand load factor and when to rehash"
+  - "Analyze time complexity: O(1) average vs O(n) worst case"
+estimatedTime: "30 minutes"
+status: "published"
+---
+
+## Intuition
+
+Imagine a library with 10,000 books. How do you find one instantly? You could check every shelf (O(n)) — or you could use a catalog that maps each book to a shelf number. A hash table is that catalog.
+
+The hash function is like a formula that converts a book's name into a shelf number. But sometimes two books map to the same shelf — that's a **collision**. How you handle collisions determines the hash table's performance.
+
+## Formal Concept
+
+### Hash Function
+
+A hash function `h(key)` maps a key to an index in the table:
+
+`h(key) = key mod m`
+
+where `m` is the table size (ideally a prime number).
+
+### Load Factor
+
+`λ = n / m` where `n` = number of entries, `m` = table size.
+
+- λ < 0.5: Good performance
+- λ > 0.7: Consider rehashing
+- λ = 1.0: Table full (open addressing fails)
+
+### Collision Resolution Methods
+
+**1. Chaining (Separate Chaining)**
+Each table slot holds a linked list of entries that hash to the same index.
+- Search: traverse the list at `h(key)`
+- Insert: add to the list at `h(key)`
+- Delete: remove from the list
+- Table never "fills up" — but chains can get long
+
+**2. Linear Probing**
+If slot `h(k)` is occupied, try `(h(k) + 1) mod m`, then `(h(k) + 2) mod m`, etc.
+- Simple but causes **primary clustering** — long runs of occupied slots
+
+**3. Quadratic Probing**
+Try `(h(k) + i²) mod m` for i = 0, 1, 2, ...
+- Reduces clustering but may not visit all slots
+
+**4. Double Hashing**
+Try `(h₁(k) + i × h₂(k)) mod m` where `h₂(k) = 1 + (k mod (m-1))`
+- Best distribution, no clustering
+- Most expensive per probe
+
+### Rehashing
+
+When load factor exceeds a threshold (typically 0.7):
+1. Create a new table of size ≈ 2× current size
+2. Re-insert ALL entries using the new table size
+3. Old table is discarded
+
+## Visual Interaction
+
+import HashingVisualizer from '../../components/visualizers/hashing/HashingVisualizer';
+
+<HashingVisualizer client:load />
+
+Try the presets to see different collision resolution methods. Insert keys that collide and watch the probe sequences.
+
+## Step-by-Step Example
+
+### Linear Probing: Insert 50, 700, 76 into table of size 7
+
+```
+h(50) = 50 mod 7 = 1 → Slot 1 empty → Insert at 1
+h(700) = 700 mod 7 = 0 → Slot 0 empty → Insert at 0
+h(76) = 76 mod 7 = 6 → Slot 6 empty → Insert at 6
+```
+
+### Insert 85 (collides):
+
+```
+h(85) = 85 mod 7 = 1 → Slot 1 occupied (50)
+Try (1+1) mod 7 = 2 → Slot 2 empty → Insert at 2
+Probe sequence: [1, 2] — 2 probes
+```
+
+### Search 700:
+
+```
+h(700) = 700 mod 7 = 0 → Slot 0 has 700 → Found! (1 probe)
+```
+
+### Delete 50 (lazy deletion):
+
+```
+h(50) = 50 mod 7 = 1 → Slot 1 has 50 → Mark as deleted
+Slot 1 is now "deleted" (δ), not empty
+Search for 85 still works: checks slot 1 (deleted, keep going), finds at slot 2
+```
+
+## Common Mistakes
+
+1. **Using table size that's a power of 2** — Key mod 2ⁿ only uses the lower n bits, causing more collisions. Use prime sizes.
+
+2. **Confusing deleted with empty slots** — In open addressing, deleted slots must be probed through (they're "tombstones"). Only empty slots stop a search.
+
+3. **Forgetting to rehash** — Without rehashing, performance degrades to O(n). Always rehash when λ > threshold.
+
+4. **Thinking hash operations are always O(1)** — Worst case is O(n) when all keys collide. Good hash functions and load factor management keep it O(1) average.
+
+5. **Not handling the h₂(k) = 0 case in double hashing** — If h₂(k) = 0, the probe sequence never advances. Use `h₂(k) = 1 + (k mod (m-1))` to guarantee h₂(k) ≥ 1.
+
+## Practice Prompts
+
+1. Insert keys {10, 22, 31, 4, 15, 28, 17, 88} into a hash table of size 11 with linear probing. Show the final table.
+
+2. What is the probe sequence for key 17 in the above table?
+
+3. Show that quadratic probing may not visit all slots in a table of size 8.
+
+4. Why is the average number of probes for a successful search ≈ (1/2)(1 + 1/(1-λ))?
+
+5. In the visualizer, insert keys until the load factor exceeds 0.7, then click Rehash. How did the table change?
