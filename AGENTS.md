@@ -4,112 +4,87 @@
 OpenCS is an open-source educational computer science project built to visually teach algorithms, data structures, theorems, and core CS processes to students.
 
 ## Current repo status
-- Active branch: `dev`
-- Immediate next checkpoint: browser verification of `RecursionTreeVisualizer`
-- Production-ready visualizers so far: `TimeComplexityVisualizer`, `RecursionTreeVisualizer` (refactored, requires visual verification)
-- Other visualizers may work but are still more fragile or monolithic than the recursion-tree module
+- Active branch: `dev`, production branch: `main`
+- 25 topic pages, 47 Playwright smoke tests passing
+- All 10 planned visualizers from IMPLEMENTATION_PLAN.md are complete
 
-## Stable vs fragile areas
-### Stable enough not to casually refactor
-- `src/lib/recursionTree/types.ts`
-- `src/lib/recursionTree/builders.ts`
-- `src/styles/global.css` (verified clean; no `.rtv-*` rules)
+## Engines
+- **Sequence Engine** (`src/engines/sequence/`): Array ops, Stack/Queue, Linked List, Sorting, Hashing, Expression Parsing
+- **TreeGraph Engine** (`src/engines/treegraph/`): BST, Graph traversals, Weighted graph (Dijkstra/Prim), Heap ops, AVL ops
+- **Theory Engine** (`src/engines/theory/`): Complexity classes, Number systems (base conversion + IEEE 754), DP (Fibonacci/LCS/Knapsack), Automata (DFA/NFA)
+- **SystemProcess Engine** (`src/engines/system-process/`): CPU scheduling (FCFS/SJF/SRTF/Priority/RR), Memory management (FIFO/LRU/Optimal)
 
-### Clean architecture zone
-- `recursionTree/` module split
+## Visualizer inventory (25 topics)
 
-### Fragile / debt areas
-- Array, LinkedList, Sorting visualizers: working but not yet refactored
-- Graph visualizers: may still have similar layout issues
-- Older monolithic visualizer code should be treated carefully
+### Stable / Production-ready
+- TimeComplexityVisualizer (Theory)
+- RecursionTreeVisualizer (Theory)
+- NumberSystemsVisualizer (Theory) — new
+- HashingVisualizer (Sequence) — new
+- DPVisualizer (Theory) — new
+- ExpressionVisualizer (Sequence) — new
+- CPUSchedulingVisualizer (SystemProcess) — new
+- MemoryVisualizer (SystemProcess) — new
+- AutomataVisualizer (Theory) — new
+- GraphRepVisualizer (TreeGraph) — new
+
+### Refactored (modular structure)
+- ArrayVisualizer (Sequence) — types/presets/CSS split
+- LinkedListVisualizer (Sequence) — types/presets/CSS split
+- SortingVisualizer (Sequence) — types/presets/render/CSS split
+- StackQueueVisualizer (Sequence) — types/presets/CSS split
+- HeapVisualizer (TreeGraph) — types/presets/render/CSS split
+- AVLVisualizer (TreeGraph) — types/presets/render/CSS split
+
+### Canvas-based (src/lib/graph/)
+- BSTVisualizer — canvas tree with edge drawing fixed
+- TreeTraversalVisualizer — canvas tree with step animation
+- GraphTraversalVisualizer — canvas state diagram (BFS/DFS)
+- ShortestPathMSTVisualizer — canvas graph (Dijkstra/Prim)
 
 ## Architecture boundaries
-Preserve this responsibility split:
+Preserve this responsibility split for all visualizers:
 
-- `RecursionTreeVisualizer.tsx` — orchestration only
-- `recursionTree/builders.ts` — tree generation, presets, utility functions, layout config ownership
-- `recursionTree/render.ts` — canvas layout and drawing
-- `recursion-tree.css` — component-specific styles
-- `recursionTree/types.ts` — interface/type definitions
+- `<Topic>Visualizer.tsx` — orchestration ONLY (state, handlers, JSX)
+- `<topic>/types.ts` — all exported interfaces/types
+- `<topic>/presets.ts` — preset data
+- `<topic>/render.ts` — canvas drawing functions (if applicable)
+- `<topic>/<topic>-visualizer.css` — component-specific styles
+- Engine ops in `src/engines/<engine>/<topic>-ops.ts`
 
-Do not collapse these concerns back into one monolithic component.
-
-## Visualizer invariants
-These are non-negotiable for recursion-tree work:
-
-- Root node: blue (`#3b82f6`), `type='root'`
-- Internal node: dark (`#1e293b`), `type='internal'`
-- Leaf node: green (`#064e3b`), `type='leaf'`
-- Parent must be centered above children
-- No edge crossings between child subtrees
-- Canvas height formula must remain:
-  `TOP_PADDING + levels * levelHeight + BOTTOM_LABEL_SPACE`
-
-## Known fixes already applied
-Do not regress these:
-
-1. Fibonacci edge crossings fixed with subtree-width layout
-2. Root clipping fixed with extra top padding
-3. Wrong root colors fixed via correct level-0 type assignment
-4. Binary Search horizontal compression fixed with larger node radius
-5. Sublabel leakage fixed so only true base cases show `→1`
-
-## Rendering failure definitions
-Treat these as failures:
-
-- Root clipping or top-canvas clipping
-- Edge crossing or overlapping child subtree lines
-- Wrong root/internal/leaf colors
-- Wrong labels on terminal or base-case nodes
-- Broken empty state styling
-- Horizontal compression that harms readability
-- Visual regressions even when build passes
+## Component rules
+1. NO inline `<style>` blocks in components
+2. NO inline style objects for static styling
+3. Use `VisualizerFrame` wrapper for consistent layout
+4. Use `data-testid` attributes on key elements for testing
 
 ## Validation workflow
 Required validation sequence:
-
-1. Run build validation
-   - `npm run build`
-2. Run preview/manual validation
-   - `npm run preview`
+1. `npm run build` — must pass with zero errors/warnings
+2. `npx astro preview --port 4321` + browser inspection
 3. Visually inspect the relevant visualizer in browser
-4. Check invariants, layout, clipping, colors, labels, and empty states
-5. Report results concisely
-
-A task is not done until visual verification passes.
-
-## Approval-gated actions
-Always require approval before:
-
-- Deleting files
-- Deployment or production-affecting commands
-- Content/schema changes
-- Test edits that could hide real failures
+4. `npx playwright test` — all smoke tests must pass
 
 ## Git and branch rules
 - Main development happens on `dev`
 - Production branch is `main`
-- Preferred commit style:
-  `type(scope): change1 + change2 + change3`
-- Example:
-  `refactor: recursion tree visualizer - tidy tree layout + css extraction + bug fixes`
+- Preferred commit style: `type(scope): change1 + change2 + change3`
 
-## Priority order
-1. Browser verification of `RecursionTreeVisualizer`
-2. Apply the same refactor pattern to the next visualizer (`ArrayVisualizer` is a likely next candidate)
-3. Add automated visual regression coverage (Playwright screenshots)
-4. Clean stale artifacts such as old `test-results/` output when appropriate
+## Priority order (next steps)
+1. Add `data-testid` attributes to all new visualizers for richer test coverage
+2. Update ROADMAP.md to reflect completed milestones
+3. Add interactive exercises with auto-grading (long-term)
+4. Mobile-optimized visualizations (long-term)
 
 ## Anti-goals
 - Do not spend time on cosmetic styling refinements without user feedback
-- Do not make risky “cleanup” changes in stable modules without clear need
+- Do not make risky "cleanup" changes in stable modules without clear need
 - Do not modify tests just to make failures disappear
-- Do not treat build success alone as proof of visual correctness
+- Do not store screenshot snapshots in git (use page-load smoke tests instead)
 
-## Reporting expectations
-When reporting progress:
-- Be concise
-- Include exact commands run
-- Distinguish build pass/fail from visual pass/fail
-- Surface blockers early
-- Use Telegram only for checkpoint summaries, failed validations, risky actions, and final completion
+## Test infrastructure
+- Tests in `tests/e2e/*.spec.ts`
+- Config: `playwright.config.js` — testDir is `tests/e2e`
+- NO screenshot-based tests (too fragile across refactors)
+- Smoke tests verify page loads + no JS errors
+- Run: `npx playwright test`
