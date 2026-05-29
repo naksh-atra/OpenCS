@@ -32,5 +32,6 @@ Thumbs.db
 test-results/
 dist-local/
 
-# Implementation plan (internal doc, not for repo)
+# Internal docs (not for repo)
 IMPLEMENTATION_PLAN.md
+DESIGN.md
