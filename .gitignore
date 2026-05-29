@@ -6,16 +6,19 @@ node_modules/
 
 # Build output
 dist/
+dist-local/
 
 # Environment
 .env
 .env.*
+!.env.example
 
 # IDE
 .idea/
 .vscode/
 *.swp
 *.swo
+*.iml
 
 # OS
 .DS_Store
@@ -26,11 +29,34 @@ Thumbs.db
 
 # Logs
 *.log
+npm-debug.log*
 
-# Misc
+# Build artifacts
 *.tsbuildinfo
-test-results/
-dist-local/
 
-# Implementation plan (internal doc, not for repo)
+# Test artifacts
+test-results/
+
+# Screenshots (generated, not source)
+tests/**/snapshots/*.png
+tests/**/*.spec.ts-snapshots/*.png
+
+# Docs (internal only, not for public repo)
 IMPLEMENTATION_PLAN.md
+DESIGN.md
+.hermes/
+
+# Lock files (for libraries, not apps; keeping for monorepo clarity)
+# package-lock.json  -- uncomment if you prefer lockfile-free installs
+
+# Cache
+.cache/
+
+# Coverage
+coverage/
+
+# WSL / Windows noise
+*.lnk
+Thumbs.db
+desktop.ini
+stitch-design/

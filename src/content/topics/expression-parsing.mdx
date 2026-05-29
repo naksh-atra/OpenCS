@@ -1,0 +1,121 @@
+---
+title: "Expression Parsing: Infix to Postfix"
+description: "Learn the stack-based algorithm to convert infix expressions to postfix (Reverse Polish Notation). Essential for compiler design and exam questions."
+category: "data-structures"
+engine: "sequence"
+order: 50
+difficulty: "intermediate"
+tags: ["expression-parsing", "infix", "postfix", "stack", "compiler-design", "shunting-yard"]
+prerequisites: ["stack-queue"]
+learningObjectives:
+  - "Understand infix, prefix, and postfix notation"
+  - "Apply the stack-based shunting-yard algorithm for infix-to-postfix conversion"
+  - "Handle operator precedence and associativity"
+  - "Trace the algorithm step by step"
+  - "Evaluate postfix expressions"
+estimatedTime: "25 minutes"
+status: "published"
+---
+
+## Intuition
+
+When you write `A + B * C`, you're using **infix** notation — operators go between operands. But computers find it easier to evaluate expressions when operators come **after** operands: `A B C * +` (postfix).
+
+The algorithm uses a stack to hold operators and reorder them correctly, respecting precedence (* before +) and parentheses.
+
+## Formal Concept
+
+### Notation Types
+
+| Notation | Form | Example |
+|----------|------|---------|
+| Infix | op1 operator op2 | A + B |
+| Prefix (Polish) | operator op1 op2 | + A B |
+| Postfix (RPN) | op1 op2 operator | A B + |
+
+### Operator Precedence
+
+| Operator | Precedence | Associativity |
+|----------|------------|---------------|
+| ^ | 3 | Right |
+| *, / | 2 | Left |
+| +, - | 1 | Left |
+
+### The Algorithm (Shunting-Yard)
+
+For each token in the input:
+1. **Operand** → Add to output
+2. **Left parenthesis** → Push to stack
+3. **Right parenthesis** → Pop stack to output until '(' is found
+4. **Operator** → While stack top has higher or equal precedence (and is left-associative), pop to output. Then push operator.
+5. **End** → Pop all remaining operators to output
+
+### Why Stacks?
+
+Stacks are perfect because we need to reverse the order — the most recent operator that was "waiting" should be output first (LIFO).
+
+## Visual Interaction
+
+import ExpressionVisualizer from '../../components/visualizers/expression/ExpressionVisualizer';
+
+<ExpressionVisualizer client:load />
+
+Watch the stack grow and shrink as each token is processed. The postfix output builds from left to right.
+
+## Step-by-Step Example
+
+### Convert `(A+B)*(C-D)` to postfix:
+
+| Token | Stack | Output | Action |
+|-------|-------|--------|--------|
+| ( | ( | | Push '(' |
+| A | ( | A | Operand → output |
+| + | ( + | A | Push '+' |
+| B | ( + | A B | Operand → output |
+| ) | | A B + | Pop until '(' |
+| * | * | A B + | Push '*' |
+| ( | * ( | A B + | Push '(' |
+| C | * ( | A B + C | Operand → output |
+| - | * ( - | A B + C | Push '-' |
+| D | * ( - | A B + C D | Operand → output |
+| ) | * | A B + C D - | Pop until '(' |
+| end | | A B + C D - * | Pop all |
+
+**Result: `A B + C D - *`**
+
+### Convert `A+B*C`:
+
+| Token | Stack | Output | Action |
+|-------|-------|--------|--------|
+| A | | A | Operand → output |
+| + | + | A | Push '+' |
+| B | + | A B | Operand → output |
+| * | + * | A | * has higher prec than +, push |
+| C | + * | A B C | Operand → output |
+| end | | A B C * + | Pop all |
+
+**Result: `A B C * +`**
+
+## Common Mistakes
+
+1. **Ignoring associativity** — For right-associative operators like `^`, equal precedence should NOT cause popping. `A^B^C` = `A B C ^ ^` (not `A B ^ C ^`).
+
+2. **Popping '(' from stack** — Never output the left parenthesis. Pop it silently when ')' is encountered.
+
+3. **Forgetting to pop remaining operators** — After all tokens are processed, pop everything left on the stack to output.
+
+4. **Confusing stack with output** — The stack holds operators waiting. Only pop when precedence rules say so.
+
+5. **Not handling parentheses correctly** — '(' always gets pushed. ')' triggers popping until '('.
+
+## Practice Prompts
+
+1. Convert `A*(B+C)/D` to postfix. What's the role of the '*' and '/' operators in the stack?
+
+2. Why is the postfix of `A-B-C` equal to `A B - C -` and not `A B C - -`?
+
+3. Convert `A+B*C-D/E+F` to postfix. How many times does the stack become empty during processing?
+
+4. What's the postfix form of `((A+B)*C-(D-E))*(F+G)`?
+
+5. In the visualizer, try `A^B^C`. Why does the second `^` NOT pop the first `^` from the stack?

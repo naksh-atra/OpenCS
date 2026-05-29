@@ -17,137 +17,91 @@ const recentPublished = allTopics
 <BaseLayout title="Home" description="Visual learning platform for BTech CSE students in India">
   <Header />
   <main>
+    <!-- Hero -->
     <section class="hero">
-      <div class="container">
-        <div class="hero-content">
+      <div class="hero-inner container">
+        <div class="hero-text">
           <h1>Computer Science,<br/>Visualized</h1>
-          <p class="hero-subtitle">
-            OpenCS provides interactive visualizations of core BTech CSE topics —
-            algorithms, data structures, theory of computation, and systems.
-            Free, open-source, and built for students in India.
-          </p>
+          <p class="hero-sub">Interactive visualizations of core BTech CSE topics — algorithms, data structures, theory of computation, and systems. Built for students in India.</p>
           <div class="hero-actions">
-            <a href="/OpenCS/topics" class="btn btn-primary">Explore Topics</a>
-            <a href="/OpenCS/contribute" class="btn btn-secondary">Contribute</a>
+            <a href="/OpenCS/topics" class="btn-primary">Explore Topics</a>
+            <a href="/OpenCS/contribute" class="btn-secondary">Contribute</a>
           </div>
         </div>
         <div class="hero-visual">
-          <div class="visual-card">
-            <div class="visual-header">Time Complexity</div>
+          <div class="visual-card graphite-border">
+            <div class="visual-label">Time Complexity</div>
             <div class="visual-bars">
-              <div class="bar" style="height: 20%"><span>n</span></div>
-              <div class="bar" style="height: 35%"><span>n log n</span></div>
-              <div class="bar" style="height: 60%"><span>n²</span></div>
-              <div class="bar" style="height: 100%"><span>2ⁿ</span></div>
+              <div class="bar" style="height:20%"></div>
+              <div class="bar" style="height:35%"></div>
+              <div class="bar" style="height:55%"></div>
+              <div class="bar" style="height:100%"></div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="topics-preview">
+    <!-- Topics -->
+    <section class="topics-section">
       <div class="container">
-        <div class="section-header">
+        <div class="section-head">
           <h2>Available Topics</h2>
-          <a href="/OpenCS/topics" class="view-all">View all {total} topics &rarr;</a>
+          <a href="/OpenCS/topics" class="view-all">View all {total} topics →</a>
         </div>
         <div class="topics-grid">
           {recentPublished.map(topic => (
             <a href={`/OpenCS/topics/${topic.id.replace(/\.mdx?$/, '')}`} class="topic-card">
-              <div class="topic-card-top">
-                <span class="topic-engine">{topic.data.engine}</span>
-                <span class={`topic-diff ${topic.data.difficulty}`}>{topic.data.difficulty}</span>
+              <div class="topic-card-meta">
+                <span class="pill category">{topic.data.category}</span>
+                <span class="pill">{topic.data.engine}</span>
               </div>
               <h3>{topic.data.title}</h3>
               <p>{topic.data.description}</p>
+              <div class="topic-card-foot">
+                <span class="pill difficulty">{topic.data.difficulty}</span>
+                <span class="pill time">{topic.data.estimatedTime}</span>
+              </div>
             </a>
           ))}
-          {recentPublished.length === 0 && (
-            <p class="no-topics">No published topics yet. <a href="/OpenCS/contribute">Be the first to contribute!</a></p>
-          )}
-        </div>
-        <div class="topics-progress">
-          <div class="progress-bar">
-            <div class="progress-fill" style={`width: ${(published / total) * 100}%`} />
-          </div>
-          <span class="progress-label">{published} of {total} topics published</span>
         </div>
       </div>
     </section>
 
-    <section class="features">
+    <!-- Features -->
+    <section class="features-section">
       <div class="container">
         <h2>Built for Learning</h2>
         <div class="features-grid">
-          <div class="feature">
-            <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-              </svg>
-            </div>
-            <h3>Pedagogically Structured</h3>
-            <p>Every topic follows a clear learning path: intuition first, formal concepts second, then interactive exploration.</p>
+          <div class="feature-card graphite-border">
+            <span class="f-icon">◇</span>
+            <h3>Interactive Visualizers</h3>
+            <p>Every topic includes a hands-on visualization. Don't just read about algorithms — watch them run.</p>
           </div>
-          <div class="feature">
-            <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
-              </svg>
-            </div>
+          <div class="feature-card graphite-border">
+            <span class="f-icon">▣</span>
             <h3>Reusable Engines</h3>
-            <p>Modular visualization engines power all topics. Sequence, TreeGraph, Theory, and SystemProcess keep the platform coherent.</p>
+            <p>Four modular engines — Sequence, TreeGraph, Theory, SystemProcess — power all 20+ topics consistently.</p>
           </div>
-          <div class="feature">
-            <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-              </svg>
-            </div>
+          <div class="feature-card graphite-border">
+            <span class="f-icon">○</span>
             <h3>Open Source</h3>
-            <p>MIT licensed, community-driven. Contribute topics, visualizers, or documentation to help fellow students.</p>
+            <p>MIT licensed. Contribute topics, visualizers, or documentation. Built by students, for students.</p>
           </div>
-          <div class="feature">
-            <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="5" y="2" width="14" height="20" rx="2"/>
-              </svg>
-            </div>
-            <h3>Mobile Friendly</h3>
-            <p>Access from any device. Visualizations are optimized for students on phones and laptops alike.</p>
+          <div class="feature-card graphite-border">
+            <span class="f-icon">□</span>
+            <h3>GATE Focused</h3>
+            <p>Content aligned with Indian university CSE curricula and GATE exam patterns. Practice prompts included.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="categories">
-      <div class="container">
-        <h2>Curriculum Areas</h2>
-        <div class="categories-grid">
-          <a href="/OpenCS/topics?category=algorithms" class="category-card">
-            <h3>Algorithms</h3>
-            <p>Sorting, complexity analysis, recursion</p>
-          </a>
-          <a href="/OpenCS/topics?category=data-structures" class="category-card">
-            <h3>Data Structures</h3>
-            <p>Arrays, linked lists, trees, graphs</p>
-          </a>
-          <a href="/OpenCS/topics?category=theory" class="category-card">
-            <h3>Theory of Computation</h3>
-            <p>DFA, NFA, formal languages</p>
-          </a>
-          <a href="/OpenCS/topics?category=systems" class="category-card">
-            <h3>Systems</h3>
-            <p>CPU scheduling, memory management</p>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="cta">
+    <!-- CTA -->
+    <section class="cta-section">
       <div class="container">
         <h2>Ready to start learning?</h2>
-        <p>Jump into any topic or explore the full curriculum.</p>
-        <a href="/OpenCS/topics" class="btn btn-primary">Browse All Topics</a>
+        <a href="/OpenCS/topics" class="btn-primary">Browse All Topics</a>
       </div>
     </section>
   </main>
@@ -155,354 +109,304 @@ const recentPublished = allTopics
 </BaseLayout>
 
 <style>
+  /* Hero */
   .hero {
-    padding: var(--space-16) 0;
-    background: linear-gradient(to bottom, var(--color-surface), var(--color-bg));
+    padding: var(--space-xl) 0;
   }
 
-  .hero .container {
+  .hero-inner {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-12);
+    grid-template-columns: 1fr 320px;
+    gap: var(--space-2xl);
     align-items: center;
   }
 
-  .hero-content h1 {
+  .hero-text h1 {
     font-size: 3rem;
     line-height: 1.1;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-md);
   }
 
-  .hero-subtitle {
+  .hero-sub {
     font-size: 1.125rem;
     color: var(--color-text-muted);
     line-height: 1.7;
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-lg);
+    max-width: 480px;
   }
 
   .hero-actions {
     display: flex;
-    gap: var(--space-3);
-  }
-
-  .btn {
-    display: inline-block;
-    padding: var(--space-3) var(--space-6);
-    border-radius: var(--radius-md);
-    font-weight: 500;
-    font-size: 0.9375rem;
-    text-decoration: none;
-    transition: all 0.15s;
+    gap: var(--space-sm);
   }
 
   .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-sm) var(--space-lg);
     background: var(--color-primary);
-    color: white;
+    color: #fff;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    transition: background-color var(--transition);
   }
 
   .btn-primary:hover {
-    background: var(--color-primary-hover);
+    background: var(--color-primary-container);
     text-decoration: none;
+    color: #fff;
   }
 
   .btn-secondary {
-    background: var(--color-surface);
-    color: var(--color-text);
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-sm) var(--space-lg);
+    background: transparent;
+    color: var(--color-text-body);
     border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    transition: color var(--transition), border-color var(--transition);
   }
 
   .btn-secondary:hover {
-    border-color: var(--color-primary);
     color: var(--color-primary);
+    border-color: var(--color-primary);
     text-decoration: none;
   }
 
-  .hero-visual {
-    display: flex;
-    justify-content: center;
-  }
-
+  /* Visual card */
   .visual-card {
     background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-6);
-    box-shadow: var(--shadow-lg);
-    width: 280px;
+    border-radius: var(--radius-sm);
+    padding: var(--space-lg);
   }
 
-  .visual-header {
-    font-size: 0.875rem;
-    font-weight: 600;
+  .visual-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
     color: var(--color-text-muted);
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-md);
   }
 
   .visual-bars {
     display: flex;
     align-items: flex-end;
-    justify-content: space-between;
-    height: 120px;
-    gap: var(--space-2);
+    gap: var(--space-xs);
+    height: 100px;
   }
 
   .bar {
     flex: 1;
     background: var(--color-primary);
     border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: var(--space-1);
-    position: relative;
+    opacity: 0.15;
+    transition: opacity var(--transition);
   }
 
-  .bar span {
-    font-size: 0.625rem;
-    font-family: var(--font-mono);
-    color: white;
-    position: absolute;
-    top: var(--space-1);
+  .bar:hover {
+    opacity: 1;
   }
 
-  .topics-preview {
-    padding: var(--space-16) 0;
+  /* Topics */
+  .topics-section {
+    padding: var(--space-2xl) 0;
     background: var(--color-surface);
   }
 
-  .section-header {
+  .section-head {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-xl);
   }
 
-  .section-header h2 {
+  .section-head h2 {
     margin: 0;
   }
 
   .view-all {
     font-size: 0.875rem;
     color: var(--color-primary);
+    font-weight: 500;
   }
 
   .topics-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-4);
-    margin-bottom: var(--space-6);
+    gap: var(--space-lg);
   }
 
   .topic-card {
     display: flex;
     flex-direction: column;
-    padding: var(--space-4);
-    background: var(--color-bg);
+    background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
+    padding: var(--space-lg);
     text-decoration: none;
-    transition: all 0.15s;
+    transition: border-color var(--transition), transform var(--transition);
+    min-height: 200px;
   }
 
   .topic-card:hover {
     border-color: var(--color-primary);
+    transform: translateY(-1px);
     text-decoration: none;
   }
 
-  .topic-card-top {
+  .topic-card-meta {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--space-2);
+    gap: var(--space-xs);
+    margin-bottom: var(--space-md);
   }
 
-  .topic-engine {
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    font-family: var(--font-mono);
     font-size: 0.625rem;
-    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--color-text-muted);
   }
 
-  .topic-diff {
-    font-size: 0.625rem;
-    font-weight: 500;
-    padding: 2px 6px;
-    border-radius: 4px;
-    text-transform: capitalize;
+  .pill.category {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background: var(--color-primary-light);
   }
 
-  .topic-diff.beginner { background: #d1fae5; color: #065f46; }
-  .topic-diff.intermediate { background: #dbeafe; color: #1e40af; }
-  .topic-diff.advanced { background: #fce7f3; color: #9d174d; }
-
   .topic-card h3 {
-    font-size: 0.9375rem;
-    margin-bottom: var(--space-1);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 var(--space-sm) 0;
     color: var(--color-text);
   }
 
   .topic-card p {
-    font-size: 0.75rem;
-    color: var(--color-text-muted);
-    line-height: 1.4;
-    margin: 0;
-  }
-
-  .topics-progress {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-  }
-
-  .progress-bar {
-    flex: 1;
-    height: 6px;
-    background: var(--color-border);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: var(--color-primary);
-    border-radius: 3px;
-    transition: width 0.3s;
-  }
-
-  .progress-label {
-    font-size: 0.75rem;
-    color: var(--color-text-muted);
-    white-space: nowrap;
-  }
-
-  .no-topics {
     font-size: 0.875rem;
-    color: var(--color-text-muted);
-    grid-column: 1 / -1;
+    color: var(--color-text-body);
+    line-height: 1.5;
+    margin: 0 0 var(--space-md) 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .topic-card-foot {
+    display: flex;
+    gap: var(--space-xs);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* Features */
+  .features-section {
+    padding: var(--space-2xl) 0;
+  }
+
+  .features-section h2 {
     text-align: center;
-    padding: var(--space-8);
-  }
-
-  .no-topics a {
-    color: var(--color-primary);
-  }
-
-  .features {
-    padding: var(--space-16) 0;
-  }
-
-  .features h2 {
-    text-align: center;
-    margin-bottom: var(--space-12);
+    margin-bottom: var(--space-2xl);
   }
 
   .features-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-6);
+    gap: var(--space-lg);
   }
 
-  .feature {
-    padding: var(--space-6);
+  .feature-card {
     background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-sm);
+    padding: var(--space-xl);
+    text-align: center;
   }
 
-  .feature-icon {
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-bg);
-    border-radius: var(--radius-md);
-    margin-bottom: var(--space-4);
-    color: var(--color-primary);
+  .f-icon {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: var(--space-md);
+    opacity: 0.5;
   }
 
-  .feature h3 {
+  .feature-card h3 {
     font-size: 1.125rem;
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-sm);
   }
 
-  .feature p {
+  .feature-card p {
     font-size: 0.9375rem;
     color: var(--color-text-muted);
+    line-height: 1.6;
   }
 
-  .categories {
-    padding: var(--space-16) 0;
-    background: var(--color-surface);
-  }
-
-  .categories h2 {
-    text-align: center;
-    margin-bottom: var(--space-8);
-  }
-
-  .categories-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-4);
-  }
-
-  .category-card {
-    padding: var(--space-6);
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    text-decoration: none;
-    transition: all 0.15s;
-  }
-
-  .category-card:hover {
-    border-color: var(--color-primary);
-    text-decoration: none;
-  }
-
-  .category-card h3 {
-    font-size: 1rem;
-    margin-bottom: var(--space-2);
-    color: var(--color-text);
-  }
-
-  .category-card p {
-    font-size: 0.875rem;
-    color: var(--color-text-muted);
-  }
-
-  .cta {
-    padding: var(--space-16) 0;
+  /* CTA */
+  .cta-section {
+    padding: var(--space-2xl) 0;
     text-align: center;
   }
 
-  .cta h2 {
-    margin-bottom: var(--space-3);
+  .cta-section h2 {
+    margin-bottom: var(--space-lg);
   }
 
-  .cta p {
-    color: var(--color-text-muted);
-    margin-bottom: var(--space-6);
-  }
-
+  /* Responsive */
   @media (max-width: 1024px) {
-    .hero .container {
+    .hero-inner {
       grid-template-columns: 1fr;
       text-align: center;
     }
 
-    .hero-actions { justify-content: center; }
-    .hero-visual { display: none; }
-    .categories-grid { grid-template-columns: repeat(2, 1fr); }
-    .topics-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-text h1 {
+      font-size: 2.25rem;
+    }
+
+    .hero-sub {
+      max-width: 100%;
+    }
+
+    .hero-actions {
+      justify-content: center;
+    }
+
+    .hero-visual {
+      display: none;
+    }
+
+    .topics-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   @media (max-width: 640px) {
-    .hero-content h1 { font-size: 2.25rem; }
-    .features-grid { grid-template-columns: 1fr; }
-    .categories-grid { grid-template-columns: 1fr; }
-    .topics-grid { grid-template-columns: 1fr; }
+    .topics-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .section-head {
+      flex-direction: column;
+      gap: var(--space-sm);
+      align-items: flex-start;
+    }
+
+    .topic-card {
+      padding: var(--space-md);
+      min-height: auto;
+    }
   }
 </style>

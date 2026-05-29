@@ -1,0 +1,112 @@
+---
+title: "Dynamic Programming"
+description: "Master dynamic programming with visual table-filling. Learn Fibonacci, LCS, and 0/1 Knapsack — essential for GATE and coding interviews."
+category: "algorithms"
+engine: "theory"
+order: 25
+difficulty: "advanced"
+tags: ["dynamic-programming", "dp", "fibonacci", "lcs", "knapsack", "memoization", "tabulation", "gates"]
+prerequisites: ["recursion-tree"]
+learningObjectives:
+  - "Understand optimal substructure and overlapping subproblems"
+  - "Compare memoization (top-down) vs tabulation (bottom-up)"
+  - "Fill DP tables for Fibonacci, LCS, and 0/1 Knapsack"
+  - "Backtrack to find the actual solution (not just the value)"
+  - "Identify DP patterns in new problems"
+estimatedTime: "35 minutes"
+status: "published"
+---
+
+## Intuition
+
+Dynamic Programming (DP) is just **recursion + memorization**. When a recursive solution solves the same subproblems repeatedly, we store the results in a table and look them up instead.
+
+Think of it like this: if computing Fibonacci(5) requires Fibonacci(4) AND Fibonacci(3), and Fibonacci(4) ALSO requires Fibonacci(3) — we're computing Fibonacci(3) twice! DP computes it once and reuses.
+
+## Formal Concept
+
+### Two Approaches
+
+**1. Memoization (Top-Down)**
+- Start with the original problem
+- Recurse but cache results
+- Only compute each subproblem once
+
+**2. Tabulation (Bottom-Up)**
+- Start with base cases
+- Fill the table iteratively
+- Usually faster (no recursion overhead)
+
+### When to Use DP
+
+Two properties must hold:
+1. **Optimal substructure**: Optimal solution contains optimal solutions to subproblems
+2. **Overlapping subproblems**: Same subproblems are solved multiple times
+
+### Classic Problems
+
+**Fibonacci**: `F(n) = F(n-1) + F(n-2)`, base: F(0)=0, F(1)=1
+
+**LCS (Longest Common Subsequence)**:
+```
+if s1[i] == s2[j]: dp[i][j] = dp[i-1][j-1] + 1
+else:              dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+```
+
+**0/1 Knapsack**:
+```
+if weight[i] > w:  dp[i][w] = dp[i-1][w]
+else:              dp[i][w] = max(dp[i-1][w], dp[i-1][w-weight[i]] + value[i])
+```
+
+## Visual Interaction
+
+import DPVisualizer from '../../components/visualizers/dp/DPVisualizer';
+
+<DPVisualizer client:load />
+
+Watch the DP table fill cell by cell. The current cell being computed is highlighted in orange.
+
+## Step-by-Step Example
+
+### Fibonacci(6):
+
+| n | 0 | 1 | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|---|---|
+| F(n) | 0 | 1 | 1 | 2 | 3 | 5 | 8 |
+
+- F(0) = 0 (base)
+- F(1) = 1 (base)
+- F(2) = F(1) + F(0) = 1 + 0 = 1
+- F(3) = F(2) + F(1) = 1 + 1 = 2
+- F(4) = F(3) + F(2) = 2 + 1 = 3
+- F(5) = F(4) + F(3) = 3 + 2 = 5
+- F(6) = F(5) + F(4) = 5 + 3 = 8
+
+### LCS("ABCDGH", "EDFHR"):
+
+Fill the table bottom-up. Green cells show the backtrack path — the actual LCS "DH". LCS length = 2.
+
+## Common Mistakes
+
+1. **Not identifying the recurrence** — The hard part is figuring out `dp[i] = some function of dp[j] where j < i`. Practice pattern recognition.
+
+2. **Wrong base cases** — Off-by-one errors in base cases cascade through the entire table. Always verify dp[0] and dp[1].
+
+3. **Confusing subproblem definition** — "dp[i] = LCS of first i chars" is different from "dp[i] = LCS ending at char i".
+
+4. **Forgetting the backtrack** — Computing the value is often easier than reconstructing the solution. Store choices made.
+
+5. **Using O(n) space when O(n²) is needed** — Sometimes you need the full table for backtracking, not just the last row.
+
+## Practice Prompts
+
+1. What is the space-optimized version of Fibonacci? Why does it only need O(1) space?
+
+2. How would you modify the LCS table to also track the actual subsequence string?
+
+3. For Knapsack with items (w=[2,3,4,5], v=[3,4,5,6]) and capacity 8, fill the DP table by hand.
+
+4. Why is the greedy approach (pick highest value/weight ratio) incorrect for 0/1 Knapsack?
+
+5. In the visualizer, select LCS and watch the backtrack. How does backtracking work?

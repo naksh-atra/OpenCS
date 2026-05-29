@@ -1,0 +1,104 @@
+---
+title: "DFA & NFA Simulator"
+description: "Simulate Deterministic and Nondeterministic Finite Automata. Test input strings and watch state transitions. Essential for Theory of Computation."
+category: "theory"
+engine: "theory"
+order: 40
+difficulty: "intermediate"
+tags: ["dfa", "nfa", "automata", "theory-of-computation", "finite-state-machine", "gate"]
+prerequisites: []
+learningObjectives:
+  - "Define DFA and NFA formally"
+  - "Trace state transitions for a given input string"
+  - "Compare DFA vs NFA expressiveness"
+  - "Design simple DFAs for pattern recognition"
+  - "Understand epsilon-transitions in NFAs"
+estimatedTime: "30 minutes"
+status: "published"
+---
+
+## Intuition
+
+A Finite Automaton is the simplest model of computation. It reads input one symbol at a time and transitions between states. If it ends in an accepting state, the input is **accepted**.
+
+Think of it as a map: each state is a room, each symbol is a door label, and transitions tell you which room to go through for each door.
+
+## Formal Concept
+
+### DFA (Deterministic Finite Automaton)
+
+A DFA is a 5-tuple (Q, sigma, delta, q0, F):
+- **Q**: Finite set of states
+- **Σ**: Input alphabet
+- **δ**: Transition function (Q × Σ maps to Q, exactly one next state)
+- **q₀**: Start state
+- **F**: Set of accept states
+
+**Key property:** For each state and symbol, there is exactly ONE next state.
+
+### NFA (Nondeterministic Finite Automaton)
+
+Same as DFA except:
+- **delta**: Transition function Q x Sigma maps to P(Q), zero or more next states
+- Can have **epsilon-transitions** (move without consuming input)
+- Accepts if ANY path leads to an accept state
+
+Despite the extra power, DFAs and NFAs recognize the same class of languages (regular languages).
+
+## Visual Interaction
+
+import AutomataVisualizer from '../../components/visualizers/automata/AutomataVisualizer';
+
+<AutomataVisualizer client:load />
+
+Select a preset, enter an input string, and click Simulate. Current states are highlighted in orange.
+
+## Step-by-Step Example
+
+### DFA: Strings ending in "01" over alphabet {0,1}
+
+States: q0 (start), q1, q2 (accept)
+
+| State | Input 0 | Input 1 |
+|-------|---------|---------|
+| q0 | q1 | q0 |
+| q1 | q1 | q2 |
+| q2 | q1 | q0 |
+
+**Input: "101"**
+1. Start: state set = [q0]
+2. Read '1': q0 via 1 -> q0, state set = [q0]
+3. Read '0': q0 via 0 -> q1, state set = [q1]
+4. Read '1': q1 via 1 -> q2, state set = [q2]
+5. End: q2 is in F -> **Accepted!**
+
+**Input: "110"**
+1. Start: state set = [q0]
+2. Read '1': state set = [q0]
+3. Read '1': state set = [q0]
+4. Read '0': state set = [q1]
+5. End: q1 is not in F -> **Rejected**
+
+## Common Mistakes
+
+1. **Confusing DFA with NFA** — DFA has exactly one transition per (state, symbol) pair. NFA can have zero, one, or many.
+
+2. **Forgetting that NFA accepts if ANY path accepts** — Even if some paths lead to reject states, one accepting path means acceptance.
+
+3. **Not handling all alphabet symbols** — Every state must have a transition for every alphabet symbol in a DFA. (Use a dead state if needed.)
+
+4. **Confusing states with transitions** — States are circles. Transitions are arrows. The arrow label is the input symbol.
+
+5. **Thinking NFAs are more powerful** — NFAs can be converted to equivalent DFAs (subset construction). They recognize the same languages.
+
+## Practice Prompts
+
+1. Design a DFA that accepts binary strings with an even number of 0s AND an even number of 1s. How many states do you need?
+
+2. In the visualizer, test "0101" with the "ends with 01" DFA. Does it accept? Why?
+
+3. Why does the subset construction for NFA-to-DFA potentially create 2^n states?
+
+4. Can an NFA without epsilon-transitions always be converted to an equivalent DFA?
+
+5. Design a DFA for strings that start AND end with the same symbol over the alphabet with symbols a and b.

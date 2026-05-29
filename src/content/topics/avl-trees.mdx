@@ -1,0 +1,112 @@
+---
+title: "AVL Trees — Self-Balancing BST"
+description: "Understand AVL trees: the self-balancing binary search tree. Watch rotations (LL, RR, LR, RL) keep the tree balanced after every insertion."
+category: "data-structures"
+engine: "treegraph"
+order: 30
+difficulty: "advanced"
+tags: ["avl-tree", "self-balancing", "rotations", "binary-search-tree", "data-structures", "gate"]
+prerequisites: ["binary-search-tree"]
+learningObjectives:
+  - "Define AVL tree property: balance factor ∈ {-1, 0, 1}"
+  - "Identify which rotation case applies (LL, RR, LR, RL)"
+  - "Trace insertion with rebalancing step by step"
+  - "Compare AVL with Red-Black trees"
+  - "Analyze O(log n) guarantee for all operations"
+estimatedTime: "30 minutes"
+status: "published"
+---
+
+## Intuition
+
+A regular BST can degenerate into a linked list (e.g., inserting 1,2,3,4,5 gives a chain). AVL trees prevent this by ensuring the height difference between left and right subtrees is at most 1.
+
+After every insertion, we check balance factors and perform **rotations** to restore balance. This guarantees O(log n) height, which means O(log n) search, insert, and delete.
+
+## Formal Concept
+
+### Balance Factor
+
+`BF(node) = height(left subtree) - height(right subtree)`
+
+Valid AVL: BF ∈ {-1, 0, 1}
+
+### Rotation Cases
+
+**LL (Left-Left):** Inserted in left subtree of left child → Single right rotation
+
+**RR (Right-Right):** Inserted in right subtree of right child → Single left rotation
+
+**LR (Left-Right):** Inserted in right subtree of left child → Left rotation on left child, then right rotation on node
+
+**RL (Right-Left):** Inserted in left subtree of right child → Right rotation on right child, then left rotation on node
+
+### Example: Insert 30, 20, 10
+
+```
+Insert 30:    30
+
+Insert 20:    30
+             /
+            20
+
+Insert 10:    30     BF(30) = 2 → LL rotation
+             /           ↓
+            20          20
+           /           /  \
+          10          10   30
+```
+
+## Visual Interaction
+
+import AVLVisualizer from '../../components/visualizers/avl/AVLVisualizer';
+
+<AVLVisualizer client:load />
+
+Try the rotation presets to see each case. Insert values manually to trigger rebalancing.
+
+## Step-by-Step Example
+
+### Insert 50, 30, 70, 20, 40, 10:
+
+1. Insert 50: `50` (balanced)
+2. Insert 30: `50 / 30` (balanced, BF=1)
+3. Insert 70: `50 / 30, 70` (balanced, BF=0)
+4. Insert 20: `50 / 30, 70 / 20` (balanced, BF=1)
+5. Insert 40: `50 / 30, 70 / 20, 40` (balanced, BF=0)
+6. Insert 10: `50 / 30, 70 / 20, 40 / 10` → BF(30) = 2 → LL rotation at 30
+
+After rotation:
+```
+        50
+       /  \
+      20   70
+     /  \
+    10   30
+          \
+           40
+```
+
+## Common Mistakes
+
+1. **Wrong rotation direction** — LL needs right rotation, RR needs left rotation. Students often mix them up.
+
+2. **Forgetting LR/RL double rotation** — A single rotation doesn't fix LR or RL cases. You need two rotations.
+
+3. **Not updating heights** — After rotation, heights must be recalculated bottom-up.
+
+4. **Confusing AVL with Red-Black** — AVL is more strictly balanced (height ≤ 1.44 log n) but has more rotations. Red-Black has fewer rotations but looser balance.
+
+5. **Thinking BST insert is different** — AVL insert = BST insert + balance. The BST part is identical.
+
+## Practice Prompts
+
+1. Insert 1, 2, 3, 4, 5, 6, 7 into an empty AVL tree. Show all intermediate trees and rotations.
+
+2. What's the minimum number of nodes in an AVL tree of height h? (Hint: it's like Fibonacci.)
+
+3. Why does AVL guarantee O(log n) height? What's the maximum height for n nodes?
+
+4. In the visualizer, insert 30, 20, 10. Which rotation is performed? Why?
+
+5. Compare AVL and Red-Black trees: when would you prefer one over the other?

@@ -1,0 +1,127 @@
+---
+title: "Number Systems & Conversions"
+description: "Master binary, octal, decimal, and hexadecimal conversions. Understand IEEE 754 floating-point representation — essential for GATE and Computer Organization courses."
+category: "architecture"
+engine: "theory"
+order: 5
+difficulty: "beginner"
+tags: ["number-systems", "binary", "hexadecimal", "ieee-754", "conversions", "digital-logic", "computer-organization"]
+prerequisites: []
+learningObjectives:
+  - "Convert between binary, octal, decimal, and hexadecimal number systems"
+  - "Understand positional notation and place values in different bases"
+  - "Perform conversions using division-remainder and power expansion methods"
+  - "Encode and decode IEEE 754 single-precision floating-point numbers"
+  - "Understand sign, exponent, and mantissa fields in IEEE 754"
+estimatedTime: "25 minutes"
+status: "published"
+---
+
+## Intuition
+
+Every number you see on screen is stored in binary inside the computer. But humans work in decimal, and binary is long and hard to read — so we use hexadecimal as shorthand. Understanding how to convert between these bases is the foundation of Computer Organization.
+
+Think of it like currency: 100 paise = 1 rupee, 1000 meters = 1 kilometer. Different bases just have different "group sizes": binary groups by 2, octal by 8, hexadecimal by 16.
+
+## Formal Concept
+
+### Positional Number Systems
+
+In base *b*, a number `dₙdₙ₋₁...d₁d₀` represents:
+
+`dₙ × bⁿ + dₙ₋₁ × bⁿ⁻¹ + ... + d₁ × b¹ + d₀ × b⁰`
+
+For example, `1101` in binary = `1×2³ + 1×2² + 0×2¹ + 1×2⁰ = 8 + 4 + 0 + 1 = 13` in decimal.
+
+### Common Bases
+
+| Base | Name | Digits | Prefix | Use Case |
+|------|------|--------|--------|----------|
+| 2 | Binary | 0, 1 | 0b | Internal representation |
+| 8 | Octal | 0-7 | 0o | Unix permissions |
+| 10 | Decimal | 0-9 | — | Human-readable |
+| 16 | Hexadecimal | 0-9, A-F | 0x | Memory addresses, colors |
+
+### Conversion Methods
+
+**To Decimal (Power Expansion):** Multiply each digit by its place value and sum.
+
+**From Decimal (Division-Remainder):** Repeatedly divide by target base, collect remainders bottom-up.
+
+### IEEE 754 Single Precision (32-bit)
+
+A floating-point number is stored as three fields:
+
+| Field | Bits | Description |
+|-------|------|-------------|
+| Sign | 1 bit | 0 = positive, 1 = negative |
+| Exponent | 8 bits | Biased by 127 (actual exponent = stored - 127) |
+| Fraction (Mantissa) | 23 bits | The significant digits after the leading 1 |
+
+Value = `(-1)^sign × 1.fraction × 2^(exponent - 127)`
+
+## Visual Interaction
+
+import NumberSystemsVisualizer from '../../components/visualizers/number-systems/NumberSystemsVisualizer';
+
+<NumberSystemsVisualizer client:load />
+
+Try the presets above, or enter your own values. Use the IEEE 754 button to see how decimal floats are encoded in binary.
+
+## Step-by-Step Example
+
+### Convert 25 (decimal) to binary:
+
+```
+25 ÷ 2 = 12 remainder 1
+12 ÷ 2 = 6  remainder 0
+6  ÷ 2 = 3  remainder 0
+3  ÷ 2 = 1  remainder 1
+1  ÷ 2 = 0  remainder 1
+```
+
+Read remainders bottom-up: **11001**
+
+### Convert 11001 (binary) to decimal:
+
+```
+1×2⁴ + 1×2³ + 0×2² + 0×2¹ + 1×2⁰
+= 16 + 8 + 0 + 0 + 1
+= 25
+```
+
+### IEEE 754 encode 3.14:
+
+```
+3.14 in binary ≈ 11.0010001111010111000011...
+Normalized: 1.10010001111010111000011 × 2¹
+Sign: 0 (positive)
+Exponent: 1 + 127 = 128 = 10000000
+Fraction: 10010001111010111000011
+Binary32: 0 10000000 10010001111010111000011
+Hex: 0x4048F5C3
+```
+
+## Common Mistakes
+
+1. **Reading remainders top-down instead of bottom-up** — When converting from decimal, always read remainders from last to first.
+
+2. **Forgetting the implicit leading 1 in IEEE 754** — The mantissa stores only the fractional part; the leading 1 is implicit (except for denormalized numbers).
+
+3. **Confusing biased and actual exponent** — The stored exponent is biased by 127. A stored value of 127 means actual exponent 0.
+
+4. **Hex digit confusion** — A=10, B=11, C=12, D=13, E=14, F=15. Students often mix these up.
+
+5. **Not padding binary to 4 bits for hex conversion** — Each hex digit = exactly 4 binary digits. Pad with leading zeros.
+
+## Practice Prompts
+
+1. Convert 2024 (decimal) to binary, octal, and hexadecimal. Which is the most compact?
+
+2. What decimal number does `0xDEAD` represent? (Hint: D=13, E=14, A=10)
+
+3. Why does IEEE 754 use a biased exponent instead of two's complement?
+
+4. What is the smallest positive normalized number in IEEE 754 single precision?
+
+5. Convert -42.5 to IEEE 754 binary32. What is the sign bit? The exponent? The fraction?

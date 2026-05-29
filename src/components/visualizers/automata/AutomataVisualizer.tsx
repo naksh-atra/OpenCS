@@ -1,0 +1,113 @@
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { VisualizerFrame } from '../VisualizerFrame';
+import type { AutomatonPreset } from './types';
+import { AUTOMATA_PRESETS, getPresetData } from './presets';
+import { drawAutomaton } from './render';
+import { createAutomaton, simulateStep, simulateFull, type SimulationState } from '../../../engines/theory/automata-ops';
+import './automata-visualizer.css';
+
+export function AutomataVisualizer() {
+  const [automaton, setAutomaton] = useState(() => createAutomaton('dfa', [], [], [], '', []));
+  const [simState, setSimState] = useState<SimulationState | null>(null);
+  const [inputStr, setInputStr] = useState('');
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    drawAutomaton(canvasRef.current, automaton, simState);
+  }, [automaton, simState]);
+
+  const handlePreset = useCallback((preset: typeof AUTOMATA_PRESETS[0]) => {
+    const data = getPresetData(preset);
+    const auto = createAutomaton(preset.type, data.states, data.alphabet, data.transitions, data.startState, data.acceptStates);
+    setAutomaton(auto);
+    setSimState(null);
+    setInputStr(preset.testInputs[0] || '');
+  }, []);
+
+  const handleSimulate = useCallback(() => {
+    if (!inputStr) return;
+    const sim: SimulationState = {
+      automaton,
+      input: inputStr,
+      currentStates: [automaton.startState],
+      inputIndex: 0,
+      history: [],
+      message: `Starting simulation with input "${inputStr}"`,
+      accepted: null,
+    };
+    setSimState(simulateFull(sim));
+  }, [automaton, inputStr]);
+
+  const handleTestInput = useCallback((input: string) => {
+    setInputStr(input);
+    const sim: SimulationState = {
+      automaton, input, currentStates: [automaton.startState],
+      inputIndex: 0, history: [],
+      message: `Testing "${input}"`, accepted: null,
+    };
+    setSimState(simulateFull(sim));
+  }, [automaton]);
+
+  const handleReset = useCallback(() => {
+    setSimState(null);
+    setInputStr('');
+  }, []);
+
+  return (
+    <VisualizerFrame
+      title="DFA/NFA Simulator"
+      description="Simulate deterministic and nondeterministic finite automata. Enter an input string and watch the state transitions."
+      controls={
+        <>
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }}>
+            {AUTOMATA_PRESETS.map((p) => (
+              <button key={p.label} onClick={() => handlePreset(p)} className="at-toggle-btn" style={{ fontSize: '0.75rem', padding: '4px 8px' }}>
+                {p.label}
+              </button>
+            ))}
+          </div>
+        </>
+      }
+      isEmpty={automaton.states.length === 0}
+      emptyMessage="Select a preset to load an automaton"
+    >
+      <div className="at-container">
+        <div className="at-canvas-wrap">
+          <canvas ref={canvasRef} className="at-canvas" width={560} height={250} />
+        </div>
+
+        <div className="at-controls">
+          <input type="text" value={inputStr} onChange={e => setInputStr(e.target.value)} placeholder="Input string" className="at-input" />
+          <button onClick={handleSimulate} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-primary)', background: 'var(--color-primary)', color: 'white', fontSize: '0.8125rem', cursor: 'pointer' }}>Simulate</button>
+          <button onClick={handleReset} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Reset</button>
+        </div>
+
+        {simState?.accepted !== null && simState?.accepted !== undefined && (
+          <div className={`at-result ${simState.accepted ? 'accept' : 'reject'}`}>
+            {simState.accepted ? '✓ Accepted' : '✗ Rejected'}
+          </div>
+        )}
+
+        {AUTOMATA_PRESETS.find(p => p.label === automaton.states[0]?.id) && (
+          <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+            {AUTOMATA_PRESETS[0].testInputs.map(inp => (
+              <button key={inp} onClick={() => handleTestInput(inp)} className="at-toggle-btn" style={{ fontSize: '0.6875rem', padding: '2px 6px' }}>
+                "{inp || 'ε'}"
+              </button>
+            ))}
+          </div>
+        )}
+
+        {simState && simState.history.length > 0 && (
+          <div className="at-history">
+            {simState.history.map((h, i) => (
+              <div key={i} className="at-history-entry">{h.message}</div>
+            ))}
+          </div>
+        )}
+      </div>
+    </VisualizerFrame>
+  );
+}
+
+export default AutomataVisualizer;

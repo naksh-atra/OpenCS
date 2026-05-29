@@ -1,0 +1,250 @@
+.ns-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.ns-conversion-area {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ns-input-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.ns-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ns-field label {
+  font-size: 0.6875rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ns-value-input {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.875rem;
+  font-family: var(--font-mono);
+  width: 180px;
+}
+
+.ns-value-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.ns-base-select {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.8125rem;
+  min-width: 140px;
+}
+
+.ns-swap-btn {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  align-self: flex-end;
+}
+
+.ns-swap-btn:hover {
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+}
+
+.ns-result-box {
+  padding: 12px 16px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 1.125rem;
+  color: var(--color-text);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.ns-result-value {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.ns-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.ns-step {
+  padding: 10px 14px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ns-step-description {
+  font-size: 0.6875rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ns-step-intermediate {
+  font-size: 0.8125rem;
+  font-family: var(--font-mono);
+  color: var(--color-text);
+  white-space: pre-wrap;
+}
+
+.ns-step-highlight {
+  font-size: 0.875rem;
+  font-family: var(--font-mono);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.ns-ieee754-area {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.ns-bit-layout {
+  display: flex;
+  gap: 4px;
+  padding: 12px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.ns-bit-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.ns-bit-group.bits-sign .ns-bit-cells {
+  background: #fef3c7;
+  border-color: #f59e0b;
+}
+
+.ns-bit-group.bits-exponent .ns-bit-cells {
+  background: #dbeafe;
+  border-color: #3b82f6;
+}
+
+.ns-bit-group.bits-fraction .ns-bit-cells {
+  background: #d1fae5;
+  border-color: #10b981;
+}
+
+.ns-bit-cells {
+  display: flex;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+}
+
+.ns-bit {
+  width: 20px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border-radius: 2px;
+}
+
+.ns-bit-label {
+  font-size: 0.625rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.ns-bit-range {
+  font-size: 0.5625rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+}
+
+.ns-ieee-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ns-ieee-step {
+  font-size: 0.8125rem;
+  font-family: var(--font-mono);
+  color: var(--color-text);
+  padding: 6px 12px;
+  background: var(--color-bg);
+  border-radius: 4px;
+  border-left: 3px solid var(--color-primary);
+}
+
+.ns-toggle-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.ns-toggle-btn.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.ns-error {
+  padding: 8px 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: #dc2626;
+  font-size: 0.8125rem;
+  font-family: var(--font-mono);
+}

@@ -1,0 +1,126 @@
+---
+title: "Graph Representations"
+description: "Compare adjacency matrix and adjacency list representations. Understand space/time tradeoffs for different graph operations."
+category: "data-structures"
+engine: "treegraph"
+order: 12
+difficulty: "beginner"
+tags: ["graphs", "adjacency-matrix", "adjacency-list", "data-structures", "graph-theory"]
+prerequisites: ["linked-lists"]
+learningObjectives:
+  - "Represent graphs using adjacency matrices and adjacency lists"
+  - "Compare space complexity: O(V²) vs O(V+E)"
+  - "Compare time complexity for common operations"
+  - "Choose the right representation for a given problem"
+  - "Convert between representations"
+estimatedTime: "20 minutes"
+status: "published"
+---
+
+## Intuition
+
+A graph can be stored in two main ways:
+
+**Adjacency Matrix:** A 2D table where `matrix[i][j] = 1` if there's an edge from vertex i to j. Simple but wastes space for sparse graphs.
+
+**Adjacency List:** For each vertex, store a list of its neighbors. Space-efficient for sparse graphs.
+
+## Formal Concept
+
+### Adjacency Matrix
+
+For a graph with V vertices, create a V×V matrix M where:
+- `M[i][j] = 1` if edge (i,j) exists (0 for unweighted)
+- `M[i][j] = weight` if edge (i,j) exists (for weighted)
+- `M[i][j] = 0` otherwise
+
+**Space:** O(V²)
+
+| Operation | Time |
+|-----------|------|
+| Check if edge (i,j) exists | O(1) |
+| Add/remove edge | O(1) |
+| Find all neighbors of vertex i | O(V) |
+| Add/remove vertex | O(V²) |
+
+### Adjacency List
+
+For each vertex, maintain a linked list (or array) of adjacent vertices.
+
+**Space:** O(V + E)
+
+| Operation | Time |
+|-----------|------|
+| Check if edge (i,j) exists | O(degree(i)) |
+| Add edge | O(1) |
+| Remove edge | O(degree(i)) |
+| Find all neighbors of vertex i | O(degree(i)) |
+| Add vertex | O(1) |
+
+### When to use which?
+
+| Scenario | Best Choice |
+|----------|-------------|
+| Dense graph (E close to V²) | Matrix |
+| Sparse graph (E much less than V²) | List |
+| Need fast edge lookup | Matrix |
+| Need fast neighbor iteration | List |
+| Memory constrained | List |
+
+## Visual Interaction
+
+import GraphRepVisualizer from '../../components/visualizers/graph-rep/GraphRepVisualizer';
+
+<GraphRepVisualizer client:load />
+
+Click a vertex to highlight its connections in all three views.
+
+## Step-by-Step Example
+
+### Graph: 4 vertices, edges: (0,1), (0,2), (1,2), (2,3)
+
+**Adjacency Matrix:**
+```
+    0  1  2  3
+ 0 [0, 1, 1, 0]
+ 1 [1, 0, 1, 0]
+ 2 [1, 1, 0, 1]
+ 3 [0, 0, 1, 0]
+```
+
+**Adjacency List:**
+```
+0: [1, 2]
+1: [0, 2]
+2: [0, 1, 3]
+3: [2]
+```
+
+**Space comparison:**
+- Matrix: 4×4 = 16 entries
+- List: 4 headers + 8 edges = 12 entries
+- For sparse graphs, the gap grows larger
+
+## Common Mistakes
+
+1. **Using matrix for sparse graphs** — If E is much less than V², the matrix wastes O(V²) space storing mostly zeros.
+
+2. **Not accounting for both directions** — In undirected graphs, edge (i,j) means both `M[i][j]` and `M[j][i]` are set.
+
+3. **Confusing adjacency list with edge list** — Adjacency list: one list per vertex. Edge list: one list of all edges.
+
+4. **Forgetting weighted graphs** — In weighted adjacency matrices, store the weight instead of 1. In adjacency lists, store (neighbor, weight) pairs.
+
+5. **Not considering directed vs undirected** — Directed: matrix may be asymmetric. Undirected: matrix is always symmetric.
+
+## Practice Prompts
+
+1. For a complete graph with V vertices, how many entries are 1 in the adjacency matrix? How many entries in the adjacency list?
+
+2. When would you prefer an adjacency matrix over an adjacency list?
+
+3. How would you represent a weighted directed graph using both representations?
+
+4. In the visualizer, select the "Complete K4" preset. Count the number of 1s in the matrix and the number of entries in the list.
+
+5. Design an algorithm to convert an adjacency matrix to an adjacency list. What's its time complexity?
