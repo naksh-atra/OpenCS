@@ -2,9 +2,10 @@
 interface Props {
   title: string;
   description?: string;
+  compact?: boolean;
 }
 
-const { title, description = 'Visual learning platform for BTech CSE students' } = Astro.props;
+const { title, description = 'Visual learning platform for BTech CSE students', compact = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -15,12 +16,45 @@ const { title, description = 'Visual learning platform for BTech CSE students' }
     <meta name="description" content={description} />
     <title>{title} | OpenCS</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   </head>
-  <body>
+  <body class={compact ? 'compact' : ''}>
     <slot />
   </body>
 </html>
 
 <style is:global>
   @import '../styles/global.css';
+
+  /* Dot grid background for topic pages */
+  body:not(.compact) {
+    background-image: radial-gradient(circle, var(--color-border) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-attachment: fixed;
+    opacity: 1;
+  }
+
+  /* Ensure the background doesn't interfere with readability */
+  body:not(.compact)::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: var(--color-bg);
+    opacity: 0.92;
+    z-index: -1;
+  }
+
+  .container {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 0 var(--space-md);
+    }
+  }
 </style>
