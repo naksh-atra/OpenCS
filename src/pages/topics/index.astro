@@ -21,10 +21,8 @@ const filteredTopics = allTopics.filter(t => {
 });
 
 const sortedTopics = filteredTopics.sort((a, b) => a.data.order - b.data.order);
-
 const publishedCount = allTopics.filter(t => t.data.status === 'published').length;
 const totalCount = allTopics.length;
-
 const engineOptions = [...new Set(allTopics.map(t => t.data.engine))];
 const difficultyOptions = ['beginner', 'intermediate', 'advanced'];
 const statusOptions = ['published', 'in-progress', 'planned'];
@@ -32,107 +30,112 @@ const statusOptions = ['published', 'in-progress', 'planned'];
 function buildUrl(params: Record<string, string | null>) {
   const merged = new URLSearchParams(url.searchParams);
   for (const [k, v] of Object.entries(params)) {
-    if (v === null) {
-      merged.delete(k);
-    } else {
-      merged.set(k, v);
-    }
+    if (v === null) merged.delete(k);
+    else merged.set(k, v);
   }
   const s = merged.toString();
   return `/OpenCS/topics${s ? '?' + s : ''}`;
 }
+
+function isFilterActive(filter: string, value: string | null) {
+  if (filter === 'category') return categoryFilter === value;
+  if (filter === 'engine') return engineFilter === value;
+  if (filter === 'difficulty') return difficultyFilter === value;
+  if (filter === 'status') return statusFilter === value;
+  return false;
+}
 ---
 
-<BaseLayout title="Topics" description="Browse all computer science topics with interactive visualizations">
+<BaseLayout title="Topics" description="Browse all computer science topics with interactive visualizers">
   <Header />
-  <main>
-    <section class="topics-header">
-      <div class="container">
-        <h1>Topics</h1>
-        <p>Explore {publishedCount} interactive visualization{publishedCount !== 1 ? 's' : ''} of core BTech CSE concepts — {totalCount} topics total</p>
-      </div>
-    </section>
+  <main class="topics-page">
+    <div class="topics-layout container">
+      <!-- Sidebar Filters -->
+      <aside class="topics-sidebar">
+        <h3>Filters</h3>
 
-    <section class="topics-filters" id="filters">
-      <div class="container">
-        <button class="filter-toggle" id="filterToggle" aria-expanded="true" aria-controls="filterSections">
-          <span class="filter-toggle-text">Hide Filters</span>
-          <span class="filter-toggle-icon">▼</span>
-        </button>
-        <div class="filter-sections" id="filterSections">
-          <div class="filter-section">
-            <span class="filter-label">Category</span>
-            <div class="filter-tabs">
-              <a href={buildUrl({ category: null, engine: null, difficulty: null, status: null })} class:list={['filter-tab', { active: !categoryFilter && !engineFilter && !difficultyFilter && !statusFilter }]}>
-                All
+        <div class="filter-group">
+          <span class="filter-label">Category</span>
+          <div class="filter-pills">
+            <a href={buildUrl({ category: null, engine: null, difficulty: null, status: null })}
+               class:list={['filter-pill', { active: !categoryFilter && !engineFilter && !difficultyFilter && !statusFilter }]}>
+              All
+            </a>
+            {categories.map(cat => (
+              <a href={buildUrl({ category: cat.slug })}
+                 class:list={['filter-pill', { active: isFilterActive('category', cat.slug) }]}>
+                {cat.label}
               </a>
-              {categories.map(cat => (
-                <a href={buildUrl({ category: cat.slug })} class:list={['filter-tab', { active: categoryFilter === cat.slug }]}>
-                  {cat.label}
-                </a>
-              ))}
-            </div>
-          </div>
-          <div class="filter-section">
-            <span class="filter-label">Engine</span>
-            <div class="filter-tabs">
-              {engineOptions.map(e => (
-                <a href={buildUrl({ engine: e })} class:list={['filter-tab', { active: engineFilter === e }]}>
-                  {e}
-                </a>
-              ))}
-            </div>
-          </div>
-          <div class="filter-section">
-            <span class="filter-label">Difficulty</span>
-            <div class="filter-tabs">
-              {difficultyOptions.map(d => (
-                <a href={buildUrl({ difficulty: d })} class:list={['filter-tab', { active: difficultyFilter === d }]}>
-                  {d}
-                </a>
-              ))}
-            </div>
-          </div>
-          <div class="filter-section">
-            <span class="filter-label">Status</span>
-            <div class="filter-tabs">
-              {statusOptions.map(s => (
-                <a href={buildUrl({ status: s })} class:list={['filter-tab', { active: statusFilter === s }]}>
-                  {s}
-                </a>
-              ))}
-            </div>
+            ))}
           </div>
         </div>
-      </div>
-    </section>
 
-    <section class="topics-list">
-      <div class="container">
+        <div class="filter-group">
+          <span class="filter-label">Engine</span>
+          <div class="filter-pills">
+            {engineOptions.map(e => (
+              <a href={buildUrl({ engine: e })}
+                 class:list={['filter-pill', { active: isFilterActive('engine', e) }]}>
+                {e}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-label">Difficulty</span>
+          <div class="filter-pills">
+            {difficultyOptions.map(d => (
+              <a href={buildUrl({ difficulty: d })}
+                 class:list={['filter-pill', { active: isFilterActive('difficulty', d) }]}>
+                {d}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-label">Status</span>
+          <div class="filter-pills">
+            {statusOptions.map(s => (
+              <a href={buildUrl({ status: s })}
+                 class:list={['filter-pill', { active: isFilterActive('status', s) }]}>
+                {s}
+              </a>
+            ))}
+          </div>
+        </div>
+      </aside>
+
+      <!-- Topic Cards Grid -->
+      <section class="topics-content">
+        <div class="topics-count">
+          <p>{sortedTopics.length} of {totalCount} topics</p>
+        </div>
+
         {sortedTopics.length === 0 ? (
           <div class="empty-state">
-            <h3>No topics match your filters</h3>
-            <p>Try adjusting the filters or browse all topics.</p>
-            <a href="/OpenCS/topics">Clear filters</a>
+            <p>No topics match your filters.</p>
+            <a href="/OpenCS/topics" class="btn-secondary">Clear filters</a>
           </div>
         ) : (
           <div class="topics-grid">
             {sortedTopics.map(topic => (
               <a href={`/OpenCS/topics/${topic.id.replace(/\.mdx?$/, '')}`} class="topic-card">
                 <div class="topic-card-header">
-                  <span class="topic-engine">{topic.data.engine}</span>
-                  <span class={`topic-status status-${topic.data.status}`}>{topic.data.status}</span>
+                  <span class="pill category">{topic.data.category}</span>
+                  <span class="pill">{topic.data.engine}</span>
                 </div>
                 <h3>{topic.data.title}</h3>
                 <p>{topic.data.description}</p>
                 <div class="topic-card-footer">
-                  <span class="topic-difficulty {topic.data.difficulty}">{topic.data.difficulty}</span>
-                  <span class="topic-time">{topic.data.estimatedTime}</span>
+                  <span class="pill difficulty">{topic.data.difficulty}</span>
+                  <span class="pill time">{topic.data.estimatedTime}</span>
                 </div>
                 {topic.data.tags && topic.data.tags.length > 0 && (
                   <div class="topic-tags">
                     {topic.data.tags.slice(0, 3).map(tag => (
-                      <span class="topic-tag">{tag}</span>
+                      <span class="pill tag">{tag}</span>
                     ))}
                   </div>
                 )}
@@ -140,357 +143,227 @@ function buildUrl(params: Record<string, string | null>) {
             ))}
           </div>
         )}
-      </div>
-    </section>
+      </section>
+    </div>
   </main>
   <Footer />
 </BaseLayout>
 
-<script>
-  const toggle = document.getElementById('filterToggle');
-  const sections = document.getElementById('filterSections');
-  const toggleText = toggle?.querySelector('.filter-toggle-text');
-  const toggleIcon = toggle?.querySelector('.filter-toggle-icon');
-  
-  function updateToggleState(expanded: boolean) {
-    if (!toggle || !sections || !toggleText || !toggleIcon) return;
-    toggle.setAttribute('aria-expanded', String(expanded));
-    sections.classList.toggle('expanded', expanded);
-    sections.classList.toggle('collapsed', !expanded);
-    toggleText.textContent = expanded ? 'Hide Filters' : 'Show Filters';
-    toggleIcon.style.transform = expanded ? 'rotate(0deg)' : 'rotate(-90deg)';
-  }
-
-  // Start collapsed on mobile (filter hidden by default)
-  if (window.innerWidth <= 640) {
-    updateToggleState(false);
-  }
-
-  toggle?.addEventListener('click', () => {
-    const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
-    updateToggleState(!isExpanded);
-  });
-
-  // Handle resize
-  window.addEventListener('resize', () => {
-    if (window.innerWidth <= 640) {
-      updateToggleState(false);
-    } else {
-      updateToggleState(true);
-    }
-  });
-</script>
-
 <style>
-  .topics-header {
-    padding: var(--space-12) 0 var(--space-6);
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
+  .topics-page {
+    padding: calc(var(--header-height) + var(--space-xl)) 0 var(--space-2xl);
   }
 
-  .topics-header h1 {
-    margin-bottom: var(--space-2);
+  .topics-layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    gap: var(--space-2xl);
+    align-items: start;
   }
 
-  .topics-header p {
-    color: var(--color-text-muted);
-  }
-
-  .topics-filters {
-    padding: var(--space-4) 0;
-    background: var(--color-bg);
-    border-bottom: 1px solid var(--color-border);
+  /* Sidebar */
+  .topics-sidebar {
     position: sticky;
-    top: var(--header-height);
-    z-index: 50;
+    top: calc(var(--header-height) + var(--space-lg));
+    padding: var(--space-lg);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
   }
 
-  .filter-section {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    margin-bottom: var(--space-3);
-    overflow-x: auto;
+  .topics-sidebar h3 {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-lg);
+    font-weight: 500;
   }
 
-  .filter-section:last-child {
+  .filter-group {
+    margin-bottom: var(--space-lg);
+  }
+
+  .filter-group:last-child {
     margin-bottom: 0;
   }
 
   .filter-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--color-text-muted);
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    white-space: nowrap;
-    min-width: 64px;
-  }
-
-  .filter-tabs {
-    display: flex;
-    gap: var(--space-2);
-    flex-wrap: wrap;
-  }
-
-  .filter-tab {
-    padding: var(--space-1) var(--space-3);
-    border-radius: var(--radius-md);
-    font-size: 0.8125rem;
-    font-weight: 500;
+    letter-spacing: 0.06em;
     color: var(--color-text-muted);
-    text-decoration: none;
-    white-space: nowrap;
-    transition: all 0.15s;
-    border: 1px solid transparent;
-  }
-
-  .filter-tab:hover {
-    background: var(--color-surface);
-    color: var(--color-text);
-    text-decoration: none;
-    border-color: var(--color-border);
-  }
-
-  .filter-tab.active {
-    background: var(--color-primary);
-    color: white;
-    border-color: var(--color-primary);
-  }
-
-  .filter-toggle {
-    display: none;
-    width: 100%;
-    padding: var(--space-2) var(--space-3);
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    font-size: 0.8125rem;
+    margin-bottom: var(--space-sm);
     font-weight: 500;
-    color: var(--color-text);
-    cursor: pointer;
-    justify-content: space-between;
-    align-items: center;
   }
 
-  .filter-toggle:hover {
-    border-color: var(--color-primary);
+  .filter-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
   }
 
-  .filter-toggle-icon {
-    font-size: 0.625rem;
-    transition: transform 0.2s;
+  /* Content area */
+  .topics-content {
+    min-width: 0;
   }
 
-  .filter-sections {
-    transition: max-height 0.3s ease, opacity 0.2s ease;
-    overflow: hidden;
-  }
-
-  .filter-sections.collapsed {
-    max-height: 0;
-    opacity: 0;
-    padding: 0;
-  }
-
-  .topics-list {
-    padding: var(--space-8) 0 var(--space-16);
+  .topics-count {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-lg);
   }
 
   .topics-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-4);
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
   }
 
   .topic-card {
     display: flex;
     flex-direction: column;
-    padding: var(--space-6);
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-sm);
+    padding: var(--space-lg);
     text-decoration: none;
-    transition: all 0.15s;
+    transition: border-color var(--transition), transform var(--transition);
+    min-height: 200px;
   }
 
   .topic-card:hover {
     border-color: var(--color-primary);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
     text-decoration: none;
   }
 
   .topic-card-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--space-3);
-  }
-
-  .topic-engine {
-    font-size: 0.6875rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-text-muted);
-    background: var(--color-bg);
-    padding: var(--space-1) var(--space-2);
-    border-radius: var(--radius-sm);
-  }
-
-  .topic-status {
-    font-size: 0.625rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: var(--space-1) var(--space-2);
-    border-radius: var(--radius-sm);
-  }
-
-  .status-planned {
-    background: #fef3c7;
-    color: #92400e;
-  }
-
-  .status-in-progress {
-    background: #dbeafe;
-    color: #1e40af;
-  }
-
-  .status-published {
-    background: #d1fae5;
-    color: #065f46;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-md);
+    flex-wrap: wrap;
   }
 
   .topic-card h3 {
-    font-size: 1rem;
-    margin-bottom: var(--space-2);
+    font-family: var(--font-sans);
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0 0 var(--space-sm) 0;
     color: var(--color-text);
+    line-height: 1.3;
   }
 
   .topic-card p {
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
-    flex: 1;
-    margin-bottom: var(--space-3);
+    font-size: 0.875rem;
+    color: var(--color-text-body);
     line-height: 1.5;
+    margin: 0 0 var(--space-md) 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
   }
 
   .topic-card-footer {
     display: flex;
-    gap: var(--space-4);
-    font-size: 0.75rem;
-    color: var(--color-text-muted);
-    margin-top: auto;
-  }
-
-  .topic-difficulty {
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 0.6875rem;
-    font-weight: 500;
-    text-transform: capitalize;
-  }
-
-  .topic-difficulty.beginner {
-    background: #d1fae5;
-    color: #065f46;
-  }
-
-  .topic-difficulty.intermediate {
-    background: #dbeafe;
-    color: #1e40af;
-  }
-
-  .topic-difficulty.advanced {
-    background: #fce7f3;
-    color: #9d174d;
+    gap: var(--space-sm);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
   }
 
   .topic-tags {
     display: flex;
-    gap: 4px;
     flex-wrap: wrap;
-    margin-top: var(--space-3);
-    padding-top: var(--space-3);
-    border-top: 1px solid var(--color-border);
+    gap: var(--space-xs);
+    margin-top: var(--space-sm);
   }
 
-  .topic-tag {
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    font-family: var(--font-mono);
     font-size: 0.625rem;
-    padding: 2px 6px;
-    background: var(--color-bg);
-    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     color: var(--color-text-muted);
+    background: transparent;
+  }
+
+  .pill.category {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background: var(--color-primary-light);
   }
 
   .empty-state {
     text-align: center;
-    padding: var(--space-12);
-    background: var(--color-surface);
-    border: 1px dashed var(--color-border);
-    border-radius: var(--radius-lg);
-  }
-
-  .empty-state h3 {
-    margin-bottom: var(--space-2);
+    padding: var(--space-2xl);
+    color: var(--color-text-muted);
   }
 
   .empty-state p {
-    color: var(--color-text-muted);
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-md);
   }
 
-  .empty-state a {
+  /* Filter pill interactive states */
+  .filter-pill {
+    display: inline-flex;
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    font-size: 0.8125rem;
+    color: var(--color-text-body);
+    cursor: pointer;
+    transition: color var(--transition), border-color var(--transition), background-color var(--transition);
+    text-decoration: none;
+    user-select: none;
+  }
+
+  .filter-pill:hover {
     color: var(--color-primary);
-    text-decoration: underline;
+    border-color: var(--color-primary);
+    text-decoration: none;
   }
 
-  @media (max-width: 1024px) {
-    .topics-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
+  .filter-pill.active {
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+    border-color: var(--color-primary);
   }
 
-  @media (max-width: 640px) {
-    .topics-grid {
+  /* Responsive */
+  @media (max-width: 768px) {
+    .topics-layout {
       grid-template-columns: 1fr;
     }
 
-    .filter-section {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: var(--space-2);
-    }
-
-    .filter-label {
-      min-width: unset;
-    }
-
-    .topics-filters {
-      padding: var(--space-2) 0;
-    }
-
-    .filter-toggle {
+    .topics-sidebar {
+      position: static;
       display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      padding: var(--space-md);
     }
 
-    .filter-sections {
-      max-height: 0;
-      opacity: 0;
-      padding: 0;
-      margin-top: 0;
+    .topics-sidebar h3 {
+      width: 100%;
+      margin-bottom: 0;
     }
 
-    .filter-sections.expanded {
-      max-height: 500px;
-      opacity: 1;
-      padding: var(--space-3) 0 0 0;
-      margin-top: var(--space-2);
+    .filter-group {
+      margin-bottom: 0;
     }
 
-    .filter-section {
-      margin-bottom: var(--space-2);
+    .topics-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>
