@@ -121,3 +121,378 @@ pre code {
 /* NO shadows anywhere — use borders instead */
 /* NO gradients */
 /* transitions ONLY on color, background-color, border-color */
+
+/* ========================================
+   VISUALIZER FRAME
+   ======================================== */
+
+.vf {
+  margin: var(--space-xl) 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.vf-header {
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.vf-title {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 var(--space-xs) 0;
+  color: var(--color-text);
+}
+
+.vf-desc {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.vf-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-surface-alt);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.vf-canvas {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-canvas);
+}
+
+.vf-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-2xl);
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+.vf-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: vf-spin 0.8s linear infinite;
+}
+
+@keyframes vf-spin {
+  to { transform: rotate(360deg); }
+}
+
+.vf-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-2xl);
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+.vf-empty-icon {
+  font-size: 1.5rem;
+  opacity: 0.3;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-primary);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color var(--transition);
+  white-space: nowrap;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-container);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: transparent;
+  color: var(--color-text-body);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition);
+  white-space: nowrap;
+}
+
+.btn-secondary:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn-secondary.active {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* Segmented control (connected buttons) */
+.segmented {
+  display: inline-flex;
+  gap: 0;
+}
+
+.segmented .btn-secondary {
+  border-radius: 0;
+  border-right-width: 0;
+}
+
+.segmented .btn-secondary:first-child {
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  border-right-width: 0;
+}
+
+.segmented .btn-secondary:last-child {
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  border-right-width: 1px;
+}
+
+/* ========================================
+   FORM ELEMENTS
+   ======================================== */
+
+.input {
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--color-text);
+  transition: border-color var(--transition);
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+}
+
+.select {
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  color: var(--color-text);
+  cursor: pointer;
+  outline: none;
+}
+
+.select:focus {
+  border-color: var(--color-primary);
+}
+
+/* ========================================
+   TOPIC CARD (for topics index page)
+   ======================================== */
+
+.topic-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-lg);
+  text-decoration: none;
+  transition: border-color var(--transition), transform var(--transition);
+}
+
+.topic-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.topic-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.topic-card-code {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.topic-card-status {
+  font-size: 0.6875rem;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.topic-card h3 {
+  margin: 0 0 var(--space-sm) 0;
+  color: var(--color-text);
+}
+
+.topic-card p {
+  margin: 0 0 var(--space-md) 0;
+  font-size: 0.875rem;
+  color: var(--color-text-body);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.topic-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ========================================
+   FILTER PILLS (topics index sidebar)
+   ======================================== */
+
+.filter-pill {
+  display: inline-flex;
+  padding: var(--space-sm) var(--space-md);
+  background: transparent;
+  color: var(--color-text-body);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition), background-color var(--transition);
+  text-decoration: none;
+}
+
+.filter-pill:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  text-decoration: none;
+}
+
+.filter-pill.active {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* ========================================
+   DOT GRID BACKGROUND
+   ======================================== */
+
+.bg-grid-dots {
+  position: relative;
+}
+
+.bg-grid-dots::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--color-border) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ========================================
+   SECTION DIVIDER
+   ======================================== */
+
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-2xl) 0;
+}
+
+/* ========================================
+   PILL BADGES
+   ======================================== */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.pill.category {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+/* ========================================
+   TABLE STYLES (for MDX content)
+   ======================================== */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--space-lg);
+  font-size: 0.875rem;
+}
+
+th, td {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
+  text-align: left;
+}
+
+th {
+  background: var(--color-surface-alt);
+  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
