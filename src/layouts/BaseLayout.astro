@@ -30,20 +30,18 @@ const { title, description = 'Visual learning platform for BTech CSE students', 
 
   /* Dot grid background for topic pages */
   body:not(.compact) {
-    background-image: radial-gradient(circle, var(--color-border) 1px, transparent 1px);
-    background-size: 24px 24px;
-    background-attachment: fixed;
-    opacity: 1;
+    position: relative;
   }
 
-  /* Ensure the background doesn't interfere with readability */
   body:not(.compact)::before {
     content: '';
     position: fixed;
     inset: 0;
-    background: var(--color-bg);
-    opacity: 0.92;
+    background-image: radial-gradient(circle, var(--color-border) 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: 0.08;
     z-index: -1;
+    pointer-events: none;
   }
 
   .container {
