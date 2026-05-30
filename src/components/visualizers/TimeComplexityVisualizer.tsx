@@ -41,8 +41,6 @@ export function TimeComplexityVisualizer() {
           </div>
         ))}
       </div>
-
-      </style>
     </VisualizerFrame>
   );
 }
