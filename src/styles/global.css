@@ -15,6 +15,10 @@
   --color-error: #DC2626;
   --color-highlight: #F59E0B;
 
+  /* Legacy aliases */
+  --color-accent: #2563EB;
+  --color-red: #DC2626;
+
   /* Complexity tier colors */
   --color-complexity-optimal: #22c55e;
   --color-complexity-good: #84cc16;

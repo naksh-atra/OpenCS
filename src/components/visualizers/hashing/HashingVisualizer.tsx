@@ -227,7 +227,7 @@ export function HashingVisualizer() {
 
         {/* Probe visualization for open addressing */}
         {state.method !== 'chaining' && state.highlightProbeSequence.length > 0 && (
-          <div style={{ padding: '8px 12px', background: 'var(--color-background)', borderRadius: '6px', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--color-text)' }}>
+          <div style={{ padding: '8px 12px', background: 'var(--color-bg)', borderRadius: '6px', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--color-text)' }}>
             Probe sequence: {state.highlightProbeSequence.map(i => `[${i}]`).join(' → ')}
           </div>
         )}
