@@ -45,8 +45,8 @@ export function TimeComplexityVisualizer() {
       title="Complexity Growth Comparison"
       description="Select complexity classes and set input size n to compare how they scale."
       controls={
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }} data-testid="tcv-controls">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }} data-testid="tcv-class-toggles">
             {complexityClasses.map(c => (
               <button
                 key={c.id}
@@ -68,6 +68,7 @@ export function TimeComplexityVisualizer() {
               value={n}
               onChange={e => setN(Number(e.target.value))}
               style={{ flex: 1, maxWidth: 300 }}
+              data-testid="tcv-n-slider"
             />
             <input
               type="number"
@@ -77,6 +78,7 @@ export function TimeComplexityVisualizer() {
               onChange={e => setN(Math.max(1, Math.min(10000, Number(e.target.value))))}
               className="ns-value-input"
               style={{ width: 80, padding: '4px 8px', fontFamily: 'var(--font-mono)', fontSize: '0.875rem' }}
+              data-testid="tcv-n-input"
             />
           </div>
         </div>
@@ -85,11 +87,11 @@ export function TimeComplexityVisualizer() {
       emptyMessage="Select at least one complexity class to visualize"
     >
       {/* Bar chart for selected n */}
-      <div style={{ marginBottom: '24px' }}>
+      <div style={{ marginBottom: '24px' }} data-testid="tcv-chart-section">
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
           Growth at n = {n}
         </div>
-        <div className="complexity-chart" data-testid="time-complexity-visualizer" style={{ height: maxBarHeight + 40 }}>
+        <div className="complexity-chart" data-testid="tcv-chart" style={{ height: maxBarHeight + 40 }}>
           {active.map(c => {
             const val = computeValue(c.id, n);
             const maxVal = Math.max(...active.map(cc => computeValue(cc.id, n)), 1);
@@ -111,12 +113,12 @@ export function TimeComplexityVisualizer() {
       </div>
 
       {/* Comparison table */}
-      <div>
+      <div data-testid="tcv-table-section">
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
           Comparison Table
         </div>
         <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8125rem' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8125rem' }} data-testid="tcv-table">
             <thead>
               <tr>
                 <th style={{ padding: '8px 12px', border: '1px solid var(--color-border)', background: 'var(--color-surface-alt)', fontFamily: 'var(--font-mono)', fontSize: '0.6875rem', textTransform: 'uppercase', letterSpacing: '0.04em', textAlign: 'left' }}>n</th>
