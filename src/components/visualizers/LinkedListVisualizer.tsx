@@ -167,21 +167,21 @@ export function LinkedListVisualizer() {
       description={message}
       controls={
         <>
-          <div className="llv-presets">
+          <div className="llv-presets" data-testid="llv-presets">
             {LINKED_LIST_PRESETS.map((p, i) => (
               <button key={p.label} onClick={() => setPresetIdx(i)} className={`llv-btn ${presetIdx === i ? 'active' : ''}`}>
                 {p.label}
               </button>
             ))}
           </div>
-          <div className="llv-controls">
-            <div className="llv-op">
+          <div className="llv-controls" data-testid="llv-controls">
+            <div className="llv-op" data-testid="llv-ops">
               <button onClick={() => setOperation('traverse')} className={`llv-btn ${operation === 'traverse' ? 'active' : ''}`}>Traverse</button>
               <button onClick={() => setOperation('search')} className={`llv-btn ${operation === 'search' ? 'active' : ''}`}>Search</button>
               <button onClick={() => setOperation('insert')} className={`llv-btn ${operation === 'insert' ? 'active' : ''}`}>Insert</button>
               <button onClick={() => setOperation('delete')} className={`llv-btn ${operation === 'delete' ? 'active' : ''}`}>Delete</button>
             </div>
-            <div className="llv-inputs">
+            <div className="llv-inputs" data-testid="llv-inputs">
               {(operation === 'search' || operation === 'insert') && (
                 <input type="number" value={value} onChange={e => setValue(e.target.value)} placeholder="Value" className="llv-input" />
               )}

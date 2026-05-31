@@ -70,17 +70,17 @@ export function ArrayVisualizer() {
       description={`Array: [${state.data.join(', ')}] — ${state.message}`}
       controls={
         <>
-          <div className="av-presets">
-            {PRESETS.map((p: ArrayPreset) => (
+          <div className="av-presets" data-testid="av-presets">
+            {PRESETS.map((p, i) => (
               <button key={p.label} onClick={() => handlePreset(p.data)} className="av-btn">
                 {p.label}
               </button>
             ))}
-            <button onClick={handleRandom} className="av-btn">Random</button>
-            <button onClick={handleReset} className="av-btn av-btn-reset">Reset</button>
+            <button onClick={handleRandom} className="av-btn" data-testid="av-random-btn">Random</button>
+            <button onClick={handleReset} className="av-btn av-btn-reset" data-testid="av-reset-btn">Reset</button>
           </div>
-          <div className="av-ops">
-            <div className="av-op-row">
+          <div className="av-ops" data-testid="av-ops">
+            <div className="av-op-row" data-testid="av-op-controls">
               <select value={operation} onChange={e => setOperation(e.target.value)} className="av-select">
                 <option value="access">Access</option>
                 <option value="insert">Insert</option>

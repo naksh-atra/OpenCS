@@ -134,22 +134,22 @@ export function BSTVisualizer() {
       description={`BST: [${inorder()}] — ${state.message}`}
       controls={
         <>
-          <div className="bst-presets">
+          <div className="bst-presets" data-testid="bst-presets">
             {PRESET_TREES.map((p, i) => (
               <button key={p.label} onClick={() => setPresetIdx(i)} className={`bst-btn ${presetIdx === i ? 'active' : ''}`}>
                 {p.label}
               </button>
             ))}
           </div>
-          <div className="bst-ops">
+          <div className="bst-ops" data-testid="bst-ops">
             <label className="sr-only" htmlFor="bst-op-select">Operation</label>
             <select id="bst-op-select" value={operation} onChange={e => setOperation(e.target.value as 'search' | 'insert' | 'delete')} className="bst-select" aria-label="Select operation">
               <option value="search">Search</option>
               <option value="insert">Insert</option>
               <option value="delete">Delete</option>
             </select>
-            <input type="number" value={inputValue} onChange={e => setInputValue(e.target.value)} placeholder="Value" className="bst-input" />
-            <button onClick={handleOp} className="bst-btn bst-btn-primary">Execute</button>
+            <input type="number" value={inputValue} onChange={e => setInputValue(e.target.value)} placeholder="Value" className="bst-input" data-testid="bst-input" />
+            <button onClick={handleOp} className="bst-btn bst-btn-primary" data-testid="bst-execute">Execute</button>
           </div>
         </>
       }
