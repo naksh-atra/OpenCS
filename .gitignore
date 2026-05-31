@@ -37,7 +37,8 @@ npm-debug.log*
 # Test artifacts
 test-results/
 
-# Screenshots (generated, not source)
+# Images / generated assets
+*.bak
 tests/**/snapshots/*.png
 tests/**/*.spec.ts-snapshots/*.png
 
