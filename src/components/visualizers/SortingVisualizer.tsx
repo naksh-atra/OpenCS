@@ -73,20 +73,20 @@ export function SortingVisualizer() {
       description={message}
       controls={
         <>
-          <div className="sv-presets">
+          <div className="sv-presets" data-testid="sv-presets">
             {SORT_PRESETS.map((p, i) => (
               <button key={p.label} onClick={() => setPresetIdx(i)} className={`sv-btn ${presetIdx === i ? 'active' : ''}`}>
                 {p.label}
               </button>
             ))}
           </div>
-          <div className="sv-controls">
-            <div className="sv-algo">
+          <div className="sv-controls" data-testid="sv-controls">
+            <div className="sv-algo" data-testid="sv-algo">
               <button onClick={() => setAlgo('bubble')} className={`sv-btn ${algo === 'bubble' ? 'active' : ''}`}>Bubble</button>
               <button onClick={() => setAlgo('insertion')} className={`sv-btn ${algo === 'insertion' ? 'active' : ''}`}>Insertion</button>
               <button onClick={() => setAlgo('merge')} className={`sv-btn ${algo === 'merge' ? 'active' : ''}`}>Merge</button>
             </div>
-            <div className="sv-playback">
+            <div className="sv-playback" data-testid="sv-playback">
               <button onClick={handleReset} className="sv-btn">Reset</button>
               <button onClick={handleStep} className="sv-btn">Step</button>
               <button onClick={handlePlay} className="sv-btn sv-btn-primary">{isPlaying ? 'Pause' : 'Play'}</button>
