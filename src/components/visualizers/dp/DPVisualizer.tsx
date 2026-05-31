@@ -40,7 +40,7 @@ export function DPVisualizer() {
 description="Watch DP tables fill step by step. See Fibonacci, LCS, and 0/1 Knapsack in action."
       controls={
         <>
-          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }}>
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }} data-testid="dpv-presets">
             {DP_PRESETS.map((p) => (
               <button key={p.label} onClick={() => handlePreset(p)} className="dp-problem-btn" style={{ fontSize: '0.75rem', padding: '4px 8px' }}>
                 {p.label}
@@ -52,8 +52,8 @@ description="Watch DP tables fill step by step. See Fibonacci, LCS, and 0/1 Knap
       isEmpty={isEmpty}
       emptyMessage="Select a problem to visualize"
     >
-      <div className="dp-container">
-        <div className="dp-controls">
+      <div className="dp-container" data-testid="dp-container">
+        <div className="dp-controls" data-testid="dp-controls">
           <button onClick={handleStep} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-primary)', background: 'var(--color-primary)', color: 'white', fontSize: '0.8125rem', cursor: 'pointer' }}>Step</button>
           <button onClick={handleRunFull} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Run All</button>
           <button onClick={handleReset} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Reset</button>
@@ -61,18 +61,18 @@ description="Watch DP tables fill step by step. See Fibonacci, LCS, and 0/1 Knap
 
         {state && (
           <>
-            <div className="dp-canvas-wrap">
-              <canvas ref={canvasRef} className="dp-canvas" width={560} height={280} />
+            <div className="dp-canvas-wrap" data-testid="dp-canvas-wrap">
+              <canvas ref={canvasRef} className="dp-canvas" width={560} height={280} data-testid="dp-canvas" />
             </div>
 
-            <div className="dp-legend">
+            <div className="dp-legend" data-testid="dp-legend">
               <span className="dp-legend-item current">Current</span>
               <span className="dp-legend-item filled">Filled</span>
               {state.backtrackPath.length > 0 && <span className="dp-legend-item backtrack">Backtrack</span>}
             </div>
 
             {state.steps.length > 0 && (
-              <div className="dp-steps">
+              <div className="dp-steps" data-testid="dp-steps">
                 {state.steps.slice(Math.max(0, state.currentStep - 5), state.currentStep + 1).map((step, i) => (
                   <div key={i} className={`dp-step ${i === Math.min(5, state.currentStep) ? 'current' : ''}`}>
                     {step.message}

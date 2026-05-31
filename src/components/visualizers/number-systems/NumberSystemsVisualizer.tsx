@@ -172,8 +172,8 @@ export function NumberSystemsVisualizer() {
       isEmpty={isEmpty}
       emptyMessage="Select a preset or enter a value and click Convert"
     >
-      <div className="ns-container">
-        <div className="ns-input-row">
+      <div className="ns-container" data-testid="ns-container">
+        <div className="ns-input-row" data-testid="ns-input-row">
           <div className="ns-field">
             <label htmlFor="ns-input">Input Value</label>
             <input
@@ -184,6 +184,7 @@ export function NumberSystemsVisualizer() {
               onKeyDown={handleKeyDown}
               placeholder="e.g. 255, 11111111, FF"
               className="ns-value-input"
+              data-testid="ns-value-input"
             />
           </div>
           <div className="ns-field">
@@ -193,6 +194,7 @@ export function NumberSystemsVisualizer() {
               value={inputBase}
               onChange={e => setInputBase(Number(e.target.value) as NumberBase)}
               className="ns-base-select"
+              data-testid="ns-from-base-select"
             >
               {AVAILABLE_BASES.map(b => (
                 <option key={b.value} value={b.value}>{b.label}</option>
@@ -207,6 +209,7 @@ export function NumberSystemsVisualizer() {
               value={outputBase}
               onChange={e => setOutputBase(Number(e.target.value) as NumberBase)}
               className="ns-base-select"
+              data-testid="ns-to-base-select"
             >
               {AVAILABLE_BASES.map(b => (
                 <option key={b.value} value={b.value}>{b.label}</option>
@@ -239,7 +242,7 @@ export function NumberSystemsVisualizer() {
 
         {/* Conversion Result */}
         {conversion && !error && (
-          <div className="ns-conversion-area">
+          <div className="ns-conversion-area" data-testid="ns-conversion-area">
             <div className="ns-result-box">
               <span className="ns-result-value">{conversion.message}</span>
             </div>
@@ -261,7 +264,7 @@ export function NumberSystemsVisualizer() {
 
         {/* IEEE 754 Display */}
         {showIEEE754 && ieeeState && (
-          <div className="ns-ieee754-area">
+            <div className="ns-ieee754-area" data-testid="ns-ieee754-area">
             <h4 style={{ margin: 0, fontSize: '0.875rem', color: 'var(--color-text)' }}>
               IEEE 754 Single Precision — {ieeeState.value}
             </h4>
