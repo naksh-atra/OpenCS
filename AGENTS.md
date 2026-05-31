@@ -5,42 +5,42 @@ OpenCS is an open-source educational computer science project built to visually 
 
 ## Current repo status
 - Active branch: `dev`, production branch: `main`
-- 25 topic pages, 47 Playwright smoke tests passing
-- All 10 planned visualizers from IMPLEMENTATION_PLAN.md are complete
+- 25 built pages (index, about, contribute, roadmap, topics index, 20 topic pages)
+- 20 interactive visualizers, all with `client:load` hydration
+- 53 Playwright E2E tests passing (smoke, hydration, render, quality, fix-verification)
+- All 4 engines complete with full operation suites
 
 ## Engines
 - **Sequence Engine** (`src/engines/sequence/`): Array ops, Stack/Queue, Linked List, Sorting, Hashing, Expression Parsing
-- **TreeGraph Engine** (`src/engines/treegraph/`): BST, Graph traversals, Weighted graph (Dijkstra/Prim), Heap ops, AVL ops
+- **TreeGraph Engine** (`src/engines/treegraph/`): BST, Graph traversals, Weighted graph (Dijkstra/Prim), Heap ops, AVL ops, Graph representations
 - **Theory Engine** (`src/engines/theory/`): Complexity classes, Number systems (base conversion + IEEE 754), DP (Fibonacci/LCS/Knapsack), Automata (DFA/NFA)
 - **SystemProcess Engine** (`src/engines/system-process/`): CPU scheduling (FCFS/SJF/SRTF/Priority/RR), Memory management (FIFO/LRU/Optimal)
 
-## Visualizer inventory (25 topics)
+## Visualizer inventory (20 topics)
 
-### Stable / Production-ready
-- TimeComplexityVisualizer (Theory)
+### With data-testid (8)
+- TimeComplexityVisualizer (Theory) — also has inline style={{}} to fix
 - RecursionTreeVisualizer (Theory)
-- NumberSystemsVisualizer (Theory) — new
-- HashingVisualizer (Sequence) — new
-- DPVisualizer (Theory) — new
-- ExpressionVisualizer (Sequence) — new
-- CPUSchedulingVisualizer (SystemProcess) — new
-- MemoryVisualizer (SystemProcess) — new
-- AutomataVisualizer (Theory) — new
-- GraphRepVisualizer (TreeGraph) — new
+- SortingVisualizer (Sequence)
+- ArrayVisualizer (Sequence)
+- BSTVisualizer (TreeGraph)
+- GraphTraversalVisualizer (TreeGraph)
+- ShortestPathMSTVisualizer (TreeGraph)
+- TreeTraversalVisualizer (TreeGraph)
 
-### Refactored (modular structure)
-- ArrayVisualizer (Sequence) — types/presets/CSS split
-- LinkedListVisualizer (Sequence) — types/presets/CSS split
-- SortingVisualizer (Sequence) — types/presets/render/CSS split
-- StackQueueVisualizer (Sequence) — types/presets/CSS split
-- HeapVisualizer (TreeGraph) — types/presets/render/CSS split
-- AVLVisualizer (TreeGraph) — types/presets/render/CSS split
-
-### Canvas-based (src/lib/graph/)
-- BSTVisualizer — canvas tree with edge drawing fixed
-- TreeTraversalVisualizer — canvas tree with step animation
-- GraphTraversalVisualizer — canvas state diagram (BFS/DFS)
-- ShortestPathMSTVisualizer — canvas graph (Dijkstra/Prim)
+### Need data-testid (12)
+- LinkedListVisualizer (Sequence)
+- StackQueueVisualizer (Sequence)
+- HashingVisualizer (Sequence)
+- ExpressionVisualizer (Sequence)
+- NumberSystemsVisualizer (Theory) — also has inline style={{}}
+- DPVisualizer (Theory) — also has inline style={{}}
+- AutomataVisualizer (Theory) — also has inline style={{}}
+- AVLVisualizer (TreeGraph) — also has inline style={{}}
+- HeapVisualizer (TreeGraph) — also has inline style={{}}
+- CPUSchedulingVisualizer (SystemProcess) — also has inline style={{}}
+- MemoryVisualizer (SystemProcess) — also has inline style={{}}
+- GraphRepVisualizer (TreeGraph) — also has inline style={{}}
 
 ## Architecture boundaries
 Preserve this responsibility split for all visualizers:
@@ -54,9 +54,10 @@ Preserve this responsibility split for all visualizers:
 
 ## Component rules
 1. NO inline `<style>` blocks in components
-2. NO inline style objects for static styling
+2. NO inline style objects for static styling — use CSS classes
 3. Use `VisualizerFrame` wrapper for consistent layout
 4. Use `data-testid` attributes on key elements for testing
+5. NO hardcoded hex colors in CSS — use design token variables (`--color-*`, `--color-complexity-*`)
 
 ## Validation workflow
 Required validation sequence:
@@ -69,12 +70,17 @@ Required validation sequence:
 - Main development happens on `dev`
 - Production branch is `main`
 - Preferred commit style: `type(scope): change1 + change2 + change3`
+- Never use "auto" as type (use feat/fix/refactor/test/chore/docs/content)
+- Always split unrelated changes into separate commits
+- Author must be set explicitly with `-c` flags in cron/automated contexts
 
 ## Priority order (next steps)
-1. Add `data-testid` attributes to all new visualizers for richer test coverage
-2. Update ROADMAP.md to reflect completed milestones
-3. Add interactive exercises with auto-grading (long-term)
-4. Mobile-optimized visualizations (long-term)
+1. Add `data-testid` attributes to all 12 remaining visualizers
+2. Fix inline `style={{}}` objects in 7 visualizers (move to CSS classes)
+3. Replace hardcoded hex colors with design token variables
+4. Merge `dev` → `main` for production release
+5. Mobile-optimized visualizations (long-term)
+6. Interactive exercises with auto-grading (long-term)
 
 ## Anti-goals
 - Do not spend time on cosmetic styling refinements without user feedback
@@ -84,7 +90,7 @@ Required validation sequence:
 
 ## Test infrastructure
 - Tests in `tests/e2e/*.spec.ts`
-- Config: `playwright.config.js` — testDir is `tests/e2e`
+- Config: `playwright.config.ts` — testDir is `tests/e2e`
 - NO screenshot-based tests (too fragile across refactors)
 - Smoke tests verify page loads + no JS errors
 - Run: `npx playwright test`
