@@ -120,7 +120,7 @@ export function HashingVisualizer() {
       description={`${state.method.charAt(0).toUpperCase() + state.method.slice(1)} probing — Load factor: ${loadFactor.toFixed(2)} (${state.count}/${state.size})`}
       controls={
         <>
-          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }}>
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }} data-testid="hsv-presets">
             {HASHING_PRESETS.map((p) => (
               <button
                 key={p.label}
@@ -144,9 +144,9 @@ export function HashingVisualizer() {
       }
       isEmpty={false}
     >
-      <div className="hs-container">
+      <div className="hs-container" data-testid="hs-container">
         {/* Method selector */}
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }} data-testid="hsv-method-selector">
           {METHOD_OPTIONS.map((opt) => (
             <button
               key={opt.value}
@@ -169,7 +169,7 @@ export function HashingVisualizer() {
         </div>
 
         {/* Controls */}
-        <div className="hs-controls">
+        <div className="hs-controls" data-testid="hs-controls">
           <div className="hs-field" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <label style={{ fontSize: '0.6875rem', fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)' }}>Key</label>
             <input
@@ -179,6 +179,7 @@ export function HashingVisualizer() {
               onChange={e => setInputKey(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="e.g. 50"
+              data-testid="hs-input"
               style={{
                 padding: '8px 10px',
                 borderRadius: '6px',
@@ -197,7 +198,7 @@ export function HashingVisualizer() {
           <button onClick={handleRehash} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Rehash</button>
           <button onClick={handleReset} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Reset</button>
 
-          <div className="hs-metric">
+          <div className="hs-metric" data-testid="hs-load-factor">
             <span className="hs-metric-label">Load Factor</span>
             <span className={`hs-metric-value ${isFull ? 'danger' : isHighLoad ? 'warn' : ''}`}>{loadFactor.toFixed(2)}</span>
           </div>
@@ -206,13 +207,13 @@ export function HashingVisualizer() {
         {error && <div className="hs-error">{error}</div>}
 
         {/* Hash Table */}
-        <div className="hs-table-wrap">
+        <div className="hs-table-wrap" data-testid="hs-table-wrap">
           <div className="hs-header-row">
             <span>Index</span>
             <span>Key</span>
             <span>Status</span>
           </div>
-          <div className="hs-table">
+          <div className="hs-table" data-testid="hs-table">
             {state.table.map((entry, i) => (
               <div key={i} className="hs-row">
                 <span className="hs-index">{i}</span>
@@ -234,7 +235,7 @@ export function HashingVisualizer() {
 
         {/* History */}
         {state.history.length > 0 && (
-          <div className="hs-history">
+          <div className="hs-history" data-testid="hs-history">
             {state.history.map((entry, i) => (
               <div key={i} className="hs-history-entry">{entry}</div>
             ))}

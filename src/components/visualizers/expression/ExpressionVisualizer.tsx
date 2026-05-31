@@ -61,7 +61,7 @@ export function ExpressionVisualizer() {
       description="Visualize the stack-based algorithm to convert infix expressions to postfix (Reverse Polish Notation)."
       controls={
         <>
-          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }}>
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }} data-testid="exv-presets">
             {EXPRESSION_PRESETS.map((p) => (
               <button
                 key={p.label}
@@ -78,8 +78,8 @@ export function ExpressionVisualizer() {
       isEmpty={isEmpty}
       emptyMessage="Select a preset or enter an expression"
     >
-      <div className="exp-container">
-        <div className="exp-input-row">
+      <div className="exp-container" data-testid="exp-container">
+        <div className="exp-input-row" data-testid="exp-input-row">
           <div className="exp-field">
             <label htmlFor="exp-input">Infix Expression</label>
             <input
@@ -90,6 +90,7 @@ export function ExpressionVisualizer() {
               onKeyDown={handleKeyDown}
               placeholder="e.g. A+B*C"
               className="exp-expression-input"
+              data-testid="exp-input"
             />
           </div>
           <button onClick={handleConvert} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-primary)', background: 'var(--color-primary)', color: 'white', fontSize: '0.8125rem', cursor: 'pointer', alignSelf: 'flex-end' }}>Convert</button>
@@ -101,10 +102,10 @@ export function ExpressionVisualizer() {
 
         {!isEmpty && (
           <>
-            <div className="exp-stack-area">
+            <div className="exp-stack-area" data-testid="exp-stack-area">
               <div className="exp-stack-wrap">
                 <span className="exp-stack-label">Stack</span>
-                <div className="exp-stack">
+                <div className="exp-stack" data-testid="exp-stack">
                   {state.stack.length === 0 ? (
                     <div className="exp-stack-item empty">Empty</div>
                   ) : (
@@ -119,13 +120,13 @@ export function ExpressionVisualizer() {
                   )}
                 </div>
               </div>
-              <div className="exp-output-wrap">
+              <div className="exp-output-wrap" data-testid="exp-output-wrap">
                 <span className="exp-output-label">Postfix Output</span>
                 <div className="exp-output">{state.output || '—'}</div>
               </div>
             </div>
 
-            <div className="exp-steps">
+            <div className="exp-steps" data-testid="exp-steps">
               {state.steps.map((step, i) => (
                 <div
                   key={i}
