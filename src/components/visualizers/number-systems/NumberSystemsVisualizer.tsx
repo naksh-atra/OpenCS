@@ -78,9 +78,32 @@ export function NumberSystemsVisualizer() {
   }, []);
 
   const handleSwapBases = useCallback(() => {
-    setInputBase(outputBase);
-    setOutputBase(inputBase);
-    setConversion(null);
+    const newInputBase = outputBase;
+    const newOutputBase = inputBase;
+    setInputBase(newInputBase);
+    setOutputBase(newOutputBase);
+
+    // Auto-convert with swapped bases if there's an input value
+    if (inputValue.trim()) {
+      if (!isValidForBase(inputValue, newInputBase)) {
+        setError(`Invalid input for base ${newInputBase}`);
+        setConversion(null);
+        return;
+      }
+      const { result, steps } = convertNumber(inputValue, newInputBase, newOutputBase);
+      setConversion({
+        inputValue,
+        inputBase: newInputBase,
+        outputBase: newOutputBase,
+        outputValue: result,
+        steps,
+        currentStep: steps.length - 1,
+        message: result.startsWith('Invalid') ? result : `${inputValue} (base ${newInputBase}) = ${result} (base ${newOutputBase})`,
+      });
+      setShowIEEE754(false);
+      setIeeeState(null);
+      setError(null);
+    }
   }, [inputBase, outputBase]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
