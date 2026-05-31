@@ -52,7 +52,7 @@ export function AVLVisualizer() {
       description="Watch the tree rebalance itself with rotations after each insertion. Height difference never exceeds 1."
       controls={
         <>
-          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }}>
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }} data-testid="avlv-presets">
             {AVL_PRESETS.map((p) => (
               <button key={p.label} onClick={() => handlePreset(p)} className="avl-toggle-btn" style={{ fontSize: '0.75rem', padding: '4px 8px' }}>
                 {p.label}
@@ -64,8 +64,8 @@ export function AVLVisualizer() {
       isEmpty={!state.root}
       emptyMessage="Insert values or load a preset to build an AVL tree"
     >
-      <div className="avl-container">
-        <div className="avl-controls">
+      <div className="avl-container" data-testid="avl-container">
+        <div className="avl-controls" data-testid="avl-controls">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <label style={{ fontSize: '0.6875rem', fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)' }}>Value</label>
             <input type="number" value={inputValue} onChange={e => setInputValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="e.g. 50" style={{ padding: '8px 10px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.875rem', fontFamily: 'var(--font-mono)', width: '80px' }} />
@@ -76,12 +76,12 @@ export function AVLVisualizer() {
 
         {error && <div className="avl-error">{error}</div>}
 
-        <div className="avl-canvas-wrap">
+        <div className="avl-canvas-wrap" data-testid="avl-canvas-wrap">
           <canvas ref={canvasRef} className="avl-canvas" width={560} height={300} />
         </div>
 
         {state.steps.length > 0 && (
-          <div className="avl-steps">
+          <div className="avl-steps" data-testid="avl-steps">
             {state.steps.slice(-5).map((step, i) => (
               <div key={i} className="avl-step">{step.message}</div>
             ))}

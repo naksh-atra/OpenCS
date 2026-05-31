@@ -32,7 +32,7 @@ export function GraphRepVisualizer() {
       description="Compare adjacency matrix vs adjacency list representations. Hover over vertices to highlight connections."
       controls={
         <>
-          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }}>
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }} data-testid="grv-presets">
             {GRAPH_REP_PRESETS.map((p, i) => (
               <button key={p.label} onClick={() => { setPresetIdx(i); setHighlightVertex(null); }} className={`gr-toggle-btn ${i === presetIdx ? 'active' : ''}`} style={{ fontSize: '0.75rem', padding: '4px 8px' }}>
                 {p.label}
@@ -43,8 +43,8 @@ export function GraphRepVisualizer() {
       }
       isEmpty={false}
     >
-      <div className="gr-container">
-        <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+      <div className="gr-container" data-testid="gr-container">
+        <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }} data-testid="gr-vertex-selector">
           {Array.from({ length: preset.vertices }, (_, i) => (
             <button key={i} onClick={() => setHighlightVertex(highlightVertex === i ? null : i)} style={{ padding: '4px 10px', borderRadius: '4px', border: '1px solid var(--color-border)', background: highlightVertex === i ? '#fef3c7' : 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'var(--font-mono)' }}>
               {i}
@@ -52,20 +52,20 @@ export function GraphRepVisualizer() {
           ))}
         </div>
 
-        <div className="gr-diagram-wrap">
+        <div className="gr-diagram-wrap" data-testid="gr-diagram-wrap">
           <canvas ref={diagramRef} className="gr-diagram-canvas" width={360} height={220} />
         </div>
 
         <div>
           <h4 style={{ margin: '0 0 8px 0', fontSize: '0.8125rem', color: 'var(--color-text)' }}>Adjacency Matrix</h4>
-          <div className="gr-matrix-wrap">
+          <div className="gr-matrix-wrap" data-testid="gr-matrix-wrap">
             <canvas ref={matrixRef} className="gr-matrix-canvas" width={360} height={120} />
           </div>
         </div>
 
         <div>
           <h4 style={{ margin: '0 0 8px 0', fontSize: '0.8125rem', color: 'var(--color-text)' }}>Adjacency List</h4>
-          <div className="gr-list-wrap">
+          <div className="gr-list-wrap" data-testid="gr-list-wrap">
             <canvas ref={listRef} className="gr-list-canvas" width={560} height={100} />
           </div>
         </div>
