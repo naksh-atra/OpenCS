@@ -48,7 +48,7 @@ export function CPUSchedulingVisualizer() {
       description="Compare FCFS, SJF, SRTF, Priority, and Round Robin scheduling with Gantt charts."
       controls={
         <>
-          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }}>
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }} data-testid="csv-presets">
             {SCHEDULING_PRESETS.map((p) => (
               <button key={p.label} onClick={() => handlePreset(p)} className="cs-algo-btn" style={{ fontSize: '0.75rem', padding: '4px 8px' }}>
                 {p.label}
@@ -60,8 +60,8 @@ export function CPUSchedulingVisualizer() {
       isEmpty={isEmpty}
       emptyMessage="Select a preset to load processes, then click Run"
     >
-      <div className="cs-container">
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+      <div className="cs-container" data-testid="cs-container">
+        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }} data-testid="cs-algorithm-selector">
           {(['fcfs', 'sjf', 'srtf', 'priority', 'round-robin'] as const).map((algo) => (
             <button key={algo} onClick={() => setAlgorithm(algo)} className={`cs-algo-btn ${algorithm === algo ? 'active' : ''}`}>
               {algo.toUpperCase()}
@@ -75,7 +75,7 @@ export function CPUSchedulingVisualizer() {
           )}
         </div>
 
-        <div className="cs-controls">
+        <div className="cs-controls" data-testid="cs-controls">
           <button onClick={handleRun} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-primary)', background: 'var(--color-primary)', color: 'white', fontSize: '0.8125rem', cursor: 'pointer' }}>Run</button>
           <button onClick={handleReset} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Reset</button>
           {state && (
@@ -88,10 +88,10 @@ export function CPUSchedulingVisualizer() {
 
         {state && state.ganttChart.length > 0 && (
           <>
-            <div className="cs-gantt-wrap">
+            <div className="cs-gantt-wrap" data-testid="cs-gantt-wrap">
               <canvas ref={ganttRef} className="cs-gantt-canvas" width={560} height={80} />
             </div>
-            <div className="cs-table-wrap">
+            <div className="cs-table-wrap" data-testid="cs-table-wrap">
               <canvas ref={tableRef} className="cs-table-canvas" width={560} height={120} />
             </div>
           </>

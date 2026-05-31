@@ -59,7 +59,7 @@ export function AutomataVisualizer() {
       description="Simulate deterministic and nondeterministic finite automata. Enter an input string and watch the state transitions."
       controls={
         <>
-          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }}>
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }} data-testid="atv-presets">
             {AUTOMATA_PRESETS.map((p) => (
               <button key={p.label} onClick={() => handlePreset(p)} className="at-toggle-btn" style={{ fontSize: '0.75rem', padding: '4px 8px' }}>
                 {p.label}
@@ -71,19 +71,19 @@ export function AutomataVisualizer() {
       isEmpty={automaton.states.length === 0}
       emptyMessage="Select a preset to load an automaton"
     >
-      <div className="at-container">
-        <div className="at-canvas-wrap">
+      <div className="at-container" data-testid="at-container">
+        <div className="at-canvas-wrap" data-testid="at-canvas-wrap">
           <canvas ref={canvasRef} className="at-canvas" width={560} height={250} />
         </div>
 
-        <div className="at-controls">
-          <input type="text" value={inputStr} onChange={e => setInputStr(e.target.value)} placeholder="Input string" className="at-input" />
+        <div className="at-controls" data-testid="at-controls">
+          <input type="text" value={inputStr} onChange={e => setInputStr(e.target.value)} placeholder="Input string" className="at-input" data-testid="at-input" />
           <button onClick={handleSimulate} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-primary)', background: 'var(--color-primary)', color: 'white', fontSize: '0.8125rem', cursor: 'pointer' }}>Simulate</button>
           <button onClick={handleReset} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Reset</button>
         </div>
 
         {simState?.accepted !== null && simState?.accepted !== undefined && (
-          <div className={`at-result ${simState.accepted ? 'accept' : 'reject'}`}>
+          <div className={`at-result ${simState.accepted ? 'accept' : 'reject'}`} data-testid="at-result">
             {simState.accepted ? '✓ Accepted' : '✗ Rejected'}
           </div>
         )}
@@ -99,7 +99,7 @@ export function AutomataVisualizer() {
         )}
 
         {simState && simState.history.length > 0 && (
-          <div className="at-history">
+          <div className="at-history" data-testid="at-history">
             {simState.history.map((h, i) => (
               <div key={i} className="at-history-entry">{h.message}</div>
             ))}

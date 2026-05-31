@@ -112,10 +112,10 @@ export function computeTraversal(type: string, root: TreeNode | null): { result:
 }
 
 export const PRESET_TREES = [
+  { label: 'Small', arr: [4, 2, 6], description: '3-node balanced tree' },
+  { label: 'Full', arr: [1, 2, 3, 4, 5, 6, 7], description: 'Perfect binary tree (3 levels, 7 nodes)' },
+  { label: 'Skewed Left', arr: [5, 4, null, 3, null, null, null, 2, null, null, null, null, null, null, null, 1, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null], description: 'Left-skewed tree (5-node chain)' },
   { label: 'Balanced', arr: [8, 3, 10, 1, 6, null, 14, null, null, 4, 7, null, null, 13, null], description: 'Well-balanced BST' },
-  { label: 'Skewed Left', arr: [5, 3, null, 1, null, null, null], description: 'Left-skewed tree' },
-  { label: 'Full', arr: [1, 2, 3, 4, 5, 6, 7], description: 'Perfect binary tree' },
-  { label: 'Small', arr: [4, 2, 6, 1, 3, 5, 7], description: 'Simple BST' },
 ];
 
 export function treeToArray(root: TreeNode | null): (number | null)[] {

@@ -75,7 +75,7 @@ export function StackQueueVisualizer() {
       description={`${isStack ? 'LIFO' : 'FIFO'} — ${state.message}`}
       controls={
         <>
-          <div className="sqv-mode-tabs">
+          <div className="sqv-mode-tabs" data-testid="sqv-mode-tabs">
             <button
               onClick={() => handleModeChange('stack')}
               className={`sqv-mode-tab ${mode === 'stack' ? 'active' : ''}`}
@@ -89,7 +89,7 @@ export function StackQueueVisualizer() {
               Queue (FIFO)
             </button>
           </div>
-          <div className="sqv-presets">
+          <div className="sqv-presets" data-testid="sqv-presets">
             {presets.map(p => (
               <button key={p.label} onClick={() => handlePreset(p.data)} className="sqv-btn">
                 {p.label}
@@ -98,7 +98,7 @@ export function StackQueueVisualizer() {
             <button onClick={handleRandom} className="sqv-btn">Random</button>
             <button onClick={handleReset} className="sqv-btn sqv-btn-reset">Reset</button>
           </div>
-          <div className="sqv-ops">
+          <div className="sqv-ops" data-testid="sqv-ops">
             <div className="sqv-input-row">
               <input
                 type="number"
@@ -106,6 +106,7 @@ export function StackQueueVisualizer() {
                 value={inputValue}
                 onChange={e => setInputValue(e.target.value)}
                 className="sqv-input"
+                data-testid="sqv-input"
               />
               {isStack ? (
                 <>
@@ -141,12 +142,12 @@ export function StackQueueVisualizer() {
       isEmpty={state.data.length === 0}
       emptyMessage={isStack ? 'Stack is empty' : 'Queue is empty'}
     >
-      <div className={`sqv-container ${isStack ? 'sqv-stack' : 'sqv-queue'}`}>
+      <div className={`sqv-container ${isStack ? 'sqv-stack' : 'sqv-queue'}`} data-testid="sqv-container">
         <div className="sqv-structure">
           {isStack ? (
             <>
               <div className="sqv-top-label">TOP</div>
-              <div className="sqv-items sqv-stack-items">
+              <div className="sqv-items sqv-stack-items" data-testid="sqv-items">
                 {[...state.data].reverse().map((val, i) => {
                   const realIndex = state.data.length - 1 - i;
                   return (
@@ -163,7 +164,7 @@ export function StackQueueVisualizer() {
               <div className="sqv-bottom-label">BOTTOM</div>
             </>
           ) : (
-            <div className="sqv-items sqv-queue-items">
+            <div className="sqv-items sqv-queue-items" data-testid="sqv-items">
               <div className="sqv-front-label">FRONT</div>
               <div className="sqv-queue-row">
                 {state.data.map((val, i) => (

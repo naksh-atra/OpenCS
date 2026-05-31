@@ -1,14 +1,14 @@
 import type { NumberPreset, NumberBase } from './types';
 
 export const NUMBER_PRESETS: NumberPreset[] = [
-  { label: '25 → Binary', value: '25', fromBase: 10, toBase: 2 },
-  { label: '11001 → Decimal', value: '11001', fromBase: 2, toBase: 10 },
-  { label: '255 → Hex', value: '255', fromBase: 10, toBase: 16 },
-  { label: 'FF → Decimal', value: 'FF', fromBase: 16, toBase: 10 },
-  { label: '77 → Octal', value: '77', fromBase: 10, toBase: 8 },
-  { label: '100 → Octal', value: '100', fromBase: 8, toBase: 10 },
-  { label: '3.14 IEEE754', value: '3.14', fromBase: 10, toBase: 10 },
-  { label: '-0.15625 IEEE754', value: '-0.15625', fromBase: 10, toBase: 10 },
+  { label: 'Decimal → Binary', value: '25', fromBase: 10, toBase: 2 },
+  { label: 'Binary → Decimal', value: '11001', fromBase: 2, toBase: 10 },
+  { label: 'Decimal → Hex', value: '255', fromBase: 10, toBase: 16 },
+  { label: 'Hex → Decimal', value: 'FF', fromBase: 16, toBase: 10 },
+  { label: 'Decimal → Octal', value: '77', fromBase: 10, toBase: 8 },
+  { label: 'Octal → Decimal', value: '100', fromBase: 8, toBase: 10 },
+  { label: 'IEEE 754 (3.14)', value: '3.14', fromBase: 10, toBase: 10 },
+  { label: 'IEEE 754 (-0.15625)', value: '-0.15625', fromBase: 10, toBase: 10 },
 ];
 
 export const AVAILABLE_BASES: { value: NumberBase; label: string }[] = [

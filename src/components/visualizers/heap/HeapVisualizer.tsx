@@ -101,7 +101,7 @@ export function HeapVisualizer() {
       description={`Size: ${state.heap.size} | Root: ${state.heap.size > 0 ? state.heap.data[0] : '—'} | ${state.message}`}
       controls={
         <>
-          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }}>
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }} data-testid="hpv-presets">
             {HEAP_PRESETS.map((p) => (
               <button
                 key={p.label}
@@ -118,9 +118,9 @@ export function HeapVisualizer() {
       isEmpty={state.heap.size === 0}
       emptyMessage="Heap is empty — insert values or load a preset"
     >
-      <div className="hp-container">
+      <div className="hp-container" data-testid="hp-container">
         {/* Type toggle */}
-        <div style={{ display: 'flex', gap: '6px' }}>
+        <div style={{ display: 'flex', gap: '6px' }} data-testid="hp-type-toggle">
           <button
             onClick={() => handleTypeToggle('min')}
             className={`hp-toggle-btn ${heapType === 'min' ? 'active' : ''}`}
@@ -136,7 +136,7 @@ export function HeapVisualizer() {
         </div>
 
         {/* Controls */}
-        <div className="hp-controls">
+        <div className="hp-controls" data-testid="hp-controls">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <label style={{ fontSize: '0.6875rem', fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)' }}>Value</label>
             <input
@@ -175,12 +175,12 @@ export function HeapVisualizer() {
         {error && <div className="hp-error">{error}</div>}
 
         {/* Canvas */}
-        <div className="hp-canvas-wrap">
+        <div className="hp-canvas-wrap" data-testid="hp-canvas-wrap">
           <canvas ref={canvasRef} className="hp-canvas" width={560} height={320} />
         </div>
 
         {/* Legend */}
-        <div className="hp-legend">
+        <div className="hp-legend" data-testid="hp-legend">
           <span className="hp-legend-item normal">Normal</span>
           <span className="hp-legend-item compare">Comparing</span>
           <span className="hp-legend-item highlight">Inserted</span>

@@ -156,14 +156,14 @@ export function TreeTraversalVisualizer() {
       description={`Traversing: ${TRAVERSALS.find(t => t.id === traversal)?.desc} — Step ${currentStep + 1}/${steps.length}`}
       controls={
         <>
-          <div className="ttv-presets">
+          <div className="ttv-presets" data-testid="ttv-presets">
             {PRESET_TREES.map((p, i) => (
               <button key={p.label} onClick={() => setPresetIdx(i)} className={`ttv-btn ${presetIdx === i ? 'active' : ''}`}>
                 {p.label}
               </button>
             ))}
           </div>
-          <div className="ttv-traversals">
+          <div className="ttv-traversals" data-testid="ttv-traversals">
             {TRAVERSALS.map(t => (
               <button key={t.id} onClick={() => setTraversal(t.id)} className={`ttv-btn ${traversal === t.id ? 'active' : ''}`}>
                 {t.label}
