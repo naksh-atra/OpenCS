@@ -53,8 +53,8 @@ function RecursionTreeVisualizer() {
       title="Recursion Tree Visualizer"
       description={`${label} · levels ${renderDepth} · ${complexity}`}
       controls={
-        <div className="rtv-controls-wrapper">
-          <div className="rtv-tabs">
+        <div className="rtv-controls-wrapper" data-testid="rtv-controls">
+          <div className="rtv-tabs" data-testid="rtv-algo-tabs">
             {Object.entries(PRESETS).map(([id, p]) => (
               <button key={id} onClick={() => handleAlgorithmChange(id as keyof typeof PRESETS)} className={`rtv-tab ${algorithm === id ? 'active' : ''}`}>
                 <span className="rtv-tab-label">{p.label}</span>
@@ -62,7 +62,7 @@ function RecursionTreeVisualizer() {
               </button>
             ))}
           </div>
-          <div className="rtv-slider">
+          <div className="rtv-slider" data-testid="rtv-depth-slider">
             <label>Levels</label>
             <input type="range" min={1} max={preset.maxRenderDepth} value={renderDepth} onChange={e => setRenderDepth(Number(e.target.value))} />
             <span className="rtv-depth-value">{renderDepth}</span>
@@ -73,9 +73,9 @@ function RecursionTreeVisualizer() {
     >
       <div className="rtv-body" data-testid="recursion-tree-visualizer">
         <div className="rtv-canvas-wrapper">
-          <canvas ref={canvasRef} className="rtv-canvas" width={560} height={canvasHeight} />
+          <canvas ref={canvasRef} className="rtv-canvas" data-testid="rtv-canvas" width={560} height={canvasHeight} />
         </div>
-        <div className="rtv-caption">{caption}</div>
+        <div className="rtv-caption" data-testid="rtv-caption">{caption}</div>
         <div className="rtv-hint">
           <div className="rtv-hint-actions">
             <button className="rtv-hint-btn" onClick={() => setRenderDepth(r => Math.max(1, r - 1))} disabled={renderDepth <= 1}>Fewer</button>
