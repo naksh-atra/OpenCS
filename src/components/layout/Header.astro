@@ -1,5 +1,6 @@
 ---
 import { navigation } from '../../data/navigation';
+import ThemeToggle from './ThemeToggle';
 
 const currentPath = Astro.url.pathname;
 ---
@@ -21,10 +22,13 @@ const currentPath = Astro.url.pathname;
       ))}
     </nav>
 
-    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
-      <span class="menu-icon">☰</span>
-      <span class="close-icon" style="display:none">✕</span>
-    </button>
+    <div class="header-right">
+      <ThemeToggle client:load />
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
+        <span class="menu-icon">☰</span>
+        <span class="close-icon" style="display:none">✕</span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -101,6 +105,55 @@ const currentPath = Astro.url.pathname;
   .nav-link.active {
     color: var(--color-text);
     border-bottom-color: var(--color-primary);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  /* Theme toggle button */
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: var(--space-xs) var(--space-sm);
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: color var(--transition), border-color var(--transition), background-color var(--transition);
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .theme-toggle:hover {
+    color: var(--color-text);
+    border-color: var(--color-primary);
+  }
+
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .theme-icon {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle-label {
+    display: none;
+  }
+
+  @media (min-width: 480px) {
+    .theme-toggle-label {
+      display: inline;
+    }
   }
 
   .menu-toggle {
