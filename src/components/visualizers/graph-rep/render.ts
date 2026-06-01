@@ -1,5 +1,5 @@
 import type { GraphRepPreset } from './types';
-import { themeColor } from '../../lib/theme-colors';
+import { themeColor } from '../../../lib/theme-colors';
 
 export function drawGraphDiagram(
   canvas: HTMLCanvasElement | null,

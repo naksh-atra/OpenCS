@@ -1,5 +1,5 @@
 import type { Heap } from '../../../engines/treegraph/heap-ops';
-import { themeColor } from '../../lib/theme-colors';
+import { themeColor } from '../../../lib/theme-colors';
 
 interface DrawOptions {
   highlightIndices: number[];

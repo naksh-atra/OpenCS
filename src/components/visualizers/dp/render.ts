@@ -1,6 +1,5 @@
 import type { DPState } from '../../../engines/theory/dp-ops';
-import { themeColor } from '../../lib/theme-colors';
-import { themeColor } from '../../lib/theme-colors';
+import { themeColor } from '../../../lib/theme-colors';
 
 export function drawDPTable(
   canvas: HTMLCanvasElement | null,

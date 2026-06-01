@@ -1,5 +1,5 @@
 import type { GanttEntry, Process } from '../../../engines/system-process/cpu-scheduling-ops';
-import { themeColor } from '../../lib/theme-colors';
+import { themeColor } from '../../../lib/theme-colors';
 
 const COLORS = [
   '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',

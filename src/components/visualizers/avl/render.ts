@@ -1,5 +1,5 @@
 import type { AVLNode } from '../../../engines/treegraph/avl-ops';
-import { themeColor } from '../../lib/theme-colors';
+import { themeColor } from '../../../lib/theme-colors';
 
 export function drawAVLTree(
   canvas: HTMLCanvasElement | null,
