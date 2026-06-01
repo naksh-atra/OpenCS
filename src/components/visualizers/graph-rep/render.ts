@@ -1,4 +1,5 @@
 import type { GraphRepPreset } from './types';
+import { themeColor } from '../../lib/theme-colors';
 
 export function drawGraphDiagram(
   canvas: HTMLCanvasElement | null,
@@ -52,7 +53,7 @@ export function drawGraphDiagram(
       ctx.lineTo(arrowX - 8 * Math.cos(angle - 0.4), arrowY - 8 * Math.sin(angle - 0.4));
       ctx.lineTo(arrowX - 8 * Math.cos(angle + 0.4), arrowY - 8 * Math.sin(angle + 0.4));
       ctx.closePath();
-      ctx.fillStyle = '#94a3b8';
+      ctx.fillStyle = themeColor('text-muted');
       ctx.fill();
     }
   });
@@ -105,7 +106,7 @@ export function drawAdjacencyMatrix(
   });
 
   // Draw header row
-  ctx.fillStyle = '#94a3b8';
+  ctx.fillStyle = themeColor('text-muted');
   ctx.font = 'bold 10px system-ui';
   ctx.textAlign = 'center';
   for (let j = 0; j <= n; j++) {
@@ -115,7 +116,7 @@ export function drawAdjacencyMatrix(
   // Draw cells
   for (let i = 0; i < n; i++) {
     // Row label
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = themeColor('text-muted');
     ctx.font = 'bold 10px system-ui';
     ctx.fillText(String(i), startX + cellSize / 2, startY + (i + 1) * cellSize + cellSize / 2);
 
@@ -196,7 +197,7 @@ export function drawAdjacencyList(
       ctx.stroke();
 
       neighbors.forEach((n, ni) => {
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = themeColor('surface');
         ctx.strokeStyle = '#10b981';
         ctx.lineWidth = 1.5;
         ctx.beginPath();
@@ -204,13 +205,13 @@ export function drawAdjacencyList(
         ctx.fill();
         ctx.stroke();
 
-        ctx.fillStyle = '#065f46';
+        ctx.fillStyle = themeColor('success-text');
         ctx.font = '10px system-ui';
         ctx.textAlign = 'center';
         ctx.fillText(String(n), x + 48 + ni * 26, y + 11);
       });
     } else {
-      ctx.fillStyle = '#94a3b8';
+      ctx.fillStyle = themeColor('text-muted');
       ctx.font = '10px system-ui';
       ctx.fillText('∅', x + 38, y + 13);
     }
