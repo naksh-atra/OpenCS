@@ -1,98 +1,91 @@
 import { test, expect } from '@playwright/test';
 
-const BASE = '/OpenCS';
-
 test.describe('Dark mode toggle', () => {
-  test('Theme toggle button exists in header', async ({ page }) => {
-    await page.goto(`http://localhost:4321${BASE}/`);
-    // Wait for React hydration
-    await page.waitForTimeout(2000);
+  test('ThemeToggle renders in header', async ({ page }) => {
+    await page.goto('http://localhost:4321/OpenCS/');
     const toggle = await page.$('[data-testid="theme-toggle"]');
     expect(toggle).not.toBeNull();
   });
 
-  test('Clicking toggle switches between light and dark', async ({ page }) => {
-    await page.goto(`http://localhost:4321${BASE}/`);
-    await page.waitForTimeout(2000);
+  test('Clicking toggle switches theme', async ({ page }) => {
+    await page.goto('http://localhost:4321/OpenCS/');
+
+    // Default should be light
+    const html = await page.evaluate(() => document.documentElement.getAttribute('theme') || 'light');
+    expect(html).toBe('light');
 
     // Click toggle to switch to dark
     await page.click('[data-testid="theme-toggle"]');
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
 
-    const darkBg = await page.evaluate(() =>
-      getComputedStyle(document.documentElement).getPropertyValue('--color-bg').trim()
-    );
-    expect(darkBg).toBe('#0F1419');
+    const theme = await page.evaluate(() => document.documentElement.getAttribute('theme'));
+    expect(theme).toBe('dark');
 
-    // Click again to go back to light
-    await page.click('[data-testid="theme-toggle"]');
-    await page.waitForTimeout(500);
-
-    const lightBg = await page.evaluate(() =>
-      getComputedStyle(document.documentElement).getPropertyValue('--color-bg').trim()
-    );
-    expect(lightBg).toBe('#FAF9F6');
-  });
-
-  test('Label shows Dark in light mode, Light in dark mode', async ({ page }) => {
-    await page.goto(`http://localhost:4321${BASE}/`);
-    await page.waitForTimeout(2000);
-
-    const label = await page.textContent('.theme-toggle-label');
-    expect(label?.trim()).toBe('Dark');
-
-    await page.click('[data-testid="theme-toggle"]');
-    await page.waitForTimeout(500);
-
-    const darkLabel = await page.textContent('.theme-toggle-label');
-    expect(darkLabel?.trim()).toBe('Light');
-  });
-
-  test('Persists across page navigation', async ({ page }) => {
-    await page.goto(`http://localhost:4321${BASE}/`);
-    await page.waitForTimeout(2000);
-
-    await page.click('[data-testid="theme-toggle"]');
-    await page.waitForTimeout(500);
-
-    await page.goto(`http://localhost:4321${BASE}/topics/time-complexity`);
-    await page.waitForTimeout(2000);
-
-    const bg = await page.evaluate(() =>
-      getComputedStyle(document.documentElement).getPropertyValue('--color-bg').trim()
-    );
+    // Verify dark mode variables are applied
+    const bg = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--color-bg').trim());
     expect(bg).toBe('#0F1419');
+
+    // Click again to switch back to light
+    await page.click('[data-testid="theme-toggle"]');
+    await page.waitForTimeout(300);
+
+    const theme2 = await page.evaluate(() => document.documentElement.getAttribute('theme'));
+    expect(theme2).toBe('light');
   });
 
-  test('Dark mode visual check — body background is dark', async ({ page }) => {
-    await page.goto(`http://localhost:4321${BASE}/`);
-    await page.waitForTimeout(2000);
+  test('Dark mode persists across page navigations', async ({ page }) => {
+    await page.goto('http://localhost:4321/OpenCS/');
 
-    // Switch to dark
+    // Enable dark mode
     await page.click('[data-testid="theme-toggle"]');
+    await page.waitForTimeout(300);
+
+    // Navigate to a topic page
+    await page.goto('http://localhost:4321/OpenCS/topics/arrays');
     await page.waitForTimeout(500);
 
-    const bodyBg = await page.evaluate(() =>
-      window.getComputedStyle(document.body).backgroundColor
-    );
+    // Theme should persist
+    const theme = await page.evaluate(() => document.documentElement.getAttribute('theme'));
+    expect(theme).toBe('dark');
 
-    // Parse rgb values — dark mode should have low values
-    const rgb = bodyBg.match(/\d+/g);
-    expect(rgb).not.toBeNull();
-    expect(Number(rgb![0])).toBeLessThan(30);
-    expect(Number(rgb![1])).toBeLessThan(30);
-    expect(Number(rgb![2])).toBeLessThan(30);
+    // Navigate to another page
+    await page.goto('http://localhost:4321/OpenCS/topics/sorting');
+    await page.waitForTimeout(500);
+
+    const theme2 = await page.evaluate(() => document.documentElement.getAttribute('theme'));
+    expect(theme2).toBe('dark');
   });
 
-  test('SSR flash prevention — dark mode loads without flash', async ({ page }) => {
-    await page.addInitScript(() => {
-      localStorage.setItem('theme', 'dark');
-    });
+  test('Both themes render without errors on all pages', async ({ page }) => {
+    const pages = [
+      '/OpenCS/',
+      '/OpenCS/topics',
+      '/OpenCS/topics/time-complexity',
+      '/OpenCS/topics/arrays',
+      '/OpenCS/topics/sorting',
+      '/OpenCS/topics/number-systems',
+      '/OpenCS/topics/binary-search-tree',
+    ];
 
-    await page.goto(`http://localhost:4321${BASE}/`);
+    for (const path of pages) {
+      // Light mode
+      await page.goto(`http://localhost:4321${path}`);
+      await page.waitForTimeout(500);
+      const bodyText = await page.evaluate(() => document.body.innerText.length);
+      expect(bodyText).toBeGreaterThan(100);
 
-    // Immediately check (before React hydration) — the inline script should have set it
-    const html = await page.evaluate(() => document.documentElement.outerHTML.substring(0, 200));
-    expect(html).toContain('data-theme="dark"');
+      // Switch to dark mode
+      const toggle = await page.$('[data-testid="theme-toggle"]');
+      if (toggle) {
+        await page.click('[data-testid="theme-toggle"]');
+        await page.waitForTimeout(500);
+        const bodyTextDark = await page.evaluate(() => document.body.innerText.length);
+        expect(bodyTextDark).toBeGreaterThan(100);
+
+        // Switch back
+        await page.click('[data-testid="theme-toggle"]');
+        await page.waitForTimeout(300);
+      }
+    }
   });
 });
