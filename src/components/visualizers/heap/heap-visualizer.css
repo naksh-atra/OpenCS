@@ -64,7 +64,7 @@
 
 .hp-legend-item.normal::before { color: #1e293b; }
 .hp-legend-item.compare::before { color: #3b82f6; }
-.hp-legend-item.highlight::before { color: #f59e0b; }
+.hp-legend-item.highlight::before { color: var(--color-highlight-border); }
 .hp-legend-item.swap::before { color: #10b981; }
 
 .hp-toggle-btn {
@@ -81,13 +81,13 @@
 .hp-toggle-btn.active {
   background: var(--color-primary);
   border-color: var(--color-primary);
-  color: white;
+  color: var(var(--color-text));
 }
 
 .hp-error {
   padding: 8px 12px;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  background: var(--color-deleted-bg);
+  border: 1px solid var(--color-deleted-border);
   border-radius: 6px;
   color: #dc2626;
   font-size: 0.8125rem;

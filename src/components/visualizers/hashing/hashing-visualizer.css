@@ -73,20 +73,20 @@
 }
 
 .hs-cell.deleted {
-  background: #fef2f2;
-  border-color: #fecaca;
+  background: var(--color-deleted-bg);
+  border-color: var(--color-deleted-border);
   color: #dc2626;
 }
 
 .hs-cell.highlight {
-  background: #fef3c7;
-  border-color: #f59e0b;
+  background: var(--color-highlight-bg);
+  border-color: var(--color-highlight-border);
   box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.3);
 }
 
 .hs-cell.probe {
-  background: #dbeafe;
-  border-color: #93c5fd;
+  background: var(--color-info-bg);
+  border-color: var(--color-info-border);
 }
 
 .hs-chain {
@@ -97,7 +97,7 @@
 
 .hs-chain-node {
   background: var(--color-primary);
-  color: #fff;
+  color: var(--color-white);
   padding: 2px 8px;
   border-radius: 4px;
   font-size: 0.75rem;
@@ -118,8 +118,8 @@
 }
 
 .hs-status.occupied {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: var(--color-info-bg);
+  color: var(--color-info-text);
 }
 
 .hs-status.empty {
@@ -128,7 +128,7 @@
 }
 
 .hs-status.deleted {
-  background: #fee2e2;
+  background: var(--color-deleted-bg-alt);
   color: #dc2626;
 }
 
@@ -163,7 +163,7 @@
 }
 
 .hs-metric-value.warn {
-  color: #f59e0b;
+  color: var(--color-highlight-border);
 }
 
 .hs-metric-value.danger {
@@ -191,8 +191,8 @@
 
 .hs-error {
   padding: 8px 12px;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  background: var(--color-deleted-bg);
+  border: 1px solid var(--color-deleted-border);
   border-radius: 6px;
   color: #dc2626;
   font-size: 0.8125rem;
