@@ -1,3 +1,5 @@
+import { themeColor } from '../../../lib/theme-colors';
+
 export function drawBars(
   canvas: HTMLCanvasElement | null,
   step: any,

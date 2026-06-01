@@ -1,4 +1,5 @@
 import type { Heap } from '../../../engines/treegraph/heap-ops';
+import { themeColor } from '../../../lib/theme-colors';
 
 interface DrawOptions {
   highlightIndices: number[];
@@ -62,7 +63,7 @@ export function drawHeap(
   ctx.clearRect(0, 0, w, h);
 
   if (heap.size === 0) {
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = themeColor('text-muted');
     ctx.font = '14px system-ui';
     ctx.textAlign = 'center';
     ctx.fillText('Empty heap', w / 2, h / 2);
@@ -135,7 +136,7 @@ export function drawHeap(
   const arrayStartX = (w - cellSize * heap.size) / 2;
 
   ctx.font = '9px system-ui';
-  ctx.fillStyle = '#94a3b8';
+  ctx.fillStyle = themeColor('text-muted');
   ctx.textAlign = 'center';
   ctx.fillText('Array view:', w / 2, arrayY - 10);
 

@@ -1,4 +1,5 @@
 import type { GanttEntry, Process } from '../../../engines/system-process/cpu-scheduling-ops';
+import { themeColor } from '../../../lib/theme-colors';
 
 const COLORS = [
   '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',
@@ -28,7 +29,7 @@ export function drawGanttChart(
   ctx.clearRect(0, 0, w, h);
 
   if (gantt.length === 0) {
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = themeColor('text-muted');
     ctx.font = '14px system-ui';
     ctx.textAlign = 'center';
     ctx.fillText('Run a schedule to see the Gantt chart', w / 2, h / 2);
@@ -63,7 +64,7 @@ export function drawGanttChart(
 
     // Process label
     if (barW > 20) {
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = themeColor('surface');
       ctx.font = 'bold 11px system-ui';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -80,7 +81,7 @@ export function drawGanttChart(
   ctx.stroke();
 
   // Time labels
-  ctx.fillStyle = '#94a3b8';
+  ctx.fillStyle = themeColor('text-muted');
   ctx.font = '10px system-ui';
   ctx.textAlign = 'center';
   const step = Math.ceil(maxTime / 10);
@@ -117,7 +118,7 @@ export function drawProcessTable(
   const headerY = 8;
 
   // Header
-  ctx.fillStyle = '#94a3b8';
+  ctx.fillStyle = themeColor('text-muted');
   ctx.font = 'bold 9px system-ui';
   headers.forEach((h, i) => {
     ctx.fillText(h, startX + i * colW + colW / 2, headerY + 8);
@@ -129,7 +130,7 @@ export function drawProcessTable(
     ctx.fillStyle = row % 2 === 0 ? '#f8fafc' : '#ffffff';
     ctx.fillRect(startX, y - 4, headers.length * colW, rowH);
 
-    ctx.fillStyle = '#1e293b';
+    ctx.fillStyle = themeColor('text');
     ctx.font = '9px system-ui';
     const values = [
       p.id,

@@ -122,7 +122,7 @@
   font-size: 0.8125rem;
   font-family: var(--font-mono);
   color: var(--color-text);
-  white-space: pre-wrap;
+  var(var(--color-text))-space: pre-wrap;
 }
 
 .ns-step-highlight {
@@ -157,17 +157,17 @@
 }
 
 .ns-bit-group.bits-sign .ns-bit-cells {
-  background: #fef3c7;
-  border-color: #f59e0b;
+  background: var(--color-highlight-bg);
+  border-color: var(--color-highlight-border);
 }
 
 .ns-bit-group.bits-exponent .ns-bit-cells {
-  background: #dbeafe;
+  background: var(--color-info-bg);
   border-color: #3b82f6;
 }
 
 .ns-bit-group.bits-fraction .ns-bit-cells {
-  background: #d1fae5;
+  background: var(--color-success-bg);
   border-color: #10b981;
 }
 
@@ -236,13 +236,13 @@
 .ns-toggle-btn.active {
   background: var(--color-primary);
   border-color: var(--color-primary);
-  color: white;
+  color: var(var(--color-text));
 }
 
 .ns-error {
   padding: 8px 12px;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  background: var(--color-deleted-bg);
+  border: 1px solid var(--color-deleted-border);
   border-radius: 6px;
   color: #dc2626;
   font-size: 0.8125rem;

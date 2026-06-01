@@ -21,8 +21,8 @@ function drawList(container: HTMLDivElement, head: LLNode | null, step: LLStep |
   const border = getCS('--color-border') || '#e5e7eb';
   const text = getCS('--color-text') || '#1f2937';
   const surface = getCS('--color-surface') || '#ffffff';
-  const visited = '#16a34a';
-  const highlight = '#d97706';
+  const visited = getCS('--color-success') || '#16a34a';
+  const highlight = getCS('--color-highlight') || '#d97706';
 
   const nodes: number[] = [];
   let current = head;

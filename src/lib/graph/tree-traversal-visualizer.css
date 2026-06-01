@@ -1,7 +1,7 @@
 .ttv-presets, .ttv-traversals { display: flex; gap: 8px; flex-wrap: wrap; }
 .ttv-btn { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 0.8125rem; cursor: pointer; transition: all 0.15s; }
 .ttv-btn:hover { border-color: var(--color-primary); }
-.ttv-btn.active { background: var(--color-primary); border-color: var(--color-primary); color: white; }
+.ttv-btn.active { background: var(--color-primary); border-color: var(--color-primary); color: var(var(--color-text)); }
 .ttv-canvas-wrap { width: 100%; display: flex; justify-content: center; }
 .ttv-canvas { width: 100%; max-width: 560px; height: 300px; border-radius: var(--radius-md); background: var(--color-bg); }
 .ttv-result { margin-top: 16px; padding: 12px; background: var(--color-bg); border-radius: var(--radius-md); text-align: center; }

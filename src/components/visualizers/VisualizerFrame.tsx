@@ -22,8 +22,8 @@ export function VisualizerFrame({
   const frameStyle: React.CSSProperties = {
     margin: '32px 0',
     padding: '24px',
-    background: '#FFFFFF',
-    border: '1px solid #E8E6E1',
+    background: 'var(--color-surface)',
+    border: '1px solid var(--color-border)',
     borderRadius: '2px',
   };
 
@@ -36,14 +36,37 @@ export function VisualizerFrame({
     fontSize: '1.25rem',
     fontWeight: 600,
     margin: 0,
-    color: '#1A1A1A',
+    color: 'var(--color-text)',
   };
 
   const descStyle: React.CSSProperties = {
     fontSize: '0.875rem',
-    color: '#8A8A8A',
+    color: 'var(--color-text-muted)',
     margin: '4px 0 0 0',
     lineHeight: 1.5,
+  };
+
+  const mutedTextStyle: React.CSSProperties = {
+    color: 'var(--color-text-muted)',
+    fontSize: '0.875rem',
+  };
+
+  const controlsStyle: React.CSSProperties = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '8px',
+    marginBottom: '16px',
+    padding: '16px',
+    background: 'var(--color-surface-alt)',
+    borderRadius: '2px',
+  };
+
+  const canvasStyle: React.CSSProperties = {
+    minHeight: 200,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: 'var(--color-surface-canvas)',
   };
 
   if (isLoading) {
@@ -53,8 +76,8 @@ export function VisualizerFrame({
           <h3 style={titleStyle}>{title}</h3>
           {description && <p style={descStyle} data-testid="vf-description">{description}</p>}
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', padding: '48px', color: '#8A8A8A', fontSize: '0.875rem' }}>
-          <div style={{ width: 24, height: 24, border: '2px solid #E8E6E1', borderTopColor: '#2563EB', borderRadius: '50%' }} />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', padding: '48px', ...mutedTextStyle }}>
+          <div style={{ width: 24, height: 24, border: '2px solid var(--color-border)', borderTopColor: 'var(--color-primary)', borderRadius: '50%' }} />
           <span>Loading visualization...</span>
         </div>
       </div>
@@ -71,28 +94,14 @@ export function VisualizerFrame({
       </div>
 
       {controls && (
-        <div style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '8px',
-          marginBottom: '16px',
-          padding: '16px',
-          background: '#F5F5F5',
-          borderRadius: '2px',
-        }}>
+        <div style={controlsStyle}>
           {controls}
         </div>
       )}
 
-      <div style={{
-        minHeight: 200,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: '#FEFEFE',
-      }}>
+      <div style={canvasStyle}>
         {isEmpty ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', padding: '48px', color: '#8A8A8A', fontSize: '0.875rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', padding: '48px', ...mutedTextStyle }}>
             <span style={{ fontSize: '1.5rem', opacity: 0.3 }}>◇</span>
             <span>{emptyMessage}</span>
           </div>

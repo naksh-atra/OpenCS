@@ -1,4 +1,5 @@
 import type { DPState } from '../../../engines/theory/dp-ops';
+import { themeColor } from '../../../lib/theme-colors';
 
 export function drawDPTable(
   canvas: HTMLCanvasElement | null,
@@ -35,15 +36,15 @@ export function drawDPTable(
       const isBacktrack = state.backtrackPath.some(([br, bc]) => br === r && bc === c);
 
       if (isCurrent) {
-        ctx.fillStyle = '#fef3c7';
+        ctx.fillStyle = themeColor('cell-highlight');
       } else if (isBacktrack) {
-        ctx.fillStyle = '#d1fae5';
+        ctx.fillStyle = themeColor('cell-success');
       } else if (isHighlight) {
-        ctx.fillStyle = '#dbeafe';
+        ctx.fillStyle = themeColor('cell-info');
       } else if (r === 0 || c === 0) {
-        ctx.fillStyle = '#f1f5f9';
+        ctx.fillStyle = themeColor('cell-neutral');
       } else {
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = themeColor('surface');
       }
       ctx.fillRect(x, y, colWidth - 1, rowHeight - 1);
 
@@ -65,7 +66,7 @@ export function drawDPTable(
   }
 
   // Column labels
-  ctx.fillStyle = '#94a3b8';
+  ctx.fillStyle = themeColor('text-muted');
   ctx.font = '9px system-ui';
   ctx.textAlign = 'center';
   state.colLabels?.forEach((label, c) => {

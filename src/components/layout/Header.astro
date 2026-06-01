@@ -1,5 +1,6 @@
 ---
 import { navigation } from '../../data/navigation';
+import ThemeToggle from './ThemeToggle';
 
 const currentPath = Astro.url.pathname;
 ---
@@ -21,10 +22,13 @@ const currentPath = Astro.url.pathname;
       ))}
     </nav>
 
-    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
-      <span class="menu-icon">☰</span>
-      <span class="close-icon" style="display:none">✕</span>
-    </button>
+    <div class="header-right">
+      <ThemeToggle client:load />
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
+        <span class="menu-icon">☰</span>
+        <span class="close-icon" style="display:none">✕</span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -49,7 +53,7 @@ const currentPath = Astro.url.pathname;
     right: 0;
     z-index: 100;
     height: var(--header-height);
-    background: rgba(250, 249, 246, 0.95);
+    background: var(--color-surface-alpha);
     border-bottom: 1px solid var(--color-border);
     backdrop-filter: blur(8px);
   }
@@ -101,6 +105,12 @@ const currentPath = Astro.url.pathname;
   .nav-link.active {
     color: var(--color-text);
     border-bottom-color: var(--color-primary);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
   }
 
   .menu-toggle {

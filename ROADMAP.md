@@ -72,8 +72,8 @@ All 20 topic pages have interactive visualizers and educational content:
 - [x] Homepage with hero, topic cards, feature cards, CTA
 - [x] Topics index with sidebar filter pills
 - [x] 47+ Playwright E2E tests passing
-- [ ] Add data-testid attributes to all visualizers for richer test coverage
-- [ ] Fix hardcoded button colors in visualizer CSS files (replace hex with design tokens)
+- [x] Add data-testid attributes to all visualizers for richer test coverage
+- [ ] Fix hardcoded button colors in visualizer CSS files (replace hex with design tokens) — low priority, no user impact
 
 ### Milestone 5 — Long-term (Planned)
 
@@ -88,11 +88,11 @@ All 20 topic pages have interactive visualizers and educational content:
 
 | Item | Description | Priority |
 |------|-------------|----------|
-| data-testid coverage | 12 of 20 visualizers still need data-testid attributes | High |
-| Hardcoded button colors | Visualizer buttons still use inline hex values in some CSS | Medium |
-| Canvas theme sync | Some canvas drawing reads computed styles at runtime | Medium |
-| Inline style objects | 7 visualizers use style={{}} for static layout — should use CSS classes | Medium |
-| ROADMAP sync | Keep ROADMAP.md updated as milestones complete | Low |
+| ~~data-testid coverage~~ | ✅ All 20 visualizers now have data-testid attributes | Complete |
+| Hardcoded button colors | Some visualizer buttons use inline hex values instead of design tokens | Low |
+| Canvas theme sync | Some canvas drawing reads computed styles at runtime | Low |
+| Inline style objects | 7 visualizers use style={{}} for static layout — should use CSS classes | Low |
+| ~~ROADMAP sync~~ | ✅ ROADMAP.md updated to reflect completed milestones | Complete |
 
 ## Contributing to Roadmap
 

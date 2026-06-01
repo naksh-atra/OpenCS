@@ -1,4 +1,5 @@
 import type { TreeNode, LayoutNode, LayoutConfig } from './types';
+import { themeColor } from '../../../lib/theme-colors';
 
 interface TidyNode extends TreeNode {
   prelim: number;

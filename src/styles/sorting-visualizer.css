@@ -36,12 +36,12 @@
 .sv-btn.active {
   background: var(--color-primary);
   border-color: var(--color-primary);
-  color: white;
+  color: var(var(--color-text));
 }
 .sv-btn-primary {
   background: var(--color-primary);
   border-color: var(--color-primary);
-  color: white;
+  color: var(var(--color-text));
 }
 .sv-canvas-wrap {
   width: 100%;
@@ -68,7 +68,7 @@
   margin-right: 4px;
 }
 .sv-legend-compare::before {
-  color: #d97706;
+  color: var(--color-highlight-border-alt);
 }
 .sv-legend-swap::before {
   color: #dc2626;

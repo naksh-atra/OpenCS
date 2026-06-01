@@ -61,3 +61,4 @@ coverage/
 Thumbs.db
 desktop.ini
 stitch-design/
+.env

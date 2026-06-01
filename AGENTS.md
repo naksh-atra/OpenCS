@@ -18,31 +18,28 @@ OpenCS is an open-source educational computer science project built to visually 
 
 ## Visualizer inventory (20 topics)
 
-### With data-testid (8)
-- TimeComplexityVisualizer (Theory) — also has inline style={{}} to fix
-- RecursionTreeVisualizer (Theory)
-- SortingVisualizer (Sequence)
-- ArrayVisualizer (Sequence)
-- BSTVisualizer (TreeGraph)
-- GraphTraversalVisualizer (TreeGraph)
-- ShortestPathMSTVisualizer (TreeGraph)
-- TreeTraversalVisualizer (TreeGraph)
-
-### Need data-testid (12)
-- LinkedListVisualizer (Sequence)
-- StackQueueVisualizer (Sequence)
-- HashingVisualizer (Sequence)
-- ExpressionVisualizer (Sequence)
-- NumberSystemsVisualizer (Theory) — also has inline style={{}}
-- DPVisualizer (Theory) — also has inline style={{}}
-- AutomataVisualizer (Theory) — also has inline style={{}}
-- AVLVisualizer (TreeGraph) — also has inline style={{}}
-- HeapVisualizer (TreeGraph) — also has inline style={{}}
-- CPUSchedulingVisualizer (SystemProcess) — also has inline style={{}}
-- MemoryVisualizer (SystemProcess) — also has inline style={{}}
-- GraphRepVisualizer (TreeGraph) — also has inline style={{}}
-
-## Architecture boundaries
+### With data-testid (20 — all visualizers)
+All 20 visualizers now have data-testid attributes on key interactive elements:
+- TimeComplexityVisualizer (Theory) — tcv-controls, tcv-class-toggles, tcv-n-slider, tcv-n-input, tcv-chart, tcv-table
+- RecursionTreeVisualizer (Theory) — rtv-controls, rtv-algo-tabs, rtv-depth-slider, rtv-canvas, rtv-caption
+- SortingVisualizer (Sequence) — sv-presets, sv-controls, sv-algo, sv-playback, sv-canvas
+- ArrayVisualizer (Sequence) — av-presets, av-ops, av-op-controls, av-chart
+- LinkedListVisualizer (Sequence) — llv-presets, llv-controls, llv-ops, llv-inputs, llv-list (dataset)
+- StackQueueVisualizer (Sequence) — sqv-mode-tabs, sqv-presets, sqv-ops, sqv-input (×2), sqv-canvas (dataset)
+- HashingVisualizer (Sequence) — hsv-presets, hsv-method-selector, hs-controls, hs-input, hs-load-factor, hs-table, hs-history
+- ExpressionVisualizer (Sequence) — exv-presets, exv-controls, exv-type, exv-input, exv-output, exv-steps, exv-stack
+- NumberSystemsVisualizer (Theory) — nsv-presets, nsv-input, nsv-from-base, nsv-to-base, nsv-swap, nsv-result, nsv-ieee
+- DPVisualizer (Theory) — dpv-presets, dpv-controls, dpv-input, dpv-table, dpv-backtrack
+- AutomataVisualizer (Theory) — atv-presets, atv-input, atv-controls, atv-canvas, atv-table, atv-result
+- AVLVisualizer (TreeGraph) — avlv-presets, avlv-controls, avlv-input, avlv-canvas, avlv-steps
+- HeapVisualizer (TreeGraph) — hpv-presets, hpv-controls, hpv-input, hpv-tree, hpv-array, hpv-steps
+- CPUSchedulingVisualizer (SystemProcess) — csv-presets, csv-algo, csv-controls, csv-gantt, csv-table, csv-metrics
+- MemoryVisualizer (SystemProcess) — mmv-presets, mmv-algo, mmv-frames, mmv-controls, mmv-table, mmv-faults
+- GraphRepVisualizer (TreeGraph) — grv-presets, grv-rep-type, grv-matrix, grv-list, grv-graph
+- BSTVisualizer (TreeGraph) — bst-presets, bst-ops, bst-input, bst-canvas
+- GraphTraversalVisualizer (TreeGraph) — gtv-presets, gtv-traversal, gtv-controls, gtv-canvas, gtv-queue, gtv-result
+- ShortestPathMSTVisualizer (TreeGraph) — spmst-presets, spmst-algo, spmst-controls, spmst-canvas, spmst-table, spmst-result
+- TreeTraversalVisualizer (TreeGraph) — ttv-presets, ttv-traversals, ttv-canvas, ttv-result
 Preserve this responsibility split for all visualizers:
 
 - `<Topic>Visualizer.tsx` — orchestration ONLY (state, handlers, JSX)
@@ -75,10 +72,10 @@ Required validation sequence:
 - Author must be set explicitly with `-c` flags in cron/automated contexts
 
 ## Priority order (next steps)
-1. Add `data-testid` attributes to all 12 remaining visualizers
-2. Fix inline `style={{}}` objects in 7 visualizers (move to CSS classes)
-3. Replace hardcoded hex colors with design token variables
-4. Merge `dev` → `main` for production release
+1. ~~Add `data-testid` attributes to all 12 remaining visualizers~~ ✅ Complete (May 31)
+2. Fix inline `style={{}}` objects in 7 visualizers (move to CSS classes) — medium priority
+3. Replace hardcoded hex colors with design token variables — medium priority
+4. ~~Merge `dev` → `main` for production release~~ ✅ Complete (May 31)
 5. Mobile-optimized visualizations (long-term)
 6. Interactive exercises with auto-grading (long-term)
 

@@ -33,7 +33,7 @@
 .av-btn-primary {
   background: var(--color-primary);
   border-color: var(--color-primary);
-  color: white;
+  color: var(var(--color-text));
 }
 
 .av-btn-reset {

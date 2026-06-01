@@ -13,7 +13,7 @@
   --color-primary-light: #EFF6FF;
   --color-success: #059669;
   --color-error: #DC2626;
-  --color-highlight: #F59E0B;
+  --color-highlight: var(--color-highlight-border);
 
   /* Legacy aliases */
   --color-accent: #2563EB;
@@ -26,6 +26,29 @@
   --color-complexity-moderate: #f97316;
   --color-complexity-costly: #ef4444;
   --color-complexity-expensive: #dc2626;
+
+  /* Semantic state colors */
+  --color-deleted-bg: #fef2f2;
+  --color-deleted-bg-alt: #fee2e2;
+  --color-deleted-border: #fecaca;
+  --color-highlight-bg: #fef3c7;
+  --color-highlight-border: #f59e0b;
+  --color-highlight-border-alt: #d97706;
+  --color-highlight-text: #92400e;
+  --color-info-bg: #dbeafe;
+  --color-info-border: #93c5fd;
+  --color-info-text: #1d4ed8;
+  --color-success-bg: #d1fae5;
+  --color-success-text: #065f46;
+  --color-success-bg-alt: #d1fae5;
+  --color-success-text-alt: #065f46;
+  --color-canvas-bg: #0f172a;
+  --color-white: #ffffff;
+  --color-surface-alpha: rgba(250, 249, 246, 0.92);
+  --color-cell-highlight: #fef3c7;
+  --color-cell-success: #d1fae5;
+  --color-cell-info: #dbeafe;
+  --color-cell-neutral: #f1f5f9;
 
   /* Typography */
   --font-sans: Georgia, 'Times New Roman', serif;
@@ -52,6 +75,97 @@
   --transition: 0.15s ease;
 }
 
+/* ========================================
+   DARK MODE
+   ======================================== */
+
+:root[data-theme="dark"] {
+  --color-bg: #0F1419;
+  --color-surface: #1A1F26;
+  --color-surface-alt: #242B33;
+  --color-surface-canvas: #0D1117;
+  --color-border: #2D3748;
+  --color-text: #E2E8F0;
+  --color-text-body: #A0AEC0;
+  --color-text-muted: #718096;
+  --color-primary: #63B3ED;
+  --color-primary-container: #3182CE;
+  --color-primary-light: #1A365D;
+  --color-success: #68D391;
+  --color-error: #FC8181;
+  --color-highlight: #F6AD55;
+  --color-accent: #63B3ED;
+  --color-red: #FC8181;
+  --color-complexity-optimal: #68D391;
+  --color-complexity-good: #68D391;
+  --color-complexity-fair: #F6AD55;
+  --color-complexity-moderate: #ED8936;
+  --color-complexity-costly: #FC8181;
+  --color-complexity-expensive: #FEB2B2;
+
+  /* Semantic state colors — dark */
+  --color-deleted-bg: #451a1a;
+  --color-deleted-bg-alt: #3f1a1a;
+  --color-deleted-border: #7f1d1d;
+  --color-highlight-bg: #451a03;
+  --color-highlight-border: #d97706;
+  --color-highlight-border-alt: #f59e0b;
+  --color-highlight-text: #fbbf24;
+  --color-info-bg: #1e3a5f;
+  --color-info-border: #3b82f6;
+  --color-info-text: #93c5fd;
+  --color-success-bg: #064e3b;
+  --color-success-text: #6ee7b7;
+  --color-canvas-bg: #0f172a;
+  --color-white: #e2e8f0;
+  --color-surface-alpha: rgba(26, 31, 38, 0.92);
+  --color-cell-highlight: #451a03;
+  --color-cell-success: #064e3b;
+  --color-cell-info: #1e3a5f;
+  --color-cell-neutral: #242B33;
+}
+
+/* ========================================
+   THEME TOGGLE BUTTON
+   ======================================== */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition), background-color var(--transition);
+}
+
+.theme-toggle:hover {
+  color: var(--color-text);
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.theme-icon {
+  display: block;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
 *,
 *::before,
 *::after {
@@ -66,6 +180,7 @@ html {
   line-height: 1.75;
   color: var(--color-text-body);
   background-color: var(--color-bg);
+  transition: background-color 0.2s ease, color 0.2s ease;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
 }
@@ -239,7 +354,7 @@ pre code {
   font-weight: 500;
   cursor: pointer;
   transition: background-color var(--transition);
-  white-space: nowrap;
+  var(var(--color-text))-space: nowrap;
 }
 
 .btn-primary:hover {
@@ -313,7 +428,7 @@ ul, ol {
   font-weight: 500;
   cursor: pointer;
   transition: color var(--transition), border-color var(--transition);
-  white-space: nowrap;
+  var(var(--color-text))-space: nowrap;
 }
 
 .btn-secondary:hover {
@@ -580,12 +695,12 @@ th {
           border-color: var(--color-primary);
         }
 
-        .complexity-btn.active.tier-optimal { background: var(--color-complexity-optimal); border-color: var(--color-complexity-optimal); color: white; }
-        .complexity-btn.active.tier-good { background: var(--color-complexity-good); border-color: var(--color-complexity-good); color: white; }
-        .complexity-btn.active.tier-fair { background: var(--color-complexity-fair); border-color: var(--color-complexity-fair); color: white; }
-        .complexity-btn.active.tier-moderate { background: var(--color-complexity-moderate); border-color: var(--color-complexity-moderate); color: white; }
-        .complexity-btn.active.tier-costly { background: var(--color-complexity-costly); border-color: var(--color-complexity-costly); color: white; }
-        .complexity-btn.active.tier-expensive { background: var(--color-complexity-expensive); border-color: var(--color-complexity-expensive); color: white; }
+        .complexity-btn.active.tier-optimal { background: var(--color-complexity-optimal); border-color: var(--color-complexity-optimal); color: var(var(--color-text)); }
+        .complexity-btn.active.tier-good { background: var(--color-complexity-good); border-color: var(--color-complexity-good); color: var(var(--color-text)); }
+        .complexity-btn.active.tier-fair { background: var(--color-complexity-fair); border-color: var(--color-complexity-fair); color: var(var(--color-text)); }
+        .complexity-btn.active.tier-moderate { background: var(--color-complexity-moderate); border-color: var(--color-complexity-moderate); color: var(var(--color-text)); }
+        .complexity-btn.active.tier-costly { background: var(--color-complexity-costly); border-color: var(--color-complexity-costly); color: var(var(--color-text)); }
+        .complexity-btn.active.tier-expensive { background: var(--color-complexity-expensive); border-color: var(--color-complexity-expensive); color: var(var(--color-text)); }
 
         .complexity-chart {
           display: flex;
