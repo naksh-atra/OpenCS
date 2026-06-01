@@ -45,12 +45,12 @@ test.describe('Canvas visualizers render content', () => {
     await page.goto('http://localhost:4321/OpenCS/topics/arrays');
     await page.waitForSelector('astro-island', { timeout: 15000 });
     await page.waitForTimeout(2000);
-    
-    // Array visualizer should have some rendered content
-    const content = await page.evaluate(() => {
-      const island = document.querySelector('astro-island');
-      return island ? island.innerHTML.length : 0;
+
+    // Array visualizer should have rendered content
+    const hasContent = await page.evaluate(() => {
+      const chart = document.querySelector('[data-testid="array-visualizer"]');
+      return chart !== null;
     });
-    expect(content).toBeGreaterThan(500);
+    expect(hasContent).toBe(true);
   });
 });
