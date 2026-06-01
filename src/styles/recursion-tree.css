@@ -32,7 +32,7 @@
 .rtv-tab.active {
   background: var(--color-primary);
   border-color: var(--color-primary);
-  color: white;
+  color: var(var(--color-text));
 }
 
 .rtv-tab-label {
@@ -76,7 +76,7 @@
 .rtv-canvas {
   width: 100%;
   height: 280px;
-  background: #0f172a;
+  background: var(--color-canvas-bg);
   border-radius: var(--radius-md);
 }
 

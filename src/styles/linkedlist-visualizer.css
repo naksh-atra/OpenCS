@@ -38,12 +38,12 @@
 .llv-btn.active {
   background: var(--color-primary);
   border-color: var(--color-primary);
-  color: white;
+  color: var(var(--color-text));
 }
 .llv-btn-primary {
   background: var(--color-primary);
   border-color: var(--color-primary);
-  color: white;
+  color: var(var(--color-text));
 }
 .llv-input {
   padding: 6px 8px;
@@ -78,5 +78,5 @@
   color: #16a34a;
 }
 .llv-legend-current::before {
-  color: #d97706;
+  color: var(--color-highlight-border-alt);
 }
