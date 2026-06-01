@@ -40,8 +40,14 @@
   --color-info-text: #1d4ed8;
   --color-success-bg: #d1fae5;
   --color-success-text: #065f46;
+  --color-success-bg-alt: #d1fae5;
+  --color-success-text-alt: #065f46;
   --color-canvas-bg: #0f172a;
   --color-white: #ffffff;
+  --color-cell-highlight: #fef3c7;
+  --color-cell-success: #d1fae5;
+  --color-cell-info: #dbeafe;
+  --color-cell-neutral: #f1f5f9;
 
   /* Typography */
   --font-sans: Georgia, 'Times New Roman', serif;
