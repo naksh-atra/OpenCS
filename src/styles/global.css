@@ -117,6 +117,10 @@
   --color-success-text: #6ee7b7;
   --color-canvas-bg: #0f172a;
   --color-white: #e2e8f0;
+  --color-cell-highlight: #451a03;
+  --color-cell-success: #064e3b;
+  --color-cell-info: #1e3a5f;
+  --color-cell-neutral: #242B33;
 }
 
 *,

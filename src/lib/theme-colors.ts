@@ -15,7 +15,7 @@ export type ThemeToken =
   | 'highlight' | 'success' | 'info'
   | 'deleted-bg' | 'deleted-border'
   | 'chain' | 'chain-arrow'
-  | 'canvas-bg';
+  | 'canvas-bg' | 'cell-highlight' | 'cell-success' | 'cell-info' | 'cell-neutral';
 
 const LIGHT: Record<ThemeToken, string> = {
   bg: '#FAF9F6',
@@ -34,6 +34,10 @@ const LIGHT: Record<ThemeToken, string> = {
   chain: '#2563EB',
   'chain-arrow': '#94a3b8',
   'canvas-bg': '#0f172a',
+  'cell-highlight': '#fef3c7',
+  'cell-success': '#d1fae5',
+  'cell-info': '#dbeafe',
+  'cell-neutral': '#f1f5f9',
 };
 
 const DARK: Record<ThemeToken, string> = {
@@ -53,6 +57,10 @@ const DARK: Record<ThemeToken, string> = {
   chain: '#63B3ED',
   'chain-arrow': '#718096',
   'canvas-bg': '#0f172a',
+  'cell-highlight': '#451a03',
+  'cell-success': '#064e3b',
+  'cell-info': '#1e3a5f',
+  'cell-neutral': '#242B33',
 };
 
 function isDark(): boolean {
