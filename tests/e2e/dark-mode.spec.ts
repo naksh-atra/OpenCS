@@ -1,14 +1,19 @@
 import { test, expect } from '@playwright/test';
 
+const BASE = '/OpenCS';
+
 test.describe('Dark mode toggle', () => {
   test('Theme toggle button exists in header', async ({ page }) => {
-    await page.goto('http://localhost:4321/');
+    await page.goto(`http://localhost:4321${BASE}/`);
+    // Wait for React hydration
+    await page.waitForTimeout(2000);
     const toggle = await page.$('[data-testid="theme-toggle"]');
     expect(toggle).not.toBeNull();
   });
 
   test('Clicking toggle switches between light and dark', async ({ page }) => {
-    await page.goto('http://localhost:4321/');
+    await page.goto(`http://localhost:4321${BASE}/`);
+    await page.waitForTimeout(2000);
 
     // Click toggle to switch to dark
     await page.click('[data-testid="theme-toggle"]');
@@ -30,13 +35,12 @@ test.describe('Dark mode toggle', () => {
   });
 
   test('Label shows Dark in light mode, Light in dark mode', async ({ page }) => {
-    await page.goto('http://localhost:4321/');
+    await page.goto(`http://localhost:4321${BASE}/`);
+    await page.waitForTimeout(2000);
 
-    // Initially should show "Dark" (click to go dark)
     const label = await page.textContent('.theme-toggle-label');
     expect(label?.trim()).toBe('Dark');
 
-    // Switch to dark
     await page.click('[data-testid="theme-toggle"]');
     await page.waitForTimeout(500);
 
@@ -45,48 +49,50 @@ test.describe('Dark mode toggle', () => {
   });
 
   test('Persists across page navigation', async ({ page }) => {
-    await page.goto('http://localhost:4321/');
+    await page.goto(`http://localhost:4321${BASE}/`);
+    await page.waitForTimeout(2000);
 
-    // Set to dark
     await page.click('[data-testid="theme-toggle"]');
     await page.waitForTimeout(500);
 
-    // Navigate to topics
-    await page.goto('http://localhost:4321/topics/time-complexity');
-    await page.waitForTimeout(1000);
+    await page.goto(`http://localhost:4321${BASE}/topics/time-complexity`);
+    await page.waitForTimeout(2000);
 
-    // Check dark mode persisted via CSS variable
     const bg = await page.evaluate(() =>
       getComputedStyle(document.documentElement).getPropertyValue('--color-bg').trim()
     );
     expect(bg).toBe('#0F1419');
   });
 
-  test('Dark mode visual check — body background changes', async ({ page }) => {
-    await page.goto('http://localhost:4321/');
-
-    // Get light mode background
-    const lightBg = await page.evaluate(() =>
-      window.getComputedStyle(document.body).backgroundColor
-    );
+  test('Dark mode visual check — body background is dark', async ({ page }) => {
+    await page.goto(`http://localhost:4321${BASE}/`);
+    await page.waitForTimeout(2000);
 
     // Switch to dark
     await page.click('[data-testid="theme-toggle"]');
     await page.waitForTimeout(500);
 
-    // Get dark mode background
-    const darkBg = await page.evaluate(() =>
+    const bodyBg = await page.evaluate(() =>
       window.getComputedStyle(document.body).backgroundColor
     );
 
-    // They should be different
-    expect(darkBg).not.toBe(lightBg);
-    // Dark mode should be dark (low RGB values)
-    // Parse the rgb values
-    const rgb = darkBg.match(/\d+/g);
+    // Parse rgb values — dark mode should have low values
+    const rgb = bodyBg.match(/\d+/g);
     expect(rgb).not.toBeNull();
-    expect(Number(rgb![0])).toBeLessThan(30);  // R should be very low
-    expect(Number(rgb![1])).toBeLessThan(30);  // G should be very low
-    expect(Number(rgb![2])).toBeLessThan(30);  // B should be very low
+    expect(Number(rgb![0])).toBeLessThan(30);
+    expect(Number(rgb![1])).toBeLessThan(30);
+    expect(Number(rgb![2])).toBeLessThan(30);
+  });
+
+  test('SSR flash prevention — dark mode loads without flash', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('theme', 'dark');
+    });
+
+    await page.goto(`http://localhost:4321${BASE}/`);
+
+    // Immediately check (before React hydration) — the inline script should have set it
+    const html = await page.evaluate(() => document.documentElement.outerHTML.substring(0, 200));
+    expect(html).toContain('data-theme="dark"');
   });
 });

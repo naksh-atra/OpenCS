@@ -13,7 +13,7 @@ export default function ThemeToggle() {
 
   useEffect(() => {
     if (!mounted) return;
-    document.documentElement.setAttribute('theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   }, [theme, mounted]);
 
