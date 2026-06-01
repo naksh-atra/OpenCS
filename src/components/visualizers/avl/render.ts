@@ -1,4 +1,5 @@
 import type { AVLNode } from '../../../engines/treegraph/avl-ops';
+import { themeColor } from '../../lib/theme-colors';
 
 export function drawAVLTree(
   canvas: HTMLCanvasElement | null,
@@ -18,7 +19,7 @@ export function drawAVLTree(
   ctx.clearRect(0, 0, w, h);
 
   if (!root) {
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = themeColor('text-muted');
     ctx.font = '14px system-ui';
     ctx.textAlign = 'center';
     ctx.fillText('Empty AVL tree', w / 2, h / 2);
@@ -99,7 +100,7 @@ export function drawAVLTree(
     ctx.fillText(String(node.value), pos.x, pos.y);
 
     // Height label
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = themeColor('text-muted');
     ctx.font = `${Math.max(8, nodeRadius * 0.35)}px system-ui`;
     ctx.fillText(`h=${node.height}`, pos.x, pos.y + nodeRadius + 10);
 
