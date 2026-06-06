@@ -22,7 +22,14 @@ const { title, description, difficulty, estimatedTime, category, engine, status,
   <Header />
   <main class="topic-main">
     <article class="topic-article container">
-      <!-- Breadcrumb could be added here -->
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/OpenCS/">Home</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="/OpenCS/topics">Topics</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">{title}</span>
+      </nav>
 
       <header class="topic-header">
         <h1>{title}</h1>
@@ -54,6 +61,37 @@ const { title, description, difficulty, estimatedTime, category, engine, status,
 </BaseLayout>
 
 <style>
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-lg);
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: var(--color-text-muted);
+  }
+
+  .breadcrumb a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  .breadcrumb a:hover {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .breadcrumb-sep {
+    color: var(--color-border);
+    user-select: none;
+  }
+
+  .breadcrumb-current {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
   .topic-main {
     padding: var(--space-2xl) 0;
     padding-top: calc(var(--header-height) + var(--space-xl));
