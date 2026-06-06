@@ -78,8 +78,8 @@ export function AutomataVisualizer() {
 
         <div className="at-controls" data-testid="at-controls">
           <input type="text" value={inputStr} onChange={e => setInputStr(e.target.value)} placeholder="Input string" className="at-input" data-testid="at-input" />
-          <button onClick={handleSimulate} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-primary)', background: 'var(--color-primary)', color: 'white', fontSize: '0.8125rem', cursor: 'pointer' }}>Simulate</button>
-          <button onClick={handleReset} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Reset</button>
+          <button onClick={handleSimulate} className="viz-btn viz-btn-primary">Simulate</button>
+          <button onClick={handleReset} className="viz-btn viz-btn-secondary">Reset</button>
         </div>
 
         {simState?.accepted !== null && simState?.accepted !== undefined && (

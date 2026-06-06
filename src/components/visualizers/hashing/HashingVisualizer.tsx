@@ -192,11 +192,11 @@ export function HashingVisualizer() {
               }}
             />
           </div>
-          <button onClick={handleInsert} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-primary)', background: 'var(--color-primary)', color: 'white', fontSize: '0.8125rem', cursor: 'pointer' }}>Insert</button>
-          <button onClick={handleSearch} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Search</button>
-          <button onClick={handleDelete} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Delete</button>
-          <button onClick={handleRehash} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Rehash</button>
-          <button onClick={handleReset} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Reset</button>
+          <button onClick={handleInsert} className="viz-btn viz-btn-primary">Insert</button>
+          <button onClick={handleSearch} className="viz-btn viz-btn-secondary">Search</button>
+          <button onClick={handleDelete} className="viz-btn viz-btn-secondary">Delete</button>
+          <button onClick={handleRehash} className="viz-btn viz-btn-secondary">Rehash</button>
+          <button onClick={handleReset} className="viz-btn viz-btn-secondary">Reset</button>
 
           <div className="hs-metric" data-testid="hs-load-factor">
             <span className="hs-metric-label">Load Factor</span>

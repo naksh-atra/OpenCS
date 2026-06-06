@@ -166,6 +166,46 @@
   height: 20px;
 }
 
+/* ========================================
+   VISUALIZER BUTTONS (shared)
+   ======================================== */
+
+.viz-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-family: var(--font-body);
+  line-height: 1.4;
+  cursor: pointer;
+  transition: background-color var(--transition), border-color var(--transition), color var(--transition);
+  border: 1px solid transparent;
+}
+
+.viz-btn-primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+.viz-btn-primary:hover {
+  background: var(--color-primary-container);
+  border-color: var(--color-primary-container);
+}
+
+.viz-btn-secondary {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.viz-btn-secondary:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
 *,
 *::before,
 *::after {

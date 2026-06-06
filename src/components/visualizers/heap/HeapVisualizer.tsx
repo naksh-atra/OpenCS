@@ -157,10 +157,10 @@ export function HeapVisualizer() {
               }}
             />
           </div>
-          <button onClick={handleInsert} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-primary)', background: 'var(--color-primary)', color: 'white', fontSize: '0.8125rem', cursor: 'pointer' }}>Insert</button>
-          <button onClick={handleExtract} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Extract Root</button>
-          <button onClick={handleBuildHeap} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Build Heap</button>
-          <button onClick={handleReset} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Reset</button>
+          <button onClick={handleInsert} className="viz-btn viz-btn-primary">Insert</button>
+          <button onClick={handleExtract} className="viz-btn viz-btn-secondary">Extract Root</button>
+          <button onClick={handleBuildHeap} className="viz-btn viz-btn-secondary">Build Heap</button>
+          <button onClick={handleReset} className="viz-btn viz-btn-secondary">Reset</button>
 
           <div className="hp-metric">
             <span className="hp-metric-label">Size</span>
