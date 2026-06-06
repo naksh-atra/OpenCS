@@ -113,6 +113,18 @@ function isFilterActive(filter: string, value: string | null) {
           <p>{sortedTopics.length} of {totalCount} topics</p>
         </div>
 
+        {/* Search */}
+        <div class="topics-search">
+          <input
+            type="text"
+            id="topicSearch"
+            placeholder="Search topics by name..."
+            class="search-input"
+            autocomplete="off"
+          />
+          <span class="search-clear" id="searchClear" hidden>&#x2715;</span>
+        </div>
+
         {sortedTopics.length === 0 ? (
           <div class="empty-state">
             <p>No topics match your filters.</p>
@@ -148,6 +160,42 @@ function isFilterActive(filter: string, value: string | null) {
   </main>
   <Footer />
 </BaseLayout>
+
+<script>
+  (function() {
+    var input = document.getElementById('topicSearch');
+    var clear = document.getElementById('searchClear');
+    var cards = document.querySelectorAll('.topic-card');
+    if (!input) return;
+
+    function filterTopics() {
+      var q = input.value.toLowerCase().trim();
+      clear.hidden = q.length === 0;
+      var visible = 0;
+      cards.forEach(function(card) {
+        var title = (card.querySelector('h3') || {}).textContent || '';
+        var desc = (card.querySelector('p') || {}).textContent || '';
+        var tags = card.querySelectorAll('.pill');
+        var tagText = '';
+        tags.forEach(function(t) { tagText += ' ' + t.textContent; });
+        var match = !q || title.toLowerCase().indexOf(q) >= 0 || desc.toLowerCase().indexOf(q) >= 0 || tagText.toLowerCase().indexOf(q) >= 0;
+        card.style.display = match ? '' : 'none';
+        if (match) visible++;
+      });
+      var countEl = document.querySelector('.topics-count p');
+      if (countEl) {
+        countEl.textContent = visible + ' of ' + cards.length + ' topics' + (q ? ' (filtered)' : '');
+      }
+    }
+
+    input.addEventListener('input', filterTopics);
+    clear.addEventListener('click', function() {
+      input.value = '';
+      filterTopics();
+      input.focus();
+    });
+  })();
+</script>
 
 <style>
   .topics-page {
@@ -337,6 +385,50 @@ function isFilterActive(filter: string, value: string | null) {
     background: var(--color-primary-light);
     color: var(--color-primary);
     border-color: var(--color-primary);
+  }
+
+  /* Search input */
+  .topics-search {
+    position: relative;
+    margin-bottom: var(--space-lg);
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 10px 36px 10px 14px;
+    font-size: 0.875rem;
+    font-family: var(--font-body);
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+
+  .search-input::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .search-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
+  }
+
+  .search-clear {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+  }
+
+  .search-clear:hover {
+    color: var(--color-text);
   }
 
   /* Responsive */
