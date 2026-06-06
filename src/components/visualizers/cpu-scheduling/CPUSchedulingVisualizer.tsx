@@ -76,8 +76,8 @@ export function CPUSchedulingVisualizer() {
         </div>
 
         <div className="cs-controls" data-testid="cs-controls">
-          <button onClick={handleRun} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-primary)', background: 'var(--color-primary)', color: 'white', fontSize: '0.8125rem', cursor: 'pointer' }}>Run</button>
-          <button onClick={handleReset} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Reset</button>
+          <button onClick={handleRun} className="viz-btn viz-btn-primary">Run</button>
+          <button onClick={handleReset} className="viz-btn viz-btn-secondary">Reset</button>
           {state && (
             <>
               <div className="cs-metric"><span className="cs-metric-label">Processes</span><span className="cs-metric-value">{state.processes.length}</span></div>

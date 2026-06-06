@@ -70,8 +70,8 @@ export function AVLVisualizer() {
             <label style={{ fontSize: '0.6875rem', fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)' }}>Value</label>
             <input type="number" value={inputValue} onChange={e => setInputValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="e.g. 50" style={{ padding: '8px 10px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.875rem', fontFamily: 'var(--font-mono)', width: '80px' }} />
           </div>
-          <button onClick={handleInsert} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-primary)', background: 'var(--color-primary)', color: 'white', fontSize: '0.8125rem', cursor: 'pointer' }}>Insert</button>
-          <button onClick={handleReset} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Reset</button>
+          <button onClick={handleInsert} className="viz-btn viz-btn-primary">Insert</button>
+          <button onClick={handleReset} className="viz-btn viz-btn-secondary">Reset</button>
         </div>
 
         {error && <div className="avl-error">{error}</div>}

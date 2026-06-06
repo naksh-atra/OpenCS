@@ -17,6 +17,30 @@ import Footer from '../components/layout/Footer.astro';
       </div>
     </section>
 
+    <section class="stats-section">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-number">20</span>
+            <span class="stat-label">Interactive Topics</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">4</span>
+            <span class="stat-label">Reusable Engines</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">58</span>
+            <span class="stat-label">E2E Tests</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">6</span>
+            <span class="stat-label">Content Sections</span>
+            <span class="stat-label-small">per topic</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="content-section">
       <div class="container narrow">
         <h2>Our Mission</h2>
@@ -63,13 +87,13 @@ import Footer from '../components/layout/Footer.astro';
 
 <style>
   .page-header {
-    padding: var(--space-12) 0;
+    padding: calc(var(--header-height) + var(--space-xl)) 0 var(--space-xl);
     background: var(--color-surface);
     border-bottom: 1px solid var(--color-border);
   }
 
   .page-header h1 {
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-md);
   }
 
   .page-intro {
@@ -79,8 +103,54 @@ import Footer from '../components/layout/Footer.astro';
     line-height: 1.7;
   }
 
+  .stats-section {
+    padding: var(--space-xl) 0;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-md);
+  }
+
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: var(--space-md) var(--space-sm);
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .stat-label-small {
+    font-size: 0.625rem;
+    color: var(--color-text-muted);
+    opacity: 0.7;
+  }
+
+  @media (max-width: 640px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   .content-section {
-    padding: var(--space-12) 0;
+    padding: var(--space-xl) 0;
   }
 
   .container.narrow {
@@ -88,8 +158,8 @@ import Footer from '../components/layout/Footer.astro';
   }
 
   .content-section h2 {
-    margin-top: var(--space-8);
-    margin-bottom: var(--space-4);
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-md);
   }
 
   .content-section h2:first-child {
@@ -97,17 +167,17 @@ import Footer from '../components/layout/Footer.astro';
   }
 
   .content-section p {
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-md);
     line-height: 1.7;
   }
 
   .content-section ul {
-    margin-bottom: var(--space-4);
-    padding-left: var(--space-6);
+    margin-bottom: var(--space-md);
+    padding-left: var(--space-lg);
   }
 
   .content-section li {
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-xs);
   }
 
   .content-section strong {

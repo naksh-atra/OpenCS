@@ -57,9 +57,9 @@ export function MemoryVisualizer() {
         </div>
 
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }} data-testid="mm-controls">
-          <button onClick={handleStep} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-primary)', background: 'var(--color-primary)', color: 'white', fontSize: '0.8125rem', cursor: 'pointer' }}>Step</button>
-          <button onClick={handleRunFull} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Run All</button>
-          <button onClick={handleReset} style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text)', fontSize: '0.8125rem', cursor: 'pointer' }}>Reset</button>
+          <button onClick={handleStep} className="viz-btn viz-btn-primary">Step</button>
+          <button onClick={handleRunFull} className="viz-btn viz-btn-secondary">Run All</button>
+          <button onClick={handleReset} className="viz-btn viz-btn-secondary">Reset</button>
         </div>
 
         {state && (

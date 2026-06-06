@@ -65,15 +65,21 @@ All 20 topic pages have interactive visualizers and educational content:
 | 20 | Memory Management | SystemProcess | Complete |
 
 ### Milestone 4 — Visual Polish & Testing
-**Status: In Progress**
+**Status: Complete**
 
 - [x] Global CSS redesign (warm ivory theme, design tokens, no shadows/gradients)
 - [x] Header/Footer redesign with backdrop blur and monospace logo
 - [x] Homepage with hero, topic cards, feature cards, CTA
-- [x] Topics index with sidebar filter pills
-- [x] 47+ Playwright E2E tests passing
+- [x] Topics index with sidebar filter pills + search box
+- [x] 58 Playwright E2E tests passing
 - [x] Add data-testid attributes to all visualizers for richer test coverage
-- [ ] Fix hardcoded button colors in visualizer CSS files (replace hex with design tokens) — low priority, no user impact
+- [x] Dark mode theme toggle (sun/moon, localStorage persistence)
+- [x] Copy code buttons on all MDX code blocks
+- [x] Scroll progress indicator on all pages
+- [x] Breadcrumb navigation on topic pages
+- [x] Footer with GitHub link and build date
+- [x] About page with stats section
+- [x] Fix hardcoded button colors → shared .viz-btn CSS classes
 
 ### Milestone 5 — Long-term (Planned)
 
@@ -82,17 +88,16 @@ All 20 topic pages have interactive visualizers and educational content:
 - Interactive exercises with auto-grading
 - Progress tracking for students
 - Multi-language support (regional Indian languages)
-- Theme toggle (light/dark with localStorage)
 
 ## Open Technical Debt
 
 | Item | Description | Priority |
 |------|-------------|----------|
 | ~~data-testid coverage~~ | ✅ All 20 visualizers now have data-testid attributes | Complete |
-| Hardcoded button colors | Some visualizer buttons use inline hex values instead of design tokens | Low |
-| Canvas theme sync | Some canvas drawing reads computed styles at runtime | Low |
-| Inline style objects | 7 visualizers use style={{}} for static layout — should use CSS classes | Low |
-| ~~ROADMAP sync~~ | ✅ ROADMAP.md updated to reflect completed milestones | Complete |
+| ~~Hardcoded button colors~~ | ✅ Replaced with shared .viz-btn CSS classes | Complete |
+| ~~Canvas theme sync~~ | ✅ All render files use themeColor utility | Complete |
+| Inline style objects | Remaining layout inline styles (flex, gap) — should move to CSS classes | Low |
+| Mobile optimization | Visualizations not yet optimized for small screens | Low |
 
 ## Contributing to Roadmap
 
