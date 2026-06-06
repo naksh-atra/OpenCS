@@ -73,11 +73,13 @@ Required validation sequence:
 
 ## Priority order (next steps)
 1. ~~Add `data-testid` attributes to all 12 remaining visualizers~~ ✅ Complete (May 31)
-2. Fix inline `style={{}}` objects in 7 visualizers (move to CSS classes) — medium priority
-3. Replace hardcoded hex colors with design token variables — medium priority
+2. ~~Fix inline `style={{}}` objects in 7 visualizers~~ ✅ Complete (June 6)
+3. ~~Replace hardcoded hex colors with design token variables~~ ✅ Complete (June 6)
 4. ~~Merge `dev` → `main` for production release~~ ✅ Complete (May 31)
-5. Mobile-optimized visualizations (long-term)
-6. Interactive exercises with auto-grading (long-term)
+5. ~~Dark mode theme toggle~~ ✅ Complete (June 6)
+6. ~~Copy code buttons, scroll progress, breadcrumb nav~~ ✅ Complete (June 6)
+7. Mobile-optimized visualizations (long-term)
+8. Interactive exercises with auto-grading (long-term)
 
 ## Anti-goals
 - Do not spend time on cosmetic styling refinements without user feedback
