@@ -58,9 +58,9 @@ const relatedTopics = allTopics
         <!-- Difficulty progression bar -->
         {difficulty && (
           <div class="difficulty-bar" aria-label={`Difficulty: ${difficulty}`}>
-            <div class="difficulty-segment {difficulty === 'beginner' ? 'active' : ''}">Beginner</div>
-            <div class="difficulty-segment {difficulty === 'intermediate' ? 'active' : ''}">Intermediate</div>
-            <div class="difficulty-segment {difficulty === 'advanced' ? 'active' : ''}">Advanced</div>
+            <div class:list={['difficulty-segment', { active: difficulty === 'beginner' }]}>Beginner</div>
+            <div class:list={['difficulty-segment', { active: difficulty === 'intermediate' }]}>Intermediate</div>
+            <div class:list={['difficulty-segment', { active: difficulty === 'advanced' }]}>Advanced</div>
           </div>
         )}
 
