@@ -11,6 +11,6 @@
 .spmv-legend { display: flex; gap: 16px; justify-content: center; margin-top: 8px; font-size: 0.75rem; color: var(--color-text); }
 .spmv-legend-item::before { content: '■'; margin-right: 4px; }
 .spmv-legend-relaxed::before { color: var(--color-highlight-border-alt); }
-.spmv-legend-visited::before { color: #16a34a; }
-.spmv-legend-mst::before { color: #7c3aed; }
+.spmv-legend-visited::before { color: var(--color-success); }
+.spmv-legend-mst::before { color: var(--color-accent); }
 .spmv-legend-current::before { color: var(--color-primary); }

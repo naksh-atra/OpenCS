@@ -75,7 +75,7 @@
   margin-right: 4px;
 }
 .llv-legend-visited::before {
-  color: #16a34a;
+  color: var(--color-success);
 }
 .llv-legend-current::before {
   color: var(--color-highlight-border-alt);

@@ -75,7 +75,7 @@
 .hs-cell.deleted {
   background: var(--color-deleted-bg);
   border-color: var(--color-deleted-border);
-  color: #dc2626;
+  color: var(--color-error);
 }
 
 .hs-cell.highlight {
@@ -129,7 +129,7 @@
 
 .hs-status.deleted {
   background: var(--color-deleted-bg-alt);
-  color: #dc2626;
+  color: var(--color-error);
 }
 
 .hs-controls {
@@ -167,7 +167,7 @@
 }
 
 .hs-metric-value.danger {
-  color: #dc2626;
+  color: var(--color-error);
 }
 
 .hs-history {
@@ -194,6 +194,6 @@
   background: var(--color-deleted-bg);
   border: 1px solid var(--color-deleted-border);
   border-radius: 6px;
-  color: #dc2626;
+  color: var(--color-error);
   font-size: 0.8125rem;
 }

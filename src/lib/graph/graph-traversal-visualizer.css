@@ -12,5 +12,5 @@
 .gtv-legend-item::before { content: '■'; margin-right: 4px; }
 .gtv-legend-pending::before { color: var(--color-border); }
 .gtv-legend-frontier::before { color: var(--color-highlight-border-alt); }
-.gtv-legend-visited::before { color: #16a34a; }
+.gtv-legend-visited::before { color: var(--color-success); }
 .gtv-legend-current::before { color: var(--color-primary); }

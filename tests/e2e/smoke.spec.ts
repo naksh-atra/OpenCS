@@ -32,7 +32,7 @@ test.describe('All topic pages load without errors', () => {
       });
       page.on('pageerror', err => errors.push(err.message));
 
-      await page.goto(`/OpenCS/topics/${topic.slug}`);
+      await page.goto(`http://localhost:4321/OpenCS/topics/${topic.slug}`);
       await page.waitForTimeout(3000);
 
       // Page should have loaded with main content
@@ -46,17 +46,17 @@ test.describe('All topic pages load without errors', () => {
 
 test.describe('Navigation works', () => {
   test('home page loads', async ({ page }) => {
-    await page.goto('/OpenCS/');
+    await page.goto('http://localhost:4321/OpenCS/');
     await expect(page.locator('main')).toBeVisible();
   });
 
   test('topics index page loads', async ({ page }) => {
-    await page.goto('/OpenCS/topics');
+    await page.goto('http://localhost:4321/OpenCS/topics');
     await expect(page.locator('main')).toBeVisible();
   });
 
   test('about page loads', async ({ page }) => {
-    await page.goto('/OpenCS/about');
+    await page.goto('http://localhost:4321/OpenCS/about');
     await expect(page.locator('main')).toBeVisible();
   });
 });

@@ -62,10 +62,10 @@
   margin-right: 4px;
 }
 
-.hp-legend-item.normal::before { color: #1e293b; }
-.hp-legend-item.compare::before { color: #3b82f6; }
+.hp-legend-item.normal::before { color: var(--color-text); }
+.hp-legend-item.compare::before { color: var(--color-primary); }
 .hp-legend-item.highlight::before { color: var(--color-highlight-border); }
-.hp-legend-item.swap::before { color: #10b981; }
+.hp-legend-item.swap::before { color: var(--color-success); }
 
 .hp-toggle-btn {
   padding: 6px 12px;
@@ -89,6 +89,6 @@
   background: var(--color-deleted-bg);
   border: 1px solid var(--color-deleted-border);
   border-radius: 6px;
-  color: #dc2626;
+  color: var(--color-error);
   font-size: 0.8125rem;
 }

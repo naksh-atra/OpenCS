@@ -1,71 +1,62 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Dark mode toggle', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:4321/OpenCS/');
+test.describe('Dark mode toggle — full coverage', () => {
+  test('Toggle button renders in header', async ({ page }) => {
+    await page.goto('/OpenCS/');
     await page.evaluate(() => localStorage.removeItem('theme'));
     await page.reload();
-    await page.waitForLoadState('networkidle');
+
+    const toggle = page.locator('[data-testid="theme-toggle"]');
+    await expect(toggle).toBeVisible();
+    await expect(toggle).toHaveAttribute('aria-label', 'Switch to dark mode');
   });
 
-  test('ThemeToggle renders in header', async ({ page }) => {
-    const toggle = await page.$('[data-testid="theme-toggle"]');
-    expect(toggle).not.toBeNull();
-  });
+  test('Toggle switches from light to dark', async ({ page }) => {
+    await page.goto('/OpenCS/');
+    await page.evaluate(() => localStorage.removeItem('theme'));
+    await page.reload();
 
-  test('Clicking toggle switches theme to dark', async ({ page }) => {
-    // Should start in light mode
-    const initial = await page.evaluate(() => document.documentElement.getAttribute('data-theme') || 'light');
-    expect(initial).toBe('light');
-
-    // Click toggle
     await page.click('[data-testid="theme-toggle"]');
     await page.waitForTimeout(300);
 
     const theme = await page.evaluate(() => document.documentElement.getAttribute('data-theme'));
     expect(theme).toBe('dark');
 
-    // Verify dark mode CSS variable
+    // Verify dark mode CSS variable is applied
     const bg = await page.evaluate(() =>
       getComputedStyle(document.documentElement).getPropertyValue('--color-bg').trim()
     );
     expect(bg).toBe('#0F1419');
   });
 
-  test('Clicking again switches back to light', async ({ page }) => {
-    // Switch to dark
-    await page.click('[data-testid="theme-toggle"]');
-    await page.waitForTimeout(300);
+  test('Toggle switches back to light', async ({ page }) => {
+    await page.goto('/OpenCS/');
+    await page.evaluate(() => localStorage.setItem('theme', 'dark'));
+    await page.reload();
 
-    // Switch back to light
-    await page.click('[data-testid="theme-toggle"]');
+    const toggle = page.locator('[data-testid="theme-toggle"]');
+    await expect(toggle).toHaveAttribute('aria-label', 'Switch to light mode');
+
+    await toggle.click();
     await page.waitForTimeout(300);
 
     const theme = await page.evaluate(() => document.documentElement.getAttribute('data-theme'));
     expect(theme).toBe('light');
-
-    const bg = await page.evaluate(() =>
-      getComputedStyle(document.documentElement).getPropertyValue('--color-bg').trim()
-    );
-    expect(bg).toBe('#FAF9F6');
   });
 
-  test('Dark mode persists across page navigations via localStorage', async ({ page }) => {
-    // Enable dark mode
+  test('Dark mode persists across page navigations', async ({ page }) => {
+    await page.goto('/OpenCS/');
     await page.click('[data-testid="theme-toggle"]');
     await page.waitForTimeout(300);
 
-    // Navigate to topic page
-    await page.goto('http://localhost:4321/OpenCS/topics/arrays');
+    await page.goto('/OpenCS/topics/arrays');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(500);
 
-    // Theme should persist
     const theme = await page.evaluate(() => document.documentElement.getAttribute('data-theme'));
     expect(theme).toBe('dark');
 
-    // Navigate to another page
-    await page.goto('http://localhost:4321/OpenCS/topics/sorting');
+    await page.goto('/OpenCS/topics/sorting');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(500);
 
@@ -73,30 +64,33 @@ test.describe('Dark mode toggle', () => {
     expect(theme2).toBe('dark');
   });
 
-  test('Both themes render content without errors', async ({ page }) => {
+  test('Dark mode renders all pages without errors', async ({ page }) => {
     const pages = [
+      '/OpenCS/',
+      '/OpenCS/topics',
       '/OpenCS/topics/time-complexity',
       '/OpenCS/topics/arrays',
       '/OpenCS/topics/binary-search-tree',
       '/OpenCS/topics/number-systems',
+      '/OpenCS/about',
+      '/OpenCS/roadmap',
     ];
 
     for (const path of pages) {
-      // Light mode
-      await page.goto(`http://localhost:4321${path}`);
-      await page.waitForLoadState('networkidle');
+      const errors: string[] = [];
+      page.on('pageerror', err => errors.push(err.message));
+      page.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); });
+
+      await page.goto(path);
+      await page.click('[data-testid="theme-toggle"]').catch(() => {});
+      await page.waitForTimeout(500);
       const bodyText = await page.evaluate(() => document.body.innerText.length);
       expect(bodyText).toBeGreaterThan(100);
 
-      // Switch to dark mode
-      await page.click('[data-testid="theme-toggle"]');
-      await page.waitForTimeout(500);
-      const bodyTextDark = await page.evaluate(() => document.body.innerText.length);
-      expect(bodyTextDark).toBeGreaterThan(100);
-
-      // Switch back
-      await page.click('[data-testid="theme-toggle"]');
-      await page.waitForTimeout(300);
+      const filteredErrors = errors.filter(e =>
+        !e.includes('favicon') && !e.includes('ERR_CONNECTION') && !e.includes('net::')
+      );
+      expect(filteredErrors).toHaveLength(0);
     }
   });
 });

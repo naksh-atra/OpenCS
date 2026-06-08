@@ -57,8 +57,8 @@
 }
 
 .sqv-btn-warn {
-  color: #dc2626;
-  border-color: #fca5a5;
+  color: var(--color-error);
+  border-color: var(--color-deleted-border);
 }
 
 .sqv-btn-reset {

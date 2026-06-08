@@ -71,8 +71,8 @@
   color: var(--color-highlight-border-alt);
 }
 .sv-legend-swap::before {
-  color: #dc2626;
+  color: var(--color-error);
 }
 .sv-legend-sorted::before {
-  color: #16a34a;
+  color: var(--color-success);
 }
