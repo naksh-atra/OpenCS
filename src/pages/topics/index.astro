@@ -133,10 +133,13 @@ function isFilterActive(filter: string, value: string | null) {
         ) : (
           <div class="topics-grid">
             {sortedTopics.map(topic => (
-              <a href={`/OpenCS/topics/${topic.id.replace(/\.mdx?$/, '')}`} class="topic-card">
+              <a href={`/OpenCS/topics/${topic.id.replace(/\.mdx?$/, '')}`} class="topic-card" data-topic-slug={topic.id.replace(/\.mdx?$/, '')}>
                 <div class="topic-card-header">
-                  <span class="pill category">{topic.data.category}</span>
-                  <span class="pill">{topic.data.engine}</span>
+                  <button class="topic-progress-btn" data-topic-slug={topic.id.replace(/\.mdx?$/, '')} onclick="event.preventDefault();" title="Mark as done" aria-label="Mark as completed">○</button>
+                  <div class="topic-card-header-pills">
+                    <span class="pill category">{topic.data.category}</span>
+                    <span class="pill">{topic.data.engine}</span>
+                  </div>
                 </div>
                 <h3>{topic.data.title}</h3>
                 <p>{topic.data.description}</p>
@@ -194,6 +197,61 @@ function isFilterActive(filter: string, value: string | null) {
       filterTopics();
       input.focus();
     });
+  })();
+</script>
+
+<script>
+  // Topic progress tracking
+  (function() {
+    function getVisited() {
+      try { return JSON.parse(localStorage.getItem('opencs_visited') || '[]'); } catch(e) { return []; }
+    }
+    function setVisited(arr) {
+      try { localStorage.setItem('opencs_visited', JSON.stringify(arr)); } catch(e) {}
+    }
+
+    function updateProgressBtns() {
+      var visited = getVisited();
+      document.querySelectorAll('.topic-progress-btn').forEach(function(btn) {
+        var slug = btn.getAttribute('data-topic-slug');
+        if (visited.indexOf(slug) >= 0) {
+          btn.textContent = '✓';
+          btn.classList.add('completed');
+          btn.setAttribute('aria-label', 'Completed');
+        } else {
+          btn.textContent = '○';
+          btn.classList.remove('completed');
+          btn.setAttribute('aria-label', 'Mark as completed');
+        }
+      });
+      // Update progress count
+      var total = document.querySelectorAll('.topic-card').length;
+      var done = visited.length;
+      var countEl = document.querySelector('.topics-count p');
+      if (countEl && total > 0) {
+        var baseText = countEl.textContent.replace(/ \(.*\)/, '').replace(/^\d+/, done + '/' + total);
+        countEl.textContent = baseText;
+      }
+    }
+
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('.topic-progress-btn');
+      if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var slug = btn.getAttribute('data-topic-slug');
+      var visited = getVisited();
+      var idx = visited.indexOf(slug);
+      if (idx >= 0) {
+        visited.splice(idx, 1);
+      } else {
+        visited.push(slug);
+      }
+      setVisited(visited);
+      updateProgressBtns();
+    });
+
+    updateProgressBtns();
   })();
 </script>
 
@@ -291,9 +349,53 @@ function isFilterActive(filter: string, value: string | null) {
 
   .topic-card-header {
     display: flex;
-    gap: var(--space-xs);
+    align-items: flex-start;
+    gap: var(--space-sm);
     margin-bottom: var(--space-md);
+  }
+
+  .topic-card-header-pills {
+    display: flex;
+    gap: var(--space-xs);
     flex-wrap: wrap;
+    flex: 1;
+  }
+
+  .topic-progress-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all var(--transition);
+    line-height: 1;
+    margin-top: 2px;
+  }
+
+  .topic-progress-btn:hover {
+    border-color: var(--color-success);
+    color: var(--color-success);
+    background: var(--color-success-bg);
+  }
+
+  .topic-progress-btn.completed {
+    border-color: var(--color-success);
+    color: var(--color-success);
+    background: var(--color-success-bg);
+  }
+
+  .topic-progress-btn.completed:hover {
+    border-color: var(--color-error);
+    color: var(--color-error);
+    background: var(--color-deleted-bg);
   }
 
   .topic-card h3 {

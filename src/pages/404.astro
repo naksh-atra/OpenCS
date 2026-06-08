@@ -1,0 +1,188 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const allTopics = (await getCollection('topics'))
+  .filter(t => t.data.status === 'published')
+  .sort((a, b) => (a.data.order || 0) - (b.data.order || 0))
+  .slice(0, 8);
+---
+
+<BaseLayout title="Page Not Found" description="The page you're looking for doesn't exist">
+  <Header />
+  <main class="error-main">
+    <div class="error-inner container">
+      <div class="error-code">404</div>
+      <h1>Page not found</h1>
+      <p class="error-desc">The page you're looking for doesn't exist or has been moved.</p>
+
+      <div class="error-actions">
+        <a href="/OpenCS/" class="btn-primary">Go to Homepage</a>
+        <a href="/OpenCS/topics" class="btn-secondary">Browse Topics</a>
+      </div>
+
+      <div class="error-topics">
+        <h2>Popular Topics</h2>
+        <div class="error-topics-grid">
+          {allTopics.map(t => (
+            <a href={`/OpenCS/topics/${t.id.replace(/\.mdx?$/, '')}`} class="error-topic-card">
+              <span class="error-topic-engine">{t.data.engine}</span>
+              <h3>{t.data.title}</h3>
+              <span class="error-topic-difficulty">{t.data.difficulty}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .error-main {
+    padding: calc(var(--header-height) + var(--space-2xl)) 0 var(--space-2xl);
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .error-inner {
+    text-align: center;
+    max-width: 640px;
+  }
+
+  .error-code {
+    font-family: var(--font-mono);
+    font-size: 6rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    opacity: 0.15;
+    line-height: 1;
+    margin-bottom: var(--space-sm);
+  }
+
+  .error-inner h1 {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .error-desc {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-xl);
+    font-size: 1.0625rem;
+  }
+
+  .error-actions {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-sm) var(--space-lg);
+    background: var(--color-primary);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    transition: background-color var(--transition);
+  }
+
+  .btn-primary:hover {
+    background: var(--color-primary-container);
+    text-decoration: none;
+    color: #fff;
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-sm) var(--space-lg);
+    background: transparent;
+    color: var(--color-text-body);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    font-size: 0.9375rem;
+  }
+
+  .btn-secondary:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .error-topics {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .error-topics h2 {
+    font-size: 1.125rem;
+    margin-bottom: var(--space-lg);
+  }
+
+  .error-topics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-sm);
+    text-align: left;
+  }
+
+  .error-topic-card {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: border-color var(--transition);
+  }
+
+  .error-topic-card:hover {
+    border-color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .error-topic-engine {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-primary);
+  }
+
+  .error-topic-card h3 {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  .error-topic-difficulty {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 768px) {
+    .error-topics-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .error-code { font-size: 4rem; }
+    .error-actions { flex-direction: column; align-items: center; }
+    .error-topics-grid { grid-template-columns: 1fr; }
+  }
+</style>

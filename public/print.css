@@ -1,0 +1,103 @@
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+  /* Reset background and color for print */
+  html {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+  }
+
+  /* Hide non-essential elements */
+  .header,
+  .footer,
+  .scroll-progress,
+  .theme-toggle,
+  .breadcrumb,
+  .topic-nav,
+  .related-topics,
+  .copy-btn,
+  .visualizer,
+  iframe,
+  script,
+  nav,
+  .difficulty-bar {
+    display: none !important;
+  }
+
+  /* Show the article content */
+  .topic-main {
+    padding: 0 !important;
+  }
+
+  .topic-article {
+    max-width: 100% !important;
+  }
+
+  /* Ensure links show their URL */
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75rem;
+    color: #666;
+    font-weight: normal;
+  }
+
+  /* Don't show URL for internal navigation links */
+  a[href^="/"]::after,
+  a[href^="#"]::after {
+    content: "";
+  }
+
+  /* Tables print nicely */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    page-break-inside: avoid;
+  }
+
+  th, td {
+    border: 1px solid #333;
+    padding: 6px 10px;
+    text-align: left;
+  }
+
+  th {
+    background: #f0f0f0 !important;
+    font-weight: bold;
+  }
+
+  /* Code blocks */
+  pre, code {
+    background: #f5f5f5 !important;
+    border: 1px solid #ddd;
+    font-size: 0.85rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  pre {
+    padding: 12px;
+    border-radius: 0;
+  }
+
+  /* Headings */
+  h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+  h2 { font-size: 1.35rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+  h3 { font-size: 1.1rem; margin-top: 1rem; margin-bottom: 0.35rem; }
+
+  /* Page breaks */
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+
+  img, table, pre {
+    page-break-inside: avoid;
+  }
+
+  /* Page margins */
+  @page {
+    margin: 2cm 1.5cm;
+  }
+}

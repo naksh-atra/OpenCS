@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
+import { getCollection } from 'astro:content';
 
 interface Props {
   title: string;
@@ -10,12 +11,34 @@ interface Props {
   estimatedTime?: string;
   category?: string;
   engine?: string;
-  status?: string;
+  tags?: string[];
   prerequisites?: string[];
   learningObjectives?: string[];
 }
 
-const { title, description, difficulty, estimatedTime, category, engine, status, prerequisites = [], learningObjectives = [] } = Astro.props;
+const { title, description, difficulty, estimatedTime, category, engine, tags = [], prerequisites = [], learningObjectives = [] } = Astro.props;
+
+// Build prev/next navigation from all published topics ordered by `order`
+const allTopics = (await getCollection('topics'))
+  .filter(t => t.data.status === 'published')
+  .sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+
+const currentSlug = Astro.url.pathname.replace('/OpenCS/topics/', '').replace(/\/$/, '');
+const currentIndex = allTopics.findIndex(t => t.id.replace(/\.mdx?$/, '') === currentSlug);
+
+const prevTopic = currentIndex > 0 ? allTopics[currentIndex - 1] : null;
+const nextTopic = currentIndex >= 0 && currentIndex < allTopics.length - 1 ? allTopics[currentIndex + 1] : null;
+
+// Related topics: same engine or shared tags (up to 4)
+const relatedTopics = allTopics
+  .filter(t => {
+    const slug = t.id.replace(/\.mdx?$/, '');
+    if (slug === currentSlug) return false;
+    if (t.data.engine === engine) return true;
+    if (tags.some(tag => (t.data.tags || []).includes(tag))) return true;
+    return false;
+  })
+  .slice(0, 4);
 ---
 
 <BaseLayout title={title} description={description}>
@@ -32,6 +55,15 @@ const { title, description, difficulty, estimatedTime, category, engine, status,
       </nav>
 
       <header class="topic-header">
+        <!-- Difficulty progression bar -->
+        {difficulty && (
+          <div class="difficulty-bar" aria-label={`Difficulty: ${difficulty}`}>
+            <div class="difficulty-segment {difficulty === 'beginner' ? 'active' : ''}">Beginner</div>
+            <div class="difficulty-segment {difficulty === 'intermediate' ? 'active' : ''}">Intermediate</div>
+            <div class="difficulty-segment {difficulty === 'advanced' ? 'active' : ''}">Advanced</div>
+          </div>
+        )}
+
         <h1>{title}</h1>
         {description && <p class="topic-description">{description}</p>}
 
@@ -55,10 +87,66 @@ const { title, description, difficulty, estimatedTime, category, engine, status,
       <div class="topic-content">
         <slot />
       </div>
+
+      <!-- Related Topics -->
+      {relatedTopics.length > 0 && (
+        <section class="related-topics">
+          <h2>Related Topics</h2>
+          <div class="related-grid">
+            {relatedTopics.map(t => (
+              <a href={`/OpenCS/topics/${t.id.replace(/\.mdx?$/, '')}`} class="related-card">
+                <span class="related-engine">{t.data.engine}</span>
+                <h3>{t.data.title}</h3>
+                <p>{t.data.description}</p>
+                <span class="related-difficulty">{t.data.difficulty}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Prev/Next Navigation -->
+      {(prevTopic || nextTopic) && (
+        <nav class="topic-nav" aria-label="Topic navigation">
+          <div class="topic-nav-inner">
+            {prevTopic ? (
+              <a href={`/OpenCS/topics/${prevTopic.id.replace(/\.mdx?$/, '')}`} class="topic-nav-link topic-nav-prev">
+                <span class="topic-nav-direction">← Previous</span>
+                <span class="topic-nav-title">{prevTopic.data.title}</span>
+              </a>
+            ) : <div />}
+            {nextTopic ? (
+              <a href={`/OpenCS/topics/${nextTopic.id.replace(/\.mdx?$/, '')}`} class="topic-nav-link topic-nav-next">
+                <span class="topic-nav-direction">Next →</span>
+                <span class="topic-nav-title">{nextTopic.data.title}</span>
+              </a>
+            ) : <div />}
+          </div>
+        </nav>
+      )}
     </article>
   </main>
   <Footer />
 </BaseLayout>
+
+<script>
+  // Track topic completion
+  (function() {
+    const slug = window.location.pathname.replace('/OpenCS/topics/', '').replace(/\/$/, '');
+    if (!slug) return;
+
+    // Mark as visited after 30 seconds on page
+    setTimeout(() => {
+      try {
+        const visited = JSON.parse(localStorage.getItem('opencs_visited') || '[]');
+        if (!visited.includes(slug)) {
+          visited.push(slug);
+          localStorage.setItem('opencs_visited', JSON.stringify(visited));
+        }
+      } catch(e) {}
+    }, 30000);
+  })();
+</script>
 
 <style>
   .breadcrumb {
@@ -82,14 +170,34 @@ const { title, description, difficulty, estimatedTime, category, engine, status,
     text-decoration: none;
   }
 
-  .breadcrumb-sep {
-    color: var(--color-border);
-    user-select: none;
+  .breadcrumb-sep { color: var(--color-border); user-select: none; }
+  .breadcrumb-current { color: var(--color-text); font-weight: 500; }
+
+  /* Difficulty bar */
+  .difficulty-bar {
+    display: flex;
+    gap: 4px;
+    margin-bottom: var(--space-lg);
   }
 
-  .breadcrumb-current {
-    color: var(--color-text);
-    font-weight: 500;
+  .difficulty-segment {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    opacity: 0.4;
+    transition: opacity var(--transition), border-color var(--transition), color var(--transition);
+  }
+
+  .difficulty-segment.active {
+    opacity: 1;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: var(--color-primary-light);
   }
 
   .topic-main {
@@ -97,9 +205,7 @@ const { title, description, difficulty, estimatedTime, category, engine, status,
     padding-top: calc(var(--header-height) + var(--space-xl));
   }
 
-  .topic-article {
-    max-width: var(--max-content);
-  }
+  .topic-article { max-width: var(--max-content); }
 
   .topic-header {
     margin-bottom: var(--space-2xl);
@@ -107,9 +213,7 @@ const { title, description, difficulty, estimatedTime, category, engine, status,
     border-bottom: 1px solid var(--color-border);
   }
 
-  .topic-header h1 {
-    margin-bottom: var(--space-sm);
-  }
+  .topic-header h1 { margin-bottom: var(--space-sm); }
 
   .topic-description {
     font-size: 1.125rem;
@@ -143,19 +247,6 @@ const { title, description, difficulty, estimatedTime, category, engine, status,
     background: var(--color-primary-light);
   }
 
-  .meta-pill.engine {
-    color: var(--color-text-muted);
-    border-color: var(--color-border);
-  }
-
-  .meta-pill.difficulty {
-    color: var(--color-text-muted);
-  }
-
-  .meta-pill.time {
-    color: var(--color-text-muted);
-  }
-
   .topic-objectives {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -186,9 +277,7 @@ const { title, description, difficulty, estimatedTime, category, engine, status,
     color: var(--color-text-body);
   }
 
-  .topic-content {
-    line-height: 1.8;
-  }
+  .topic-content { line-height: 1.8; }
 
   .topic-content :global(h2) {
     margin-top: var(--space-2xl);
@@ -202,9 +291,7 @@ const { title, description, difficulty, estimatedTime, category, engine, status,
     margin-bottom: var(--space-md);
   }
 
-  .topic-content :global(p) {
-    margin-bottom: var(--space-md);
-  }
+  .topic-content :global(p) { margin-bottom: var(--space-md); }
 
   .topic-content :global(ul),
   .topic-content :global(ol) {
@@ -212,13 +299,8 @@ const { title, description, difficulty, estimatedTime, category, engine, status,
     padding-left: var(--space-xl);
   }
 
-  .topic-content :global(li) {
-    margin-bottom: var(--space-sm);
-  }
-
-  .topic-content :global(pre) {
-    margin-bottom: var(--space-lg);
-  }
+  .topic-content :global(li) { margin-bottom: var(--space-sm); }
+  .topic-content :global(pre) { margin-bottom: var(--space-lg); }
 
   .topic-content :global(table) {
     width: 100%;
@@ -243,23 +325,89 @@ const { title, description, difficulty, estimatedTime, category, engine, status,
     letter-spacing: 0.04em;
   }
 
-  .topic-content :global(.visualizer) {
-    margin: var(--space-xl) 0;
+  .topic-content :global(.visualizer) { margin: var(--space-xl) 0; }
+
+  /* Related topics */
+  .related-topics {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-border);
   }
 
-  :global(.topic-nav) {
+  .related-topics h2 {
+    font-size: 1.25rem;
+    margin-bottom: var(--space-lg);
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+  }
+
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding: var(--space-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: border-color var(--transition);
+  }
+
+  .related-card:hover {
+    border-color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .related-engine {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-primary);
+  }
+
+  .related-card h3 {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  .related-card p {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .related-difficulty {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  /* Topic nav */
+  .topic-nav {
     margin-top: var(--space-2xl);
     padding-top: var(--space-lg);
     border-top: 1px solid var(--color-border);
   }
 
-  :global(.topic-nav-inner) {
+  .topic-nav-inner {
     display: flex;
     justify-content: space-between;
     gap: var(--space-md);
   }
 
-  :global(.topic-nav-link) {
+  .topic-nav-link {
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -273,18 +421,18 @@ const { title, description, difficulty, estimatedTime, category, engine, status,
     flex: 1;
   }
 
-  :global(.topic-nav-link:hover) {
+  .topic-nav-link:hover {
     border-color: var(--color-primary);
     text-decoration: none;
   }
 
-  :global(.topic-nav-next) {
+  .topic-nav-next {
     text-align: right;
     margin-left: auto;
     align-items: flex-end;
   }
 
-  :global(.topic-nav-direction) {
+  .topic-nav-direction {
     font-size: 0.6875rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -292,27 +440,28 @@ const { title, description, difficulty, estimatedTime, category, engine, status,
     font-family: var(--font-mono);
   }
 
-  :global(.topic-nav-title) {
+  .topic-nav-title {
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--color-text);
   }
 
   @media (max-width: 640px) {
-    .topic-meta {
-      flex-wrap: wrap;
+    .topic-meta { flex-wrap: wrap; }
+
+    .related-grid {
+      grid-template-columns: 1fr;
     }
 
-    :global(.topic-nav-inner) {
+    .topic-nav-inner {
       flex-direction: column;
     }
 
-    :global(.topic-nav-link) {
-      max-width: 100%;
-    }
+    .topic-nav-link { max-width: 100%; }
+    .topic-nav-next { align-items: flex-start; }
 
-    :global(.topic-nav-next) {
-      align-items: flex-start;
+    .difficulty-bar {
+      flex-wrap: wrap;
     }
   }
 </style>
