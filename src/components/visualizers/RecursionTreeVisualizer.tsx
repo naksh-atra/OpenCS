@@ -3,11 +3,20 @@ import { VisualizerFrame } from './VisualizerFrame';
 import { PRESETS, LAYOUT, CAPTIONS, getActualTreeDepth, getCanvasHeight, buildFactorialTree, buildFibonacciTree, buildBinarySearchTree } from './recursionTree/builders';
 import { computeLayout, renderLayout } from './recursionTree/render';
 import '../../styles/recursion-tree.css';
+import { useDebugState } from '../../lib/useDebugState';
 
 function RecursionTreeVisualizer() {
   const [algorithm, setAlgorithm] = useState<'factorial' | 'fibonacci' | 'binary-search'>('fibonacci');
   const [renderDepth, setRenderDepth] = useState(4);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useDebugState(
+    'RecursionTree',
+    { algorithm, renderDepth },
+    null, 0, 0,
+    { label: PRESETS[algorithm].label, complexity: PRESETS[algorithm].complexity },
+    {}
+  );
 
   const preset = PRESETS[algorithm];
   const layoutConfig = LAYOUT[algorithm];

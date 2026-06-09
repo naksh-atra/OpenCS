@@ -4,10 +4,17 @@ import type { MemoryPreset } from './types';
 import { MEMORY_PRESETS } from './presets';
 import { createMemoryState, stepForward, runFull, type MemoryState } from '../../../engines/system-process/memory-ops';
 import './memory-visualizer.css';
+import { useDebugState } from '../../../lib/useDebugState';
 
 export function MemoryVisualizer() {
   const [state, setState] = useState<MemoryState | null>(null);
   const [algorithm, setAlgorithm] = useState<'fifo' | 'lru' | 'optimal'>('fifo');
+
+  useDebugState(
+    'Memory',
+    state ? { algorithm: state.algorithm, pageFaults: state.pageFaults, pageHits: state.pageHits, currentIndex: state.currentIndex, message: state.message } : null,
+    null, state?.currentIndex ?? 0, state?.referenceString?.length ?? 0, { algorithm: state?.algorithm }, { faultCount: state?.pageFaults ?? 0 }
+  );
 
   const handlePreset = useCallback((preset: MemoryPreset) => {
     setAlgorithm(preset.algorithm);

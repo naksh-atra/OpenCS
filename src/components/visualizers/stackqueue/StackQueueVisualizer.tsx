@@ -14,11 +14,18 @@ import {
   type DataStructureType,
 } from '../../../engines/sequence';
 import './stackqueue-visualizer.css';
+import { useDebugState } from '../../../lib/useDebugState';
 
 export function StackQueueVisualizer() {
   const [state, setState] = useState<StackQueueState>(createStackQueueState('stack', [3, 7, 1, 8]));
   const [inputValue, setInputValue] = useState('');
   const [mode, setMode] = useState<DataStructureType>('stack');
+
+  useDebugState(
+    'StackQueue',
+    state ? { type: state.type, data: state.data, highlightIndex: state.highlightIndex, message: state.message } : null,
+    null, 0, state?.operations?.length ?? 0, { mode }, { elementCount: state?.data?.length ?? 0 }
+  );
 
   const handleModeChange = useCallback((newMode: DataStructureType) => {
     setMode(newMode);

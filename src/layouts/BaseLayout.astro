@@ -20,160 +20,336 @@ const { title, description = 'Visual learning platform for BTech CSE students', 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
-    {/* Theme initialization — runs before paint to prevent flash */}
+    <style>
+      /* Inline critical styles for debug panel to avoid FOUC */
+      .debug-toggle-btn {
+        position: fixed; bottom: 16px; right: 16px; z-index: 9999;
+        width: 40px; height: 40px; border-radius: 50%;
+        background: var(--color-surface); border: 1px solid var(--color-border);
+        font-size: 1.25rem; cursor: pointer; display: flex;
+        align-items: center; justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        transition: transform 0.15s ease;
+      }
+      .debug-toggle-btn:hover { transform: scale(1.1); }
+      .debug-panel {
+        position: fixed; bottom: 16px; right: 16px; z-index: 9999;
+        width: 380px; max-height: 70vh; overflow-y: auto;
+        background: var(--color-surface); border: 1px solid var(--color-border);
+        border-radius: 8px; font-family: var(--font-mono);
+        font-size: 0.75rem; box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+        display: flex; flex-direction: column;
+      }
+      .debug-header {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 8px 12px; border-bottom: 1px solid var(--color-border);
+        font-weight: 600; font-size: 0.8125rem;
+      }
+      .debug-close-btn {
+        background: none; border: none; color: var(--color-text-muted);
+        cursor: pointer; font-size: 1rem; padding: 2px 6px;
+      }
+      .debug-close-btn:hover { color: var(--color-text); }
+      .debug-tabs {
+        display: flex; border-bottom: 1px solid var(--color-border);
+      }
+      .debug-tab {
+        flex: 1; padding: 6px 8px; background: none; border: none;
+        color: var(--color-text-muted); cursor: pointer; font-family: var(--font-mono);
+        font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.04em;
+      }
+      .debug-tab.active { color: var(--color-primary); border-bottom: 2px solid var(--color-primary); }
+      .debug-body { padding: 8px 12px; overflow-y: auto; max-height: 50vh; }
+      .debug-section { margin-bottom: 6px; }
+      .debug-section-header {
+        background: none; border: none; color: var(--color-text); cursor: pointer;
+        font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600;
+        padding: 4px 0; display: flex; align-items: center; gap: 6px; width: 100%;
+      }
+      .debug-section-body { padding: 4px 0 4px 14px; }
+      .debug-table { width: 100%; border-collapse: collapse; }
+      .debug-table td { padding: 2px 4px; vertical-align: top; }
+      .debug-key { color: var(--color-text-muted); white-space: nowrap; padding-right: 8px; }
+      .debug-val { color: var(--color-text); word-break: break-all; }
+      .debug-muted { color: var(--color-text-muted); font-style: italic; }
+      .debug-step-counter {
+        padding: 4px 0 8px; font-size: 0.8125rem; color: var(--color-text);
+      }
+      .debug-arrow { font-size: 0.625rem; }
+    </style>
+    <style is:global>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --color-bg: #FAF9F6; --color-surface: #FFFFFF; --color-surface-alt: #F5F5F5;
+        --color-surface-canvas: #FEFEFE; --color-border: #E8E6E1; --color-text: #1A1A1A;
+        --color-text-body: #4A4A4A; --color-text-muted: #8A8A8A; --color-primary: #2563EB;
+        --color-primary-container: #1D4ED8; --color-primary-light: #EFF6FF;
+        --color-success: #059669; --color-error: #DC2626; --color-accent: #2563EB;
+        --color-red: #DC2626; --color-highlight-border: #f59e0b;
+        --color-deleted-bg: #fef2f2; --color-deleted-bg-alt: #fee2e2; --color-deleted-border: #fecaca;
+        --color-highlight-bg: #fef3c7; --color-highlight-text: #92400e;
+        --color-info-bg: #dbeafe; --color-info-border: #93c5fd; --color-info-text: #1d4ed8;
+        --color-success-bg: #d1fae5; --color-success-bg-alt: #d1fae5;
+        --color-success-text: #065f46; --color-success-text-alt: #065f46;
+        --color-canvas-bg: #0f172a; --color-white: #ffffff;
+        --color-surface-alpha: rgba(250, 249, 246, 0.92);
+        --color-cell-highlight: #fef3c7; --color-cell-success: #d1fae5;
+        --color-cell-info: #dbeafe; --color-cell-neutral: #f1f5f9;
+        --space-xs: 4px; --space-sm: 8px; --space-md: 16px; --space-lg: 24px; --space-xl: 32px; --space-2xl: 48px;
+        --radius-sm: 2px; --radius-pill: 16px; --header-height: 56px;
+        --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+        --max-content: 720px; --sidebar-width: 220px; --transition: 0.15s ease;
+      }
+      [data-theme="dark"] {
+        --color-bg: #0F1419; --color-surface: #1A1F26; --color-surface-alt: #242B33;
+        --color-surface-canvas: #0D1117; --color-border: #2D3748; --color-text: #E2E8F0;
+        --color-text-body: #A0AEC0; --color-text-muted: #718096; --color-primary: #63B3ED;
+        --color-primary-container: #3182CE; --color-primary-light: #1A365D;
+        --color-success: #68D391; --color-error: #FC8181; --color-accent: #63B3ED;
+        --color-red: #FC8181; --color-highlight-border: #f59e0b;
+        --color-deleted-bg: #451a1a; --color-deleted-bg-alt: #3f1a1a; --color-deleted-border: #7f1d1d;
+        --color-highlight-bg: #451a03; --color-highlight-text: #fbbf24;
+        --color-info-bg: #1e3a5f; --color-info-border: #3b82f6; --color-info-text: #93c5fd;
+        --color-success-bg: #064e3b; --color-success-text: #6ee7b7;
+        --color-success-bg-alt: #0f172a; --color-success-text-alt: #6ee7b7;
+        --color-surface-alpha: rgba(26, 31, 38, 0.92);
+        --color-cell-highlight: #451a03; --color-cell-success: #064e3b;
+        --color-cell-info: #1e3a5f; --color-cell-neutral: #242B33;
+      }
+      html { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-text); line-height: 1.6; transition: background-color 0.2s ease, color 0.2s ease; -webkit-font-smoothing: antialiased; }
+      body { min-height: 100vh; }
+      a { color: var(--color-primary); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      code, pre { font-family: var(--font-mono); }
+      pre { background: var(--color-surface-alt); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: var(--space-md); overflow-x: auto; font-size: 0.875rem; line-height: 1.7; position: relative; }
+      code { background: var(--color-surface-alt); padding: 1px 5px; border-radius: 3px; font-size: 0.85em; }
+      pre code { background: none; padding: 0; }
+      table { width: 100%; border-collapse: collapse; }
+      td, th { padding: var(--space-sm) var(--space-md); border: 1px solid var(--color-border); text-align: left; font-size: 0.875rem; }
+      th { background: var(--color-surface-alt); font-weight: 600; font-family: var(--font-mono); font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.04em; }
+      h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.3; color: var(--color-text); }
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.5rem; }
+      h3 { font-size: 1.25rem; }
+      h4 { font-size: 1rem; }
+      p { margin-bottom: var(--space-md); color: var(--color-text-body); }
+      ul, ol { margin-bottom: var(--space-md); padding-left: var(--space-xl); }
+      li { margin-bottom: var(--space-xs); color: var(--color-text-body); }
+      strong { font-weight: 600; color: var(--color-text); }
+      img { max-width: 100%; height: auto; }
+      ::selection { background: var(--color-primary-light); color: var(--color-text); }
+      .container { max-width: var(--max-content); margin: 0 auto; padding: 0 var(--space-md); }
+      .scroll-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--color-primary); z-index: 200; transition: width 0.05s linear; pointer-events: none; }
+      .copy-btn { position: absolute; top: 8px; right: 8px; padding: 4px 10px; font-size: 0.6875rem; font-family: var(--font-mono); font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-muted); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); cursor: pointer; opacity: 0; transition: opacity var(--transition), color var(--transition), border-color var(--transition); z-index: 1; }
+      pre:hover .copy-btn { opacity: 1; }
+      .copy-btn:hover { color: var(--color-text); border-color: var(--color-primary); }
+      .copy-btn.copied { color: var(--color-success); border-color: var(--color-success); opacity: 1; }
+      pre { position: relative; }
+      @media (max-width: 768px) { .container { padding: 0 var(--space-md); } }
+    </style>
+  </head>
+  <body>
+    <!-- Theme init (before paint, no flash) -->
     <script is:inline>
       (function() {
         try {
-          var stored = localStorage.getItem('theme');
-          var theme = stored === 'dark' ? 'dark' : 'light';
-          document.documentElement.setAttribute('data-theme', theme);
-        } catch (e) {}
+          var t = localStorage.getItem('theme');
+          if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+          else document.documentElement.removeAttribute('data-theme');
+        } catch(e) {}
       })();
     </script>
-  </head>
-  <body class={compact ? 'compact' : ''}>
-    {/* Scroll progress bar */}
+
     <div class="scroll-progress" id="scrollProgress"></div>
 
     <slot />
 
-    {/* Copy code button script */}
-    <script is:inline>
+    <!-- Debug panel (vanilla JS, no framework needed) -->
+    <div id="debugPanelContainer"></div>
+
+    <script>
+      // Debug panel
       (function() {
-        function initCopyButtons() {
-          var blocks = document.querySelectorAll('pre');
-          blocks.forEach(function(pre) {
-            if (pre.querySelector('.copy-btn')) return;
-            var btn = document.createElement('button');
-            btn.className = 'copy-btn';
-            btn.textContent = 'Copy';
-            btn.setAttribute('aria-label', 'Copy code to clipboard');
-            btn.addEventListener('click', function() {
-              var code = pre.querySelector('code');
-              var text = code ? code.textContent : pre.textContent;
-              navigator.clipboard.writeText(text).then(function() {
-                btn.textContent = 'Copied!';
-                btn.classList.add('copied');
-                setTimeout(function() {
-                  btn.textContent = 'Copy';
-                  btn.classList.remove('copied');
-                }, 2000);
-              }).catch(function() {
-                btn.textContent = 'Failed';
-                setTimeout(function() {
-                  btn.textContent = 'Copy';
-                }, 2000);
-              });
-            });
-            pre.style.position = 'relative';
-            pre.appendChild(btn);
+        var container = document.getElementById('debugPanelContainer');
+        if (!container) return;
+
+        var enabled = false;
+        var activeTab = 'state';
+        var refreshInterval = null;
+        var frameCount = 0;
+        var lastFpsTime = performance.now();
+        var currentFps = 0;
+
+        // FPS counter
+        function countFrame() {
+          frameCount++;
+          var now = performance.now();
+          if (now - lastFpsTime >= 1000) {
+            currentFps = frameCount;
+            frameCount = 0;
+            lastFpsTime = now;
+          }
+          if (enabled) requestAnimationFrame(countFrame);
+        }
+        requestAnimationFrame(countFrame);
+
+        function formatValue(v, depth) {
+          depth = depth || 0;
+          if (v === null) return 'null';
+          if (v === undefined) return 'undefined';
+          if (typeof v === 'number' || typeof v === 'boolean') return String(v);
+          if (typeof v === 'string') return '"' + (v.length > 60 ? v.slice(0, 57) + '...' : v) + '"';
+          if (Array.isArray(v)) {
+            if (depth > 2) return '[' + v.length + ' items]';
+            if (v.length === 0) return '[]';
+            if (v.length <= 6) return '[' + v.map(function(x) { return formatValue(x, depth + 1); }).join(', ') + ']';
+            return '[' + v.slice(0, 3).map(function(x) { return formatValue(x, depth + 1); }).join(', ') + ', ...+' + (v.length - 3) + ']';
+          }
+          if (typeof v === 'object') {
+            if (depth > 2) return '{...}';
+            var entries = Object.entries(v);
+            if (entries.length === 0) return '{}';
+            if (entries.length <= 4) {
+              return '{ ' + entries.map(function(e) { return e[0] + ': ' + formatValue(e[1], depth + 1); }).join(', ') + ' }';
+            }
+            var head = entries.slice(0, 3).map(function(e) { return e[0] + ': ' + formatValue(e[1], depth + 1); });
+            return '{ ' + head.join(', ') + ', ...+' + (entries.length - 3) + ' }';
+          }
+          return String(v);
+        }
+
+        function buildTable(data) {
+          if (!data) return '<span class="debug-muted">No data</span>';
+          var entries = Object.entries(data);
+          if (entries.length === 0) return '<span class="debug-muted">Empty</span>';
+          var html = '<table class="debug-table"><tbody>';
+          entries.forEach(function(e) {
+            html += '<tr><td class="debug-key">' + e[0] + '</td><td class="debug-val">' + formatValue(e[1]) + '</td></tr>';
+          });
+          html += '</tbody></table>';
+          return html;
+        }
+
+        function renderPanel() {
+          var info = null;
+          try { info = window.__VIS_DEBUG__; } catch(e) {}
+
+          var tabs = ['state', 'step', 'render', 'perf'];
+          var tabLabels = { state: 'State', step: 'Step', render: 'Render', perf: 'Perf' };
+
+          var html = '<div class="debug-panel" id="debugPanel">' +
+            '<div class="debug-header">' +
+              '<span class="debug-title">Debug — ' + (info && info.vizName ? info.vizName : 'No visualizer') + '</span>' +
+              '<button class="debug-close-btn" id="debugCloseBtn">✕</button>' +
+            '</div>' +
+            '<div class="debug-tabs">';
+
+          tabs.forEach(function(tab) {
+            html += '<button class="debug-tab' + (activeTab === tab ? ' active' : '') + '" data-tab="' + tab + '">' + tabLabels[tab] + '</button>';
+          });
+
+          html += '</div><div class="debug-body">';
+
+          if (!info) {
+            html += '<div class="debug-muted">Waiting for visualizer debug data...<br><br>Press <strong>D</strong> to toggle.</div>';
+          } else if (activeTab === 'state') {
+            html += '<div class="debug-section"><div class="debug-section-header">Current State</div><div class="debug-section-body">' + buildTable(info.state) + '</div></div>';
+          } else if (activeTab === 'step') {
+            html += '<div class="debug-step-counter">Step <strong>' + info.stepIndex + '</strong> / ' + info.totalSteps + '</div>';
+            html += '<div class="debug-section"><div class="debug-section-header">Current Step</div><div class="debug-section-body">' + buildTable(info.step) + '</div></div>';
+            html += '<div class="debug-section"><div class="debug-section-header">Metadata</div><div class="debug-section-body">' + buildTable(info.metadata) + '</div></div>';
+          } else if (activeTab === 'render') {
+            html += '<div class="debug-section"><div class="debug-section-header">Render Output</div><div class="debug-section-body">' + buildTable(info.renderOutput) + '</div></div>';
+          } else if (activeTab === 'perf') {
+            html += '<div class="debug-section"><div class="debug-section-header">Performance</div><div class="debug-section-body">' +
+              '<table class="debug-table"><tbody>' +
+              '<tr><td class="debug-key">FPS</td><td class="debug-val">' + currentFps + '</td></tr>' +
+              '<tr><td class="debug-key">Last render</td><td class="debug-val">' + (info.lastRenderTime ? info.lastRenderTime.toFixed(1) : '—') + ' ms</td></tr>' +
+              '<tr><td class="debug-key">Total steps</td><td class="debug-val">' + info.totalSteps + '</td></tr>' +
+              '</tbody></table></div></div>';
+          }
+
+          html += '</div></div>';
+          container.innerHTML = html;
+
+          // Event listeners
+          document.getElementById('debugCloseBtn').addEventListener('click', function() { enabled = false; renderPanel(); });
+          document.querySelectorAll('.debug-tab').forEach(function(btn) {
+            btn.addEventListener('click', function() { activeTab = btn.dataset.tab; renderPanel(); });
           });
         }
 
-        // Run on load and after any dynamic content
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', initCopyButtons);
-        } else {
-          initCopyButtons();
+        function toggleDebug() {
+          enabled = !enabled;
+          if (enabled) {
+            renderPanel();
+            refreshInterval = setInterval(renderPanel, 300);
+          } else {
+            if (refreshInterval) clearInterval(refreshInterval);
+            container.innerHTML = '<button class="debug-toggle-btn" id="debugToggleBtn" title="Toggle debug mode (D)">D</button>';
+            document.getElementById('debugToggleBtn').addEventListener('click', toggleDebug);
+          }
         }
 
-        // Scroll progress bar
-        var progressBar = document.getElementById('scrollProgress');
-        if (progressBar) {
-          window.addEventListener('scroll', function() {
-            var scrollTop = window.scrollY;
-            var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-            progressBar.style.width = progress + '%';
-          }, { passive: true });
+        // Keyboard shortcut
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'd' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+            var tag = e.target && e.target.tagName;
+            if (tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
+              toggleDebug();
+            }
+          }
+        });
+
+        // Initial render — just the toggle button
+        container.innerHTML = '<button class="debug-toggle-btn" id="debugToggleBtn" title="Toggle debug mode (D)">D</button>';
+        document.getElementById('debugToggleBtn').addEventListener('click', toggleDebug);
+      })();
+    </script>
+
+    <script>
+      // Scroll progress bar
+      (function() {
+        var bar = document.getElementById('scrollProgress');
+        if (!bar) return;
+        function update() {
+          var scrolled = window.scrollY;
+          var total = document.body.scrollHeight - window.innerHeight;
+          bar.style.width = total > 0 ? (scrolled / total * 100) + '%' : '0%';
         }
+        window.addEventListener('scroll', update, { passive: true });
+        update();
+      })();
+
+      // Copy code buttons
+      (function() {
+        document.querySelectorAll('pre').forEach(function(pre) {
+          if (pre.querySelector('.copy-btn')) return;
+          var btn = document.createElement('button');
+          btn.className = 'copy-btn';
+          btn.textContent = 'Copy';
+          btn.setAttribute('aria-label', 'Copy code to clipboard');
+          btn.addEventListener('click', function() {
+            var code = pre.querySelector('code');
+            var text = code ? code.textContent : pre.textContent;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(text).then(function() {
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+              }).catch(function() {
+                btn.textContent = 'Failed';
+                setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+              });
+            } else {
+              btn.textContent = 'Failed';
+              setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+            }
+          });
+          pre.appendChild(btn);
+        });
       })();
     </script>
   </body>
 </html>
-
-<style is:global>
-  @import '../styles/global.css';
-
-  /* Dot grid background for topic pages */
-  body:not(.compact) {
-    position: relative;
-  }
-
-  body:not(.compact)::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: radial-gradient(circle, var(--color-border) 1px, transparent 1px);
-    background-size: 24px 24px;
-    opacity: 0.08;
-    z-index: -1;
-    pointer-events: none;
-  }
-
-  .container {
-    max-width: var(--max-content);
-    margin: 0 auto;
-    padding: 0 var(--space-lg);
-  }
-
-  @media (max-width: 768px) {
-    .container {
-      padding: 0 var(--space-md);
-    }
-  }
-
-  /* Scroll progress bar */
-  .scroll-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 2px;
-    width: 0%;
-    background: var(--color-primary);
-    z-index: 200;
-    transition: width 0.05s linear;
-    pointer-events: none;
-  }
-
-  /* Copy code button */
-  .copy-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 4px 10px;
-    font-size: 0.6875rem;
-    font-family: var(--font-mono);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--color-text-muted);
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity var(--transition), color var(--transition), border-color var(--transition);
-    z-index: 1;
-  }
-
-  pre:hover .copy-btn {
-    opacity: 1;
-  }
-
-  .copy-btn:hover {
-    color: var(--color-text);
-    border-color: var(--color-primary);
-  }
-
-  .copy-btn.copied {
-    color: var(--color-success);
-    border-color: var(--color-success);
-    opacity: 1;
-  }
-
-  pre {
-    position: relative;
-  }
-</style>

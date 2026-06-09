@@ -5,11 +5,18 @@ import { AVL_PRESETS } from './presets';
 import { drawAVLTree } from './render';
 import { createAVLState, avlInsert, type AVLState } from '../../../engines/treegraph/avl-ops';
 import './avl-visualizer.css';
+import { useDebugState } from '../../../lib/useDebugState';
 
 export function AVLVisualizer() {
   const [state, setState] = useState<AVLState>(createAVLState());
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState<string | null>(null);
+
+  useDebugState(
+    'AVL',
+    state ? { stepCount: state.steps?.length ?? 0, currentStep: state.currentStep, highlightNode: state.highlightNode, message: state.message } : null,
+    null, state?.currentStep ?? 0, state?.steps?.length ?? 0, {}, {}
+  );
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {

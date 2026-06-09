@@ -14,6 +14,7 @@ import {
   PRESET_GRAPHS,
 } from '../../engines/treegraph';
 import './shortest-path-mst-visualizer.css';
+import { useDebugState } from '../../lib/useDebugState';
 
 type DrawState = {
   visited: Set<GraphNodeId>;
@@ -153,6 +154,14 @@ export function ShortestPathMSTVisualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const result = algo === 'dijkstra' ? dijkstraResult : primResult;
+
+  useDebugState(
+    'ShortestPathMST',
+    result ? { algorithm: algo, stepCount: result.steps?.length ?? 0, message: result.message } : null,
+    null, 0, result?.steps?.length ?? 0, { algorithm: algo }, {}
+  );
 
   useEffect(() => {
     setStepIdx(0);

@@ -12,6 +12,7 @@ import {
   type HeapState,
 } from '../../../engines/treegraph/heap-ops';
 import './heap-visualizer.css';
+import { useDebugState } from '../../../lib/useDebugState';
 
 export function HeapVisualizer() {
   const [state, setState] = useState<HeapState>(() => createHeapState('min'));
@@ -19,6 +20,12 @@ export function HeapVisualizer() {
   const [heapType, setHeapType] = useState<'min' | 'max'>('min');
   const [error, setError] = useState<string | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
+
+  useDebugState(
+    'Heap',
+    state ? { heapType: state.heap?.type, size: state.heap?.size, stepCount: state.steps?.length ?? 0, message: state.message } : null,
+    null, state?.currentStep ?? 0, state?.steps?.length ?? 0, {}, {}
+  );
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 

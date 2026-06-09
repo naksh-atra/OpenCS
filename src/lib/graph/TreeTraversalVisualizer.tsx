@@ -8,6 +8,7 @@ import {
   PRESET_TREES,
 } from '../../engines/treegraph';
 import './tree-traversal-visualizer.css';
+import { useDebugState } from '../../lib/useDebugState';
 
 const TRAVERSALS = [
   { id: 'preorder', label: 'Preorder', desc: 'Root → Left → Right' },
@@ -120,6 +121,12 @@ export function TreeTraversalVisualizer() {
   const [highlighted, setHighlighted] = useState<number[]>([]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const root = buildTreeFromArray(PRESET_TREES[presetIdx].arr);
+
+  useDebugState(
+    'TreeTraversal',
+    { traversalType: traversal, currentStep, totalSteps: steps.length },
+    null, currentStep, steps.length, { traversalType: traversal }, {}
+  );
 
   const runTraversal = useCallback(() => {
     const treeRoot = buildTreeFromArray(PRESET_TREES[presetIdx].arr);

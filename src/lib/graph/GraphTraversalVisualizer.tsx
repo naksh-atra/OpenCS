@@ -11,6 +11,7 @@ import {
   type TraversalType,
 } from '../../engines/treegraph';
 import './graph-traversal-visualizer.css';
+import { useDebugState } from '../../lib/useDebugState';
 
 type DrawState = {
   visited: Set<GraphNodeId>;
@@ -116,6 +117,12 @@ export function GraphTraversalVisualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useDebugState(
+    'GraphTraversal',
+    result ? { visitedCount: result.visited?.length ?? 0, stepCount: result.steps?.length ?? 0, message: result.message } : null,
+    null, 0, result?.steps?.length ?? 0, { traversalType: algo }, {}
+  );
 
   useEffect(() => {
     setStepIdx(0);

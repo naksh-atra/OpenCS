@@ -13,6 +13,7 @@ import {
   type ArrayState,
 } from '../../../engines/sequence';
 import './array-visualizer.css';
+import { useDebugState } from '../../../lib/useDebugState';
 
 export function ArrayVisualizer() {
   const [state, setState] = useState<ArrayState>(createArrayState());
@@ -20,6 +21,16 @@ export function ArrayVisualizer() {
   const [inputIndex, setInputIndex] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [operation, setOperation] = useState<string>('access');
+
+  useDebugState(
+    'Array',
+    { data: state.data, operation, currentIndex: state.currentIndex, highlightIndices: state.highlightIndices, message: state.message, error },
+    null,
+    0,
+    state.operations.length,
+    { inputValue, inputIndex },
+    { dataLength: state.data.length, operationCount: state.operations.length }
+  );
 
   const handlePreset = useCallback((data: number[]) => {
     setState(createArrayState(data));

@@ -6,11 +6,19 @@ import { drawGanttChart, drawProcessTable } from './render';
 import { createSchedulingState, computeSchedule, createProcess } from '../../../engines/system-process/cpu-scheduling-ops';
 import type { SchedulingState } from '../../../engines/system-process/cpu-scheduling-ops';
 import './cpu-scheduling-visualizer.css';
+import { useDebugState } from '../../../lib/useDebugState';
 
 export function CPUSchedulingVisualizer() {
   const [state, setState] = useState<SchedulingState | null>(null);
   const [algorithm, setAlgorithm] = useState<'fcfs' | 'sjf' | 'srtf' | 'priority' | 'round-robin'>('fcfs');
   const [quantum, setQuantum] = useState(2);
+
+  useDebugState(
+    'CPUScheduling',
+    state ? { algorithm: state.algorithm, processCount: state.processes?.length ?? 0, ganttSegments: state.ganttChart?.length ?? 0, currentTime: state.currentTime, message: state.message } : null,
+    null, 0, state?.ganttChart?.length ?? 0, { algorithm: state?.algorithm }, { segmentCount: state?.ganttChart?.length ?? 0 }
+  );
+
   const ganttRef = useRef<HTMLCanvasElement>(null);
   const tableRef = useRef<HTMLCanvasElement>(null);
 

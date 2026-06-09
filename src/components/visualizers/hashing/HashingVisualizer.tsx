@@ -12,11 +12,18 @@ import {
   type HashingState,
 } from '../../../engines/sequence/hashing-ops';
 import './hashing-visualizer.css';
+import { useDebugState } from '../../../lib/useDebugState';
 
 export function HashingVisualizer() {
   const [state, setState] = useState<HashingState>(() => createHashingState('linear', 7));
   const [inputKey, setInputKey] = useState('');
   const [error, setError] = useState<string | null>(null);
+
+  useDebugState(
+    'Hashing',
+    state ? { method: state.method, loadFactor: state.loadFactor, count: state.count, size: state.size, message: state.message } : null,
+    null, 0, state?.steps?.length ?? 0, {}, { tableSize: state?.size ?? 0 }
+  );
 
   const handleMethodChange = useCallback((method: HashMethod) => {
     setState(createHashingState(method, 7));

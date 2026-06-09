@@ -9,6 +9,7 @@ import {
   type ConversionState,
 } from '../../../engines/theory/number-systems-ops';
 import './number-systems-visualizer.css';
+import { useDebugState } from '../../../lib/useDebugState';
 
 export function NumberSystemsVisualizer() {
   const [inputValue, setInputValue] = useState('');
@@ -18,6 +19,12 @@ export function NumberSystemsVisualizer() {
   const [error, setError] = useState<string | null>(null);
   const [showIEEE754, setShowIEEE754] = useState(false);
   const [ieeeState, setIeeeState] = useState<ReturnType<typeof ieee754Encode> | null>(null);
+
+  useDebugState(
+    'NumberSystems',
+    conversion ? { inputValue: conversion.inputValue, inputBase: conversion.inputBase, outputBase: conversion.outputBase, outputValue: conversion.outputValue, message: conversion.message } : null,
+    null, 0, conversion?.steps?.length ?? 0, { showIEEE754 }, {}
+  );
 
   const handleConvert = useCallback(() => {
     setError(null);

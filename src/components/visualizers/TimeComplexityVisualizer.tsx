@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { VisualizerFrame } from './VisualizerFrame';
 import { complexityClasses } from '../../engines/theory';
+import { useDebugState } from '../../lib/useDebugState';
 
 function computeValue(fn: string, n: number): number {
   switch (fn) {
@@ -18,13 +19,13 @@ export function TimeComplexityVisualizer() {
   const [selected, setSelected] = useState<string[]>(['o1', 'on', 'on2']);
   const [n, setN] = useState(10);
 
-  const toggle = (id: string) => {
-    setSelected(prev =>
-      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
-    );
-  };
-
   const active = complexityClasses.filter(c => selected.includes(c.id));
+
+  useDebugState(
+    'TimeComplexity',
+    { activeClasses: active.length, n, selected },
+    null, 0, complexityClasses.length, {}, { classCount: complexityClasses.length }
+  );
 
   const tableData = useMemo(() => {
     const sizes = [5, 10, 20, 50, 100];

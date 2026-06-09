@@ -14,6 +14,7 @@ import {
   computeLLInsert,
   computeLLDelete,
 } from '../../engines/sequence';
+import { useDebugState } from '../../lib/useDebugState';
 
 function drawList(container: HTMLDivElement, head: LLNode | null, step: LLStep | null) {
   container.innerHTML = '';
@@ -107,6 +108,12 @@ export function LinkedListVisualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useDebugState(
+    'LinkedList',
+    state ? { result: state.result, message: state.message, stepCount: state.steps?.length ?? 0 } : null,
+    null, 0, state?.steps?.length ?? 0, { operation, preset: LINKED_LIST_PRESETS[presetIdx].label }, {}
+  );
 
   const arr = LINKED_LIST_PRESETS[presetIdx].arr;
 

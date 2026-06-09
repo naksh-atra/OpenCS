@@ -5,9 +5,17 @@ import { DP_PRESETS } from './presets';
 import { drawDPTable } from './render';
 import { createDPState, stepForward, runFull, type DPState } from '../../../engines/theory/dp-ops';
 import './dp-visualizer.css';
+import { useDebugState } from '../../../lib/useDebugState';
 
 export function DPVisualizer() {
   const [state, setState] = useState<DPState | null>(null);
+
+  useDebugState(
+    'DP',
+    state ? { problem: state.problem, tableSize: `${state.rows}x${state.cols}`, currentCell: state.currentCell, message: state.message } : null,
+    null, 0, state?.steps?.length ?? 0, { problem: state?.problem }, {}
+  );
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {

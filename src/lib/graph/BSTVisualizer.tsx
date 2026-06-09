@@ -4,6 +4,7 @@ import type { TreeNode } from './bst/types';
 import { PRESET_TREES } from './bst/presets';
 import { buildInitialState, computeBSTOperationWrapper } from './bst/builders';
 import './bst-visualizer.css';
+import { useDebugState } from '../../lib/useDebugState';
 
 function drawBST(canvas: HTMLCanvasElement | null, root: TreeNode | null, highlighted: number[]) {
   if (!canvas) return;
@@ -105,6 +106,12 @@ export function BSTVisualizer() {
   const [state, setState] = useState(() => buildInitialState(presetIdx));
   const [highlighted, setHighlighted] = useState<number[]>([]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useDebugState(
+    'BST',
+    state ? { stepCount: state.steps?.length ?? 0, currentStep: state.currentStep, message: state.message, result: state.result } : null,
+    null, state?.currentStep ?? 0, state?.steps?.length ?? 0, {}, {}
+  );
 
   const root = state.root;
 

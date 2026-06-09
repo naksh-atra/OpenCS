@@ -4,6 +4,7 @@ import type { GraphRepPreset } from './types';
 import { GRAPH_REP_PRESETS } from './presets';
 import { drawGraphDiagram, drawAdjacencyMatrix, drawAdjacencyList } from './render';
 import './graph-rep-visualizer.css';
+import { useDebugState } from '../../../lib/useDebugState';
 
 export function GraphRepVisualizer() {
   const [presetIdx, setPresetIdx] = useState(0);
@@ -13,6 +14,12 @@ export function GraphRepVisualizer() {
   const listRef = useRef<HTMLCanvasElement>(null);
 
   const preset = GRAPH_REP_PRESETS[presetIdx];
+
+  useDebugState(
+    'GraphRep',
+    { preset: GRAPH_REP_PRESETS[presetIdx].label, presetIdx, highlightVertex },
+    null, 0, 0, { nodeCount: preset.nodes?.length ?? 0, edgeCount: preset.edges?.length ?? 0 }, {}
+  );
 
   useEffect(() => {
     drawGraphDiagram(diagramRef.current, preset, highlightVertex);

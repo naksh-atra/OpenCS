@@ -11,6 +11,7 @@ import {
 } from '../../engines/sequence';
 
 import { drawBars } from './sorting/render';
+import { useDebugState } from '../../lib/useDebugState';
 export function SortingVisualizer() {
   const [presetIdx, setPresetIdx] = useState(0);
   const [algo, setAlgo] = useState<SortAlgorithm>('bubble');
@@ -23,6 +24,18 @@ export function SortingVisualizer() {
   const arr = SORT_PRESETS[presetIdx].arr;
   const maxVal = Math.max(...arr);
 
+  // Debug state exposure
+  const currentStep = sortState && stepIdx > 0 && stepIdx <= sortState.steps.length ? sortState.steps[stepIdx - 1] : null;
+  useDebugState(
+    'Sorting',
+    sortState ? { algorithm: algo, array: arr, isPlaying, message: sortState.message } : null,
+    currentStep ? { action: currentStep.action, indices: currentStep.indices, message: currentStep.message } : null,
+    stepIdx,
+    sortState?.steps?.length ?? 0,
+    { preset: SORT_PRESETS[presetIdx].label, maxVal },
+    currentStep ? { barCount: arr.length, comparing: currentStep.highlight ?? [], sorted: currentStep.sorted ?? [] } : {}
+  );
+
   useEffect(() => {
     setStepIdx(0);
     setIsPlaying(false);
@@ -32,8 +45,7 @@ export function SortingVisualizer() {
 
   useEffect(() => {
     if (!sortState) return;
-    const step = stepIdx > 0 && stepIdx <= sortState.steps.length ? sortState.steps[stepIdx - 1] : null;
-    drawBars(canvasRef.current, step, maxVal);
+    drawBars(canvasRef.current, currentStep, maxVal);
   }, [sortState, stepIdx, maxVal]);
 
   useEffect(() => {

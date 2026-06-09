@@ -8,11 +8,18 @@ import {
   type ExpressionState,
 } from '../../../engines/sequence/expression-ops';
 import './expression-visualizer.css';
+import { useDebugState } from '../../../lib/useDebugState';
 
 export function ExpressionVisualizer() {
   const [state, setState] = useState<ExpressionState>({ input: '', output: '', stack: [], steps: [], currentStep: -1, highlightStackIndex: null, message: 'Enter an infix expression' });
   const [inputExpr, setInputExpr] = useState('');
   const [error, setError] = useState<string | null>(null);
+
+  useDebugState(
+    'Expression',
+    state ? { input: state.input, output: state.output, stackSize: state.stack?.length ?? 0, message: state.message } : null,
+    null, 0, state?.steps?.length ?? 0, {}, { stackDepth: state?.stack?.length ?? 0 }
+  );
 
   const handleConvert = useCallback(() => {
     setError(null);

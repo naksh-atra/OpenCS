@@ -45,6 +45,7 @@ tests/**/*.spec.ts-snapshots/*.png
 # Docs (internal only, not for public repo)
 IMPLEMENTATION_PLAN.md
 DESIGN.md
+algorithms-visualization-testing-strategy.md
 .hermes/
 
 # Lock files (for libraries, not apps; keeping for monorepo clarity)
@@ -58,24 +59,5 @@ coverage/
 
 # WSL / Windows noise
 *.lnk
-Thumbs.db
 desktop.ini
 stitch-design/
-.env
-.env
-.env
-.env
-.env
-.env
-.env
-.env
-.env
-.env
-.env
-.env
-.env
-.env
-.env
-.env
-.env
-.env

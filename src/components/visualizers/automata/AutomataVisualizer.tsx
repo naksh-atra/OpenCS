@@ -5,12 +5,19 @@ import { AUTOMATA_PRESETS, getPresetData } from './presets';
 import { drawAutomaton } from './render';
 import { createAutomaton, simulateStep, simulateFull, type SimulationState } from '../../../engines/theory/automata-ops';
 import './automata-visualizer.css';
+import { useDebugState } from '../../../lib/useDebugState';
 
 export function AutomataVisualizer() {
   const [automaton, setAutomaton] = useState(() => createAutomaton('dfa', [], [], [], '', []));
   const [simState, setSimState] = useState<SimulationState | null>(null);
   const [inputStr, setInputStr] = useState('');
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useDebugState(
+    'Automata',
+    simState ? { automatonType: simState.automaton?.type, currentStates: simState.currentStates, inputIndex: simState.inputIndex, accepted: simState.accepted, message: simState.message } : null,
+    null, simState?.inputIndex ?? 0, simState?.automaton?.alphabet?.length ?? 0, { type: simState?.automaton?.type }, {}
+  );
 
   useEffect(() => {
     drawAutomaton(canvasRef.current, automaton, simState);
